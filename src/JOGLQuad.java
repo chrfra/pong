@@ -19,6 +19,11 @@ import com.jogamp.opengl.util.Animator;
  
  
 public class JOGLQuad implements GLEventListener, KeyListener {
+    float centerX=(float)0.5;    
+    float centerY=(float)0.5; 
+    float deltaY=(float)0.1;
+    float deltaX=(float)0.1;
+    
     float rotateT = 0.0f;
  
     static GLU glu = new GLU();
@@ -40,19 +45,28 @@ public class JOGLQuad implements GLEventListener, KeyListener {
         gl.glRotatef(rotateT, 1.0f, 0.0f, 0.0f);
         gl.glRotatef(rotateT, 0.0f, 1.0f, 0.0f);
         gl.glRotatef(rotateT, 0.0f, 0.0f, 1.0f);
- 
+
+        
         // Draw A Quad
+//        gl.glBegin(GL2.GL_QUADS);          
+//            gl.glColor3f(0.0f, 1.0f, 1.0f);   // set the color of the quad
+//            gl.glVertex3f(-1.0f, 1.0f, 0.0f);      // Top Left
+//            gl.glVertex3f( 1.0f, 1.0f, 0.0f);       // Top Right
+//            gl.glVertex3f( 1.0f,-1.0f, 0.0f);      // Bottom Right
+//            gl.glVertex3f(-1.0f,-1.0f, 0.0f);     // Bottom Left
+//            
+   
         gl.glBegin(GL2.GL_QUADS);          
             gl.glColor3f(0.0f, 1.0f, 1.0f);   // set the color of the quad
-            gl.glVertex3f(-1.0f, 1.0f, 0.0f);      // Top Left
-            gl.glVertex3f( 1.0f, 1.0f, 0.0f);       // Top Right
-            gl.glVertex3f( 1.0f,-1.0f, 0.0f);      // Bottom Right
-            gl.glVertex3f(-1.0f,-1.0f, 0.0f);     // Bottom Left
+            gl.glVertex3f(centerX-1, centerY, 0.0f);      // Top Left
+            gl.glVertex3f( centerX, centerY, 0.0f);       // Top Right
+            gl.glVertex3f( centerX,centerY-1, 0.0f);      // Bottom Right
+            gl.glVertex3f(centerX-1,centerY-1, 0.0f);     // Bottom Left
         // Done Drawing The Quad
         gl.glEnd();                                                     
  
         // increasing rotation for the next iteration                                 
-        rotateT += 0.2f; 
+        //rotateT += 0.2f; 
     }
  
     public void displayChanged(GLAutoDrawable gLDrawable, boolean modeChanged, boolean deviceChanged) {
@@ -85,10 +99,19 @@ public class JOGLQuad implements GLEventListener, KeyListener {
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             exit();
-        }
+        }else if(e.getKeyCode() == KeyEvent.VK_NUMPAD8){
+    		centerY+=deltaY;
+    	}else if(e.getKeyCode() == KeyEvent.VK_NUMPAD2){
+    		centerY-=deltaY;
+    	}else if(e.getKeyCode() == KeyEvent.VK_NUMPAD4){
+			centerX-=deltaX;
+		}else if(e.getKeyCode() == KeyEvent.VK_NUMPAD6){
+			centerX+=deltaX;
+		}
     }
  
     public void keyReleased(KeyEvent e) {
+
     }
  
     public void keyTyped(KeyEvent e) {
