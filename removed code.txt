@@ -1,0 +1,28 @@
+              //steer with numpad (deprecated)
+
+	}else if(e.getKeyCode() == KeyEvent.VK_NUMPAD8){
+    		centerY+=deltaY;
+    	}else if(e.getKeyCode() == KeyEvent.VK_NUMPAD2){
+    		centerY-=deltaY;
+    	}else if(e.getKeyCode() == KeyEvent.VK_NUMPAD4){
+			centerX-=deltaX;
+		}else if(e.getKeyCode() == KeyEvent.VK_NUMPAD6){
+			centerX+=deltaX;
+
+  //------unused method----------
+	public void centerMouse() {
+		//this code works if you eg. put it in a event listener method, but moves quad with it
+	//if(frame.isShowing()){
+	    Point locOnScreen = frame.getLocationOnScreen();
+	    System.out.println("mouse location");
+	    System.out.println(locOnScreen.x + (frame.getWidth() / 2));
+	    System.out.println(locOnScreen.y + (frame.getWidth() / 2));
+	    int middleX = locOnScreen.x + (frame.getWidth() / 2);
+	    int middleY = locOnScreen.y + (frame.getHeight() / 2);
+	    try{
+	      Robot rob = new Robot();
+	      rob.mouseMove(middleX, middleY);
+	    }catch(Exception e){System.out.println(e);}
+		    //setting mouse coords
+		//  }
+	}
