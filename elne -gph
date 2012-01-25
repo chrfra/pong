@@ -1,0 +1,35 @@
+[33mcommit 719ac1019fe54bbad00855db38f42ce8280d11f9[m
+Author: Christian Fransson <st_anger01@hotmail.com>
+Date:   Wed Jan 25 14:14:25 2012 +0100
+
+    added comments for the basic jogl commands,removed numpad movement support,exit fullscreen on F12 unfinished,frame set to 1080p, centerMouse method removed
+
+[33mcommit 696d5ec492d1fcaabc2711c8b212805be346e0af[m
+Author: Christian Fransson <st_anger01@hotmail.com>
+Date:   Tue Jan 17 19:45:34 2012 +0100
+
+    added mouse support
+
+[33mcommit 57d2dd571d74ef80d545265c3ef32fd60e899271[m
+Author: Christian Fransson <st_anger01@hotmail.com>
+Date:   Tue Jan 17 16:44:13 2012 +0100
+
+    added keypad movement to quad
+
+[33mcommit 95d9b76cc4514c8c34a9e23d5072bc364abce89d[m
+Author: Christian Fransson <st_anger01@hotmail.com>
+Date:   Mon Jan 16 18:34:28 2012 +0100
+
+    basic 3d code
+
+[33mcommit 8f88f4bdd04620bb212efcb20e82e87d015c109c[m
+Author: Christian Fransson <st_anger01@hotmail.com>
+Date:   Sun Jan 15 19:02:30 2012 +0100
+
+    Added project info to readme
+
+[33mcommit dab49a2e40bd2d4849142d7b36f7d69de33834d9[m
+Author: Christian Fransson <st_anger01@hotmail.com>
+Date:   Sun Jan 15 15:50:18 2012 +0100
+
+    first commit
