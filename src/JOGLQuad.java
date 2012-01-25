@@ -36,14 +36,18 @@ public class JOGLQuad implements GLEventListener, KeyListener, MouseInputListene
     static GLCanvas canvas = new GLCanvas();
  
     static Frame frame = new Frame("Jogl Quad drawing");
- 
+    
+    //animator drives display method in a loop
     static Animator animator = new Animator(canvas);
     
     //Wiimote[] wiimote = WiiUseApiManager.getWiimotes(1, true);
     
     public void display(GLAutoDrawable gLDrawable) {
         final GL2 gl = gLDrawable.getGL().getGL2();
+        //clear previously drawn frame
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+        //remove last drawn quad 
+        //(commenting this results in same effect as windows crashing, or "drawing" effect..)
         gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
         gl.glTranslatef(0.0f, 0.0f, -5.0f);
@@ -70,7 +74,13 @@ public class JOGLQuad implements GLEventListener, KeyListener, MouseInputListene
             gl.glVertex3f( centerX,centerY-1, 0.0f);      // Bottom Right
             gl.glVertex3f(centerX-1,centerY-1, 0.0f);     // Bottom Left
         // Done Drawing The Quad
-        gl.glEnd();                                                     
+        gl.glEnd();
+        
+//        gl.Begin(GL_TRIANGLES);                      // Drawing Using Triangles
+//            glVertex3f( 0.0f, 1.0f, 0.0f);              // Top
+//            glVertex3f(-1.0f,-1.0f, 0.0f);              // Bottom Left
+//            glVertex3f( 1.0f,-1.0f, 0.0f);              // Bottom Right
+//        glEnd();                            // Finished Drawing The Triangle
  
         // increasing rotation for the next iteration                                 
         //rotateT += 0.2f; 
@@ -78,7 +88,9 @@ public class JOGLQuad implements GLEventListener, KeyListener, MouseInputListene
  
     public void displayChanged(GLAutoDrawable gLDrawable, boolean modeChanged, boolean deviceChanged) {
     }
- 
+ /*Init is an initalization function which OpenGL/Jogl will call when your program starts up. 
+  * Typically, you apply global settings and initalize the GL instance with your programs options.
+  */
     public void init(GLAutoDrawable gLDrawable) {
     	//centerMouse();
         GL2 gl = gLDrawable.getGL().getGL2();
@@ -88,7 +100,7 @@ public class JOGLQuad implements GLEventListener, KeyListener, MouseInputListene
         gl.glEnable(GL.GL_DEPTH_TEST);
         gl.glDepthFunc(GL.GL_LEQUAL);
         gl.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
-        //add listeners, 
+        //add listeners
         ((Component) gLDrawable).addKeyListener(this);
         ((Component) gLDrawable).addMouseMotionListener(this);
         ((Component) gLDrawable).addMouseListener(this);   
@@ -109,8 +121,10 @@ public class JOGLQuad implements GLEventListener, KeyListener, MouseInputListene
     }
  
     public void keyPressed(KeyEvent e) {
+    	//close program on escape button
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             exit();
+        //steer with numpad (deprecated)
         }else if(e.getKeyCode() == KeyEvent.VK_NUMPAD8){
     		centerY+=deltaY;
     	}else if(e.getKeyCode() == KeyEvent.VK_NUMPAD2){
@@ -119,6 +133,9 @@ public class JOGLQuad implements GLEventListener, KeyListener, MouseInputListene
 			centerX-=deltaX;
 		}else if(e.getKeyCode() == KeyEvent.VK_NUMPAD6){
 			centerX+=deltaX;
+		//exit fullscreen on F12 button
+		}else if (e.getKeyCode() == KeyEvent.VK_F12) {
+			//frame.setUndecorated(false);
 		}
     }
  
@@ -139,15 +156,17 @@ public class JOGLQuad implements GLEventListener, KeyListener, MouseInputListene
     	
         canvas.addGLEventListener(new JOGLQuad());
         frame.add(canvas);
-        frame.setSize(640, 480);
-        frame.setUndecorated(true);
-        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+        frame.setSize(1920, 1080);
+        frame.setUndecorated(true);//enables fullscreen
+        frame.setExtendedState(Frame.MAXIMIZED_BOTH);//maximizes window
+        //runs exit method when closing window
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 exit();
             }
         });
         frame.setVisible(true);
+        //starts calling display method
         animator.start();
         canvas.requestFocus();
         //hide cursor
@@ -160,7 +179,7 @@ public class JOGLQuad implements GLEventListener, KeyListener, MouseInputListene
         // do nothing
     }
     
-    //unused method
+    //------unused method----------
 	public void centerMouse() {
 		//this code works if you eg. put it in a event listener method, but moves quad with it
 	//if(frame.isShowing()){
@@ -217,7 +236,7 @@ public class JOGLQuad implements GLEventListener, KeyListener, MouseInputListene
 	public void mouseMoved(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		//System.out.println(arg0.getXOnScreen());
-		float offset =4; //used to alleviate the consequences of the cursor being too far away from the quad at startup
+		float offset =0; //used to alleviate the consequences of the cursor being too far away from the quad at startup
 		centerY=-((float)arg0.getYOnScreen() / 100)+offset;
 		centerX=((float)arg0.getXOnScreen() / 100)-offset-1;
 		//r.delay(500);	fun effect to make game harder if using a robot object
