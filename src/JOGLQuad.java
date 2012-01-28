@@ -16,6 +16,7 @@ import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
  
 import com.jogamp.opengl.util.Animator;
+import com.jogamp.opengl.util.gl2.GLUT;
  
  
 public class JOGLQuad implements GLEventListener{
@@ -24,6 +25,8 @@ public class JOGLQuad implements GLEventListener{
     float deltaY=(float)0.1;
     float deltaX=(float)0.1;
     float rotateT = 0.0f;
+    float rotateUp = 0.0f;
+    float rotateRight = 0.0f;
     kmListener k;
  
     static GLU glu = new GLU();
@@ -45,8 +48,12 @@ public class JOGLQuad implements GLEventListener{
         gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
         //same effect as offset in mouselistener
-        gl.glTranslatef(-3.0f, 3.0f, -5.0f);
+        gl.glTranslatef(0f, 0f, -5.0f);
         //gl.glTranslatef(0.0f, 0.0f, -5.0f);
+        
+        gl.glRotatef(rotateUp, 1.0f, 0.0f, 0.0f);
+        gl.glRotatef(rotateRight, 0.0f, 1.0f, 0.0f);
+        
         
         // rotate on the three axis
         gl.glRotatef(rotateT, 1.0f, 0.0f, 0.0f);
@@ -63,6 +70,9 @@ public class JOGLQuad implements GLEventListener{
         gl.glVertex3f(centerX-1,centerY-1, 0.0f);     // Bottom Left
         // Done Drawing The Quad
         gl.glEnd();
+        
+        GLUT glut = new GLUT();
+        glut.glutWireCube(3);
 /*
         gl.Begin(GL_TRIANGLES);                      // Drawing Using Triangles
         	glVertex3f( 0.0f, 1.0f, 0.0f);              // Top
@@ -99,6 +109,7 @@ public class JOGLQuad implements GLEventListener{
         if (height <= 0) {
             height = 1;
         }
+        
         float h = (float) width / (float) height;
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();
@@ -156,4 +167,22 @@ public class JOGLQuad implements GLEventListener{
 		this.centerY = centerY;
 	}
 
+	public float getRotateUp() {
+		return rotateUp;
+	}
+
+	public void setRotateUp(float rotateUp) {
+		this.rotateUp = rotateUp;
+	}
+
+	public float getRotateRight() {
+		return rotateRight;
+	}
+
+	public void setRotateRight(float rotateRight) {
+		this.rotateRight = rotateRight;
+	}
+
+
+	
 }

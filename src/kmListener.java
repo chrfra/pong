@@ -65,6 +65,18 @@ public class kmListener implements KeyListener, MouseInputListener{
 		}else if (e.getKeyCode() == KeyEvent.VK_F12) {
 			//frame.setUndecorated(false);
 		}
+		if (e.getKeyCode() == KeyEvent.VK_NUMPAD4) {
+			q.setRotateRight(q.getRotateRight()-5);
+		}
+		if (e.getKeyCode() == KeyEvent.VK_NUMPAD6) {
+			q.setRotateRight(q.getRotateRight()+5);
+		}
+		if (e.getKeyCode() == KeyEvent.VK_NUMPAD8) {
+			q.setRotateUp(q.getRotateUp()+5);
+		}
+		if (e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
+			q.setRotateUp(q.getRotateUp()-5);
+		}
 	}
 
 	public void keyReleased(KeyEvent e) {
