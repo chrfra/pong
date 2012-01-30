@@ -2,32 +2,32 @@ package pong.model;
 
 public class GameItem {
 	
-	private double xPos;
-	private double yPos;
-	private double zPos;
+	private float xPos;
+	private float yPos;
+	private float zPos;
 	
-	public GameItem(double xPos, double yPos, double zPos) {
+	public GameItem(float xPos, float yPos, float zPos) {
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.zPos = zPos;
 	}
 	
-	public double getxPos() {
+	public float getxPos() {
 		return xPos;
 	}
-	public void setxPos(double xPos) {
+	public void setxPos(float xPos) {
 		this.xPos = xPos;
 	}
-	public double getyPos() {
+	public float getyPos() {
 		return yPos;
 	}
-	public void setyPos(double yPos) {
+	public void setyPos(float yPos) {
 		this.yPos = yPos;
 	}
-	public double getzPos() {
+	public float getzPos() {
 		return zPos;
 	}
-	public void setzPos(double zPos) {
+	public void setzPos(float zPos) {
 		this.zPos = zPos;
 	}
 	
