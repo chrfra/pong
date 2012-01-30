@@ -8,7 +8,7 @@ public class GameEngine {
 	private Paddle paddle;
 
 	public GameEngine(){
-		paddle = new Paddle(0,0,0);
+		paddle = new Paddle(0,0,0, 0, 0, 0);
 	}
 	public static void main(String[] args) {
 		GameEngine ge = new GameEngine();
@@ -26,7 +26,7 @@ public class GameEngine {
 		
 		paddle.setDepth(30);
 		paddle.setHeight(10);
-		paddle.setDepth(10);
+		paddle.setWidth(10);
 		
 		GraphicsEngine ge = new GraphicsEngine(this);
 		ge.setUp();
