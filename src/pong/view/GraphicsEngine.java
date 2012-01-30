@@ -12,6 +12,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.fixedfunc.GLLightingFunc;
+import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
 
 import pong.control.GameEngine;
@@ -55,6 +56,7 @@ public class GraphicsEngine implements GLEventListener {
 	public void display(GLAutoDrawable gLDrawable) {
 		//Draw walls around playarea
 		//Draw paddles, ball etc
+		this.drawPaddle(gLDrawable, null);
 	}
 
 	@Override
@@ -81,7 +83,17 @@ public class GraphicsEngine implements GLEventListener {
 
 	@Override
 	public void reshape(GLAutoDrawable gLDrawable, int x, int y, int width, int height) {
-		// TODO Auto-generated method stub
+        GL2 gl = gLDrawable.getGL().getGL2();
+        if (height <= 0) {
+            height = 1;
+        }
+        
+        float h = (float) width / (float) height;
+        gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
+        gl.glLoadIdentity();
+        glu.gluPerspective(50.0f, h, 1.0, 1000.0);
+        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+        gl.glLoadIdentity();
 	}
 
     public static void exit() {
