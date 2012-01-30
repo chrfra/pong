@@ -6,8 +6,11 @@ public class Paddle extends MoveableItem {
 	private float width;
 	private float depth;
 
-	public Paddle(float xPos, float yPos, float zPos) {
+	public Paddle(float xPos, float yPos, float zPos, float height, float width, float depth) {
 		super(xPos, yPos, zPos);
+		this.height = height;
+		this.width = width;
+		this.depth = depth;
 	}
 
 	public float getHeight() {
