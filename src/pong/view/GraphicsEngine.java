@@ -93,12 +93,52 @@ public class GraphicsEngine implements GLEventListener {
     public void drawPaddle(GLAutoDrawable drawable, Paddle pad){
     	GL2 gl = drawable.getGL().getGL2();
     	
-    	gl.glPushMatrix();
+    	
+//    	gl.glPushMatrix();
+    	gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+    	 gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
+         gl.glLoadIdentity();
     	 
     	//TODO Draw paddle here. Use the data in the Paddle object to draw it in the right place.
+         gl.glRotatef(30, 1.0f, 1.0f, 1.0f);
+         gl.glTranslatef(5.0f, -5.0f, -20.0f);
+    	gl.glBegin(GL2.GL_QUADS);         // Draw A Quad
     	
-    	
-    	
-    	gl.glPopMatrix();
+        gl.glColor3f(0.0f, 1.0f, 0.0f);     // Set The Color To Green
+        gl.glVertex3f(1.0f, 1.0f, -1.0f);   // Top Right Of The Quad (Top)
+        gl.glVertex3f(-1.0f, 1.0f, -1.0f);  // Top Left Of The Quad (Top)
+        gl.glVertex3f(-1.0f, 1.0f, 1.0f);   // Bottom Left Of The Quad (Top)
+        gl.glVertex3f(1.0f, 1.0f, 1.0f);    // Bottom Right Of The Quad (Top)
+
+        gl.glColor3f(1.0f, 0.5f, 0.0f);     // Set The Color To Orange
+        gl.glVertex3f(1.0f, -1.0f, 1.0f);   // Top Right Of The Quad (Bottom)
+        gl.glVertex3f(-1.0f, -1.0f, 1.0f);  // Top Left Of The Quad (Bottom)
+        gl.glVertex3f(-1.0f, -1.0f, -1.0f); // Bottom Left Of The Quad (Bottom)
+        gl.glVertex3f(1.0f, -1.0f, -1.0f);  // Bottom Right Of The Quad (Bottom)
+
+        gl.glColor3f(1.0f, 0.0f, 0.0f);     // Set The Color To Red
+        gl.glVertex3f(1.0f, 1.0f, 1.0f);    // Top Right Of The Quad (Front)
+        gl.glVertex3f(-1.0f, 1.0f, 1.0f);   // Top Left Of The Quad (Front)
+        gl.glVertex3f(-1.0f, -1.0f, 1.0f);  // Bottom Left Of The Quad (Front)
+        gl.glVertex3f(1.0f, -1.0f, 1.0f);   // Bottom Right Of The Quad (Front)
+
+        gl.glColor3f(1.0f, 1.0f, 0.0f);     // Set The Color To Yellow
+        gl.glVertex3f(1.0f, -1.0f, -1.0f);  // Bottom Left Of The Quad (Back)
+        gl.glVertex3f(-1.0f, -1.0f, -1.0f); // Bottom Right Of The Quad (Back)
+        gl.glVertex3f(-1.0f, 1.0f, -1.0f);  // Top Right Of The Quad (Back)
+        gl.glVertex3f(1.0f, 1.0f, -1.0f);   // Top Left Of The Quad (Back)
+
+        gl.glColor3f(0.0f, 0.0f, 1.0f);     // Set The Color To Blue
+        gl.glVertex3f(-1.0f, 1.0f, 1.0f);   // Top Right Of The Quad (Left)
+        gl.glVertex3f(-1.0f, 1.0f, -1.0f);  // Top Left Of The Quad (Left)
+        gl.glVertex3f(-1.0f, -1.0f, -1.0f); // Bottom Left Of The Quad (Left)
+        gl.glVertex3f(-1.0f, -1.0f, 1.0f);  // Bottom Right Of The Quad (Left)
+
+        gl.glColor3f(1.0f, 0.0f, 1.0f);     // Set The Color To Violet
+        gl.glVertex3f(1.0f, 1.0f, -1.0f);   // Top Right Of The Quad (Right)
+        gl.glVertex3f(1.0f, 1.0f, 1.0f);    // Top Left Of The Quad (Right)
+        gl.glVertex3f(1.0f, -1.0f, 1.0f);   // Bottom Left Of The Quad (Right)
+        gl.glVertex3f(1.0f, -1.0f, -1.0f);  // Bottom Right Of The Quad (Right)
+        gl.glEnd();                         // Done Drawing The Quad
     }
 }
