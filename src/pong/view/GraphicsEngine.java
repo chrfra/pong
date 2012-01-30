@@ -1,6 +1,12 @@
 package pong.view;
 
 
+import java.awt.Component;
+import java.awt.Frame;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+
+import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -15,8 +21,8 @@ import javax.media.opengl.fixedfunc.GLLightingFunc;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
 
-import pong.control.GameEngine;
-import pong.model.Paddle;
+import pong.control.*;
+import pong.model.*;
 
 import com.jogamp.opengl.util.Animator;
 
@@ -27,6 +33,8 @@ public class GraphicsEngine implements GLEventListener {
 	private static Frame frame = new Frame("Pong");
 	
 	private GameEngine ge;
+	
+	private MouseInput mouse;
 	
     //animator drives display method in a loop
     private static Animator animator = new Animator(canvas);
@@ -79,6 +87,12 @@ public class GraphicsEngine implements GLEventListener {
         gl.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
         
         //TODO Add listeners
+        
+        //add listeners
+        mouse = new MouseInput(this);
+        ((Component) glDrawable).addKeyListener(mouse);
+        ((Component) glDrawable).addMouseMotionListener(mouse);
+        ((Component) glDrawable).addMouseListener(mouse);   
 	}
 
 	@Override
