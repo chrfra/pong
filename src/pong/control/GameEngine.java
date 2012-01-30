@@ -1,6 +1,7 @@
 package pong.control;
 
-import pong.view.GraphicsEngine;
+import pong.model.*;
+import pong.view.*;
 
 public class GameEngine {
 
@@ -13,6 +14,13 @@ public class GameEngine {
 		System.out.println("Running the game...");
 		GraphicsEngine ge = new GraphicsEngine(this);
 		ge.setUp();
+		
+		// Set up paddle
+		Paddle paddle = new Paddle(0, 0, 0);
+		paddle.setDepth(30);
+		paddle.setHeight(10);
+		paddle.setDepth(10);
+		
 	}
 	
 }
