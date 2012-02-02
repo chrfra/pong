@@ -48,7 +48,7 @@ public class GraphicsEngine implements GLEventListener {
 		// First setup of the frame
 		canvas.addGLEventListener(this);
 		frame.add(canvas);
-		frame.setSize(Const.SCREEN_WIDTH, Const.SCREEN_WIDTH);
+		frame.setSize(Const.SCREEN_WIDTH, Const.SCREEN_HEIGHT);
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				exit();
@@ -68,7 +68,10 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glLoadIdentity();
 
 		rotation += 1;
-
+		gl.glPushMatrix();
+		this.drawGamearea(gl);
+		gl.glPopMatrix();
+		
 		//TODO Draw walls around playarea
 		
 		// Draw paddles, ball etc
@@ -201,45 +204,27 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glVertex3f(w / 2f, -h / 2f, d / 2f); // Bottom Left Of The Quad (Right)
 		gl.glVertex3f(w / 2f, -h / 2f, -d / 2f); // Bottom Right Of The Quad (Right)
 
-		/*Just draw a cube. No respect for xyz or dimensions
-		/*		
-		gl.glColor3f(0.0f, 1.0f, 0.0f); // Set The Color To Green
-		gl.glVertex3f(1.0f, 1.0f, -1.0f); // Top Right Of The Quad (Top)
-		gl.glVertex3f(-1.0f, 1.0f, -1.0f); // Top Left Of The Quad (Top)
-		gl.glVertex3f(-1.0f, 1.0f, 1.0f); // Bottom Left Of The Quad (Top)
-		gl.glVertex3f(1.0f, 1.0f, 1.0f); // Bottom Right Of The Quad (Top)
-
-		gl.glColor3f(1.0f, 0.5f, 0.0f); // Set The Color To Orange
-		gl.glVertex3f(1.0f, -1.0f, 1.0f); // Top Right Of The Quad (Bottom)
-		gl.glVertex3f(-1.0f, -1.0f, 1.0f); // Top Left Of The Quad (Bottom)
-		gl.glVertex3f(-1.0f, -1.0f, -1.0f); // Bottom Left Of The Quad (Bottom)
-		gl.glVertex3f(1.0f, -1.0f, -1.0f); // Bottom Right Of The Quad (Bottom)
-
-		gl.glColor3f(1.0f, 0.0f, 0.0f); // Set The Color To Red
-		gl.glVertex3f(1.0f, 1.0f, 1.0f); // Top Right Of The Quad (Front)
-		gl.glVertex3f(-1.0f, 1.0f, 1.0f); // Top Left Of The Quad (Front)
-		gl.glVertex3f(-1.0f, -1.0f, 1.0f); // Bottom Left Of The Quad (Front)
-		gl.glVertex3f(1.0f, -1.0f, 1.0f); // Bottom Right Of The Quad (Front)
-
-		gl.glColor3f(1.0f, 1.0f, 0.0f); // Set The Color To Yellow
-		gl.glVertex3f(1.0f, -1.0f, -1.0f); // Bottom Left Of The Quad (Back)
-		gl.glVertex3f(-1.0f, -1.0f, -1.0f); // Bottom Right Of The Quad (Back)
-		gl.glVertex3f(-1.0f, 1.0f, -1.0f); // Top Right Of The Quad (Back)
-		gl.glVertex3f(1.0f, 1.0f, -1.0f); // Top Left Of The Quad (Back)
-
-		gl.glColor3f(0.0f, 0.0f, 1.0f); // Set The Color To Blue
-		gl.glVertex3f(-1.0f, 1.0f, 1.0f); // Top Right Of The Quad (Left)
-		gl.glVertex3f(-1.0f, 1.0f, -1.0f); // Top Left Of The Quad (Left)
-		gl.glVertex3f(-1.0f, -1.0f, -1.0f); // Bottom Left Of The Quad (Left)
-		gl.glVertex3f(-1.0f, -1.0f, 1.0f); // Bottom Right Of The Quad (Left)
-
-		gl.glColor3f(1.0f, 0.0f, 1.0f); // Set The Color To Violet
-		gl.glVertex3f(1.0f, 1.0f, -1.0f); // Top Right Of The Quad (Right)
-		gl.glVertex3f(1.0f, 1.0f, 1.0f); // Top Left Of The Quad (Right)
-		gl.glVertex3f(1.0f, -1.0f, 1.0f); // Bottom Left Of The Quad (Right)
-		gl.glVertex3f(1.0f, -1.0f, -1.0f); // Bottom Right Of The Quad (Right)
-		*/
-
 		gl.glEnd(); // Done Drawing The Quad
 	}
+	
+	/* Draws walls on top and in the bottom
+	 * 
+	 */
+	public void drawGamearea(GL2 gl){
+		
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glColor3f(0.0f, 1.0f, 0.0f); // Set The Color To Green
+		
+		gl.glVertex3f(Const.GAME_WIDTH / 2f, Const.GAME_HEIGHT / 2f, -Const.GAME_DEPTH); // Top Right Of The Quad (Top Wall)
+		gl.glVertex3f(-Const.GAME_WIDTH / 2f,Const.GAME_HEIGHT / 2f, -Const.GAME_DEPTH); // Top Left Of The Quad (Top Wall)
+		gl.glVertex3f(-Const.GAME_WIDTH / 2f, Const.GAME_HEIGHT / 2f, Const.GAME_DEPTH); // Bottom Left Of The Quad (Top Wall)
+		gl.glVertex3f(Const.GAME_WIDTH / 2f, Const.GAME_HEIGHT / 2f, Const.GAME_DEPTH); // Bottom Right Of The Quad (Top Wall)
+		
+		gl.glVertex3f(Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT / 2f, -Const.GAME_DEPTH); // Top Right Of The Quad (Bottom Wall)
+		gl.glVertex3f(-Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT / 2f, -Const.GAME_DEPTH); // Top Left Of The Quad (Bottom Wall)
+		gl.glVertex3f(-Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT / 2f, Const.GAME_DEPTH); // Bottom Left Of The Quad (Bottom Wall)
+		gl.glVertex3f(Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT / 2f, Const.GAME_DEPTH); // Bottom Right Of The Quad (Bottom Wall)
+		gl.glEnd();
+	}
+	
 }
