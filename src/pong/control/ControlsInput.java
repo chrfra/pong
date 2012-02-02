@@ -8,11 +8,11 @@ import javax.swing.event.MouseInputListener;
 import pong.view.GraphicsEngine;
 
 
-public class MouseInput implements KeyListener, MouseInputListener{
-	int mouseSens = 100; //mouse sensitivity
-	GraphicsEngine q;
-	public MouseInput(GraphicsEngine graphicsEngine){
-		this.q=graphicsEngine;
+public class ControlsInput implements KeyListener, MouseInputListener{
+	int mouseSens = 5; //mouse sensitivity
+	GameEngine q;
+	public ControlsInput(GameEngine ge){
+		this.q=ge;
 	}
 
 	@Override
@@ -53,17 +53,31 @@ public class MouseInput implements KeyListener, MouseInputListener{
 	public void mouseMoved(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		//System.out.println(arg0.getXOnScreen());
-		float offset =4; //used to alleviate the consequences of the cursor being too far away from the quad at startup
-		//q.moveY(-((float)arg0.getYOnScreen() / mouseSens)+offset);
-	//	q.moveX(((float)arg0.getXOnScreen() / mouseSens)-offset-1);
+		float offset =40; //used to alleviate the consequences of the cursor being too far away from the quad at startup
+		// offset was previously 4
+		q.moveY(-((float)arg0.getYOnScreen() / mouseSens)+offset);
+		q.moveX(((float)arg0.getXOnScreen() / mouseSens)-offset-1);
 		//r.delay(500);	fun effect to make game harder if using a robot object
 	}
 
 	public void keyPressed(KeyEvent e) {
+		float offset =40; //used to alleviate the consequences of the cursor being too far away from the quad at startup
 		//close program on escape button
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			q.exit();
 			//exit fullscreen on F12 button
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_UP) {			
+			q.moveY(q.getPaddle().getyPos()+1);
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_DOWN) {			
+			q.moveY(q.getPaddle().getyPos()-1);
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_LEFT) {			
+			q.moveX(q.getPaddle().getxPos()-1);
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {			
+			q.moveX(q.getPaddle().getxPos()+1);
 		}
 	}
 

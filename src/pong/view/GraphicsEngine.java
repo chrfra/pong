@@ -34,7 +34,7 @@ public class GraphicsEngine implements GLEventListener {
 	private int rotation = 0;
 	private GameEngine ge;
 
-	private MouseInput mouse;
+	private ControlsInput mouse;
 
 	// animator drives display method in a loop
 	private static Animator animator = new Animator(canvas);
@@ -48,7 +48,7 @@ public class GraphicsEngine implements GLEventListener {
 		// First setup of the frame
 		canvas.addGLEventListener(this);
 		frame.add(canvas);
-		frame.setSize(800, 600);
+		frame.setSize(Const.SCREEN_WIDTH, Const.SCREEN_WIDTH);
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				exit();
@@ -75,7 +75,8 @@ public class GraphicsEngine implements GLEventListener {
 		try {
 			// IMPORTANT! PopMatrix() resets glTranslatef and glRotatef to what it was before the previous PushMatrix()
 			gl.glPushMatrix();
-			this.draw3DRectangle(gl, new Paddle(50, 50, 0, 5, 10, 2));
+			//this.draw3DRectangle(gl, new Paddle(50, 50, 0, 5, 10, 2));
+			this.draw3DRectangle(gl, ge.getPaddle());
 			gl.glPopMatrix();
 			gl.glPushMatrix();
 			this.draw3DRectangle(gl, new Paddle(-30, -50, 0, 3, 40, 2));
@@ -107,7 +108,7 @@ public class GraphicsEngine implements GLEventListener {
 		// TODO Add listeners
 
 		// add listeners
-		mouse = new MouseInput(this);
+		mouse = new ControlsInput(ge);
 		((Component) glDrawable).addKeyListener(mouse);
 		((Component) glDrawable).addMouseMotionListener(mouse);
 		((Component) glDrawable).addMouseListener(mouse);
@@ -160,7 +161,7 @@ public class GraphicsEngine implements GLEventListener {
 
 		// Move to right coordinates.
 		gl.glTranslatef(x / 2f, y / 2f, z / 2f);
-		gl.glRotatef(rotation, 1.0f, 1.0f, 1.0f);
+		//gl.glRotatef(rotation, 1.0f, 1.0f, 1.0f);
 
 		gl.glBegin(GL2.GL_QUADS); // Draw A Quad
 
