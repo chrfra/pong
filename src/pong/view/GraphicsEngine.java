@@ -25,6 +25,7 @@ import pong.control.*;
 import pong.model.*;
 
 import com.jogamp.opengl.util.Animator;
+import com.jogamp.opengl.util.gl2.GLUT;
 
 public class GraphicsEngine implements GLEventListener {
 
@@ -33,6 +34,7 @@ public class GraphicsEngine implements GLEventListener {
 	private static Frame frame = new Frame("Pong");
 	private int rotation = 0;
 	private GameEngine ge;
+	private GLUT glut = new GLUT();
 
 	private ControlsInput mouse;
 
@@ -84,6 +86,10 @@ public class GraphicsEngine implements GLEventListener {
 			gl.glPushMatrix();
 			this.draw3DRectangle(gl, new Paddle(-30, -50, 0, 3, 40, 2));
 			gl.glPopMatrix();
+			gl.glPushMatrix();
+			renderStrokeString(gl, GLUT.STROKE_MONO_ROMAN, "Hej"); 
+			gl.glPopMatrix();
+			
 		} catch (InvalidClassException e) {
 			e.printStackTrace();
 		}
@@ -226,5 +232,13 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glVertex3f(Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT / 2f, Const.GAME_DEPTH); // Bottom Right Of The Quad (Bottom Wall)
 		gl.glEnd();
 	}
+	
+    void renderStrokeString(GL2 gl, int font, String string) {
+        // Center Our Text On The Screen
+        float width = glut.glutStrokeLength(font, string);
+        gl.glTranslatef(-width / 2f, 200, -700);
+        // Render The Text
+        glut.glutStrokeString(font, string);
+    }
 	
 }

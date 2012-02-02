@@ -1,4 +1,4 @@
-package pong.view;
+package pong.model;
 
 /* Used for constant variables */
 
