@@ -20,6 +20,9 @@ import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.fixedfunc.GLLightingFunc;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
+import javax.media.opengl.glu.GLUquadric;
+
+import jogamp.opengl.glu.GLUquadricImpl;
 
 import pong.control.*;
 import pong.model.*;
@@ -73,9 +76,9 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glPushMatrix();
 		this.drawGamearea(gl);
 		gl.glPopMatrix();
-		
+
 		//TODO Draw walls around playarea
-		
+
 		// Draw paddles, ball etc
 		try {
 			// IMPORTANT! PopMatrix() resets glTranslatef and glRotatef to what it was before the previous PushMatrix()
@@ -90,6 +93,11 @@ public class GraphicsEngine implements GLEventListener {
 			renderStrokeString(gl, GLUT.STROKE_MONO_ROMAN, "Hej"); 
 			gl.glPopMatrix();
 			
+			gl.glPushMatrix();
+			this.drawBall(gl, new Ball(0, 0, 0, 5));
+			gl.glPopMatrix();
+			
+
 		} catch (InvalidClassException e) {
 			e.printStackTrace();
 		}
@@ -146,7 +154,34 @@ public class GraphicsEngine implements GLEventListener {
 		frame.dispose();
 		System.exit(0);
 	}
+	/*
+	 * Renders a Ball.
+	 */
+	public void drawBall(GL2 gl, GameItem item) throws InvalidClassException {
+		float x, y, z, r;
 
+		// Check that item is a Paddle. Need to support all classes that have the same shape in the future.
+		if (item instanceof Ball) {
+			Ball Ball = (Ball) item;
+			x = Ball.getxPos();
+			y = Ball.getyPos();
+			z = Ball.getzPos();
+			r = Ball.getRadius();
+		} else {
+			throw new InvalidClassException("Wrong class of GameItem in draw3DRectangle(GL2 gl, GameItem item)");
+		}
+		gl.glTranslatef(x / 2f, y / 2f, z / 2f);
+		// Draw Ball (possible styles: FILL, LINE, POINT).
+		gl.glColor3f(0.3f, 0.5f, 1f);
+		GLUquadric earth = glu.gluNewQuadric();
+		glu.gluQuadricDrawStyle(earth, GLU.GLU_FILL);
+		glu.gluQuadricNormals(earth, GLU.GLU_FLAT);
+		glu.gluQuadricOrientation(earth, GLU.GLU_OUTSIDE);
+		final int slices = 16;
+		final int stacks = 16;
+		glu.gluSphere(earth, r, slices, stacks);
+		glu.gluDeleteQuadric(earth);
+	}
 	/*
 	 * Renders a 3D rectangle.
 	 * This can be used to draw a paddle or obstacle or something else.
@@ -212,33 +247,33 @@ public class GraphicsEngine implements GLEventListener {
 
 		gl.glEnd(); // Done Drawing The Quad
 	}
-	
+
 	/* Draws walls on top and in the bottom
 	 * 
 	 */
 	public void drawGamearea(GL2 gl){
-		
+
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glColor3f(0.0f, 1.0f, 0.0f); // Set The Color To Green
-		
+
 		gl.glVertex3f(Const.GAME_WIDTH / 2f, Const.GAME_HEIGHT / 2f, -Const.GAME_DEPTH); // Top Right Of The Quad (Top Wall)
 		gl.glVertex3f(-Const.GAME_WIDTH / 2f,Const.GAME_HEIGHT / 2f, -Const.GAME_DEPTH); // Top Left Of The Quad (Top Wall)
 		gl.glVertex3f(-Const.GAME_WIDTH / 2f, Const.GAME_HEIGHT / 2f, Const.GAME_DEPTH); // Bottom Left Of The Quad (Top Wall)
 		gl.glVertex3f(Const.GAME_WIDTH / 2f, Const.GAME_HEIGHT / 2f, Const.GAME_DEPTH); // Bottom Right Of The Quad (Top Wall)
-		
+
 		gl.glVertex3f(Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT / 2f, -Const.GAME_DEPTH); // Top Right Of The Quad (Bottom Wall)
 		gl.glVertex3f(-Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT / 2f, -Const.GAME_DEPTH); // Top Left Of The Quad (Bottom Wall)
 		gl.glVertex3f(-Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT / 2f, Const.GAME_DEPTH); // Bottom Left Of The Quad (Bottom Wall)
 		gl.glVertex3f(Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT / 2f, Const.GAME_DEPTH); // Bottom Right Of The Quad (Bottom Wall)
 		gl.glEnd();
 	}
-	
-    void renderStrokeString(GL2 gl, int font, String string) {
-        // Center Our Text On The Screen
-        float width = glut.glutStrokeLength(font, string);
-        gl.glTranslatef(-width / 2f, 200, -700);
-        // Render The Text
-        glut.glutStrokeString(font, string);
-    }
-	
+
+	void renderStrokeString(GL2 gl, int font, String string) {
+		// Center Our Text On The Screen
+		float width = glut.glutStrokeLength(font, string);
+		gl.glTranslatef(-width / 2f, 200, -700);
+		// Render The Text
+		glut.glutStrokeString(font, string);
+	}
+
 }
