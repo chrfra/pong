@@ -9,13 +9,17 @@ import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InvalidClassException;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES1;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
+import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.fixedfunc.GLLightingFunc;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
@@ -29,6 +33,9 @@ import pong.model.*;
 
 import com.jogamp.opengl.util.Animator;
 import com.jogamp.opengl.util.gl2.GLUT;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureData;
+import com.jogamp.opengl.util.texture.TextureIO;
 
 public class GraphicsEngine implements GLEventListener {
 
@@ -38,8 +45,8 @@ public class GraphicsEngine implements GLEventListener {
 	private int rotation = 0;
 	private GameEngine ge;
 	private GLUT glut = new GLUT();
-
 	private ControlsInput mouse;
+	private Texture balltexture;
 
 	// animator drives display method in a loop
 	private static Animator animator = new Animator(canvas);
@@ -47,6 +54,7 @@ public class GraphicsEngine implements GLEventListener {
 	public GraphicsEngine(GameEngine ge) {
 		this.ge = ge;
 	}
+	
 
 	public void setUp() {
 		System.out.println("Setting up the frame...");
@@ -77,7 +85,7 @@ public class GraphicsEngine implements GLEventListener {
 		this.drawGamearea(gl);
 		gl.glPopMatrix();
 
-		//TODO Draw walls around playarea
+		//TODO Draw walls around playarea		
 
 		// Draw paddles, ball etc
 		try {
@@ -90,6 +98,7 @@ public class GraphicsEngine implements GLEventListener {
 			this.draw3DRectangle(gl, new Paddle(-30, -50, 0, 3, 40, 2));
 			gl.glPopMatrix();
 			gl.glPushMatrix();
+			// Render a string on screen
 			renderStrokeString(gl, GLUT.STROKE_MONO_ROMAN, "Hej"); 
 			gl.glPopMatrix();
 			
@@ -121,10 +130,32 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glDepthFunc(GL.GL_LEQUAL);
 		gl.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
+		
+		
+		// Fix lights
+		
+        // Prepare light parameters.
+        float SHINE_ALL_DIRECTIONS = 1;
+        float[] lightPos = {20, 0, 0, SHINE_ALL_DIRECTIONS};
+        float[] lightColorAmbient = {0.2f, 0.2f, 0.2f, 1f};
+        float[] lightColorSpecular = {0.8f, 0.8f, 0.8f, 1f};
 
-		// TODO Add listeners
+        // Set light parameters.
+        gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_POSITION, lightPos, 0);
+        gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_AMBIENT, lightColorAmbient, 0);
+        gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_SPECULAR, lightColorSpecular, 0);
 
-		// add listeners
+        // Enable lighting in GL.
+        gl.glEnable(GL2.GL_LIGHT1);
+        gl.glEnable(GL2.GL_LIGHTING);
+
+        // Set material properties.
+        float[] rgba = {1f, 1f, 1f};
+        gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_AMBIENT, rgba, 0);
+        gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, rgba, 0);
+        gl.glMaterialf(GL2.GL_FRONT, GL2.GL_SHININESS, 0.5f);
+		
+		// add listeners for keyboard and mouse input
 		mouse = new ControlsInput(ge);
 		((Component) glDrawable).addKeyListener(mouse);
 		((Component) glDrawable).addMouseMotionListener(mouse);
@@ -170,17 +201,26 @@ public class GraphicsEngine implements GLEventListener {
 		} else {
 			throw new InvalidClassException("Wrong class of GameItem in draw3DRectangle(GL2 gl, GameItem item)");
 		}
+        // Apply texture.
+		setBallTexture();
+		
+        // Set white color, and enable texturing.
+        gl.glEnable(GL.GL_TEXTURE_2D);
+		
+        balltexture.enable(gl);
+        balltexture.bind(gl);
+		
 		gl.glTranslatef(x / 2f, y / 2f, z / 2f);
 		// Draw Ball (possible styles: FILL, LINE, POINT).
 		gl.glColor3f(0.3f, 0.5f, 1f);
-		GLUquadric earth = glu.gluNewQuadric();
-		glu.gluQuadricDrawStyle(earth, GLU.GLU_FILL);
-		glu.gluQuadricNormals(earth, GLU.GLU_FLAT);
-		glu.gluQuadricOrientation(earth, GLU.GLU_OUTSIDE);
+		GLUquadric ball = glu.gluNewQuadric();
+		glu.gluQuadricDrawStyle(ball, GLU.GLU_FILL);
+		glu.gluQuadricNormals(ball, GLU.GLU_FLAT);
+		glu.gluQuadricOrientation(ball, GLU.GLU_OUTSIDE);
 		final int slices = 16;
 		final int stacks = 16;
-		glu.gluSphere(earth, r, slices, stacks);
-		glu.gluDeleteQuadric(earth);
+		glu.gluSphere(ball, r, slices, stacks);
+		glu.gluDeleteQuadric(ball);
 	}
 	/*
 	 * Renders a 3D rectangle.
@@ -268,12 +308,32 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glEnd();
 	}
 
-	void renderStrokeString(GL2 gl, int font, String string) {
+	public void renderStrokeString(GL2 gl, int font, String string) {
 		// Center Our Text On The Screen
 		float width = glut.glutStrokeLength(font, string);
 		gl.glTranslatef(-width / 2f, 200, -700);
 		// Render The Text
 		glut.glutStrokeString(font, string);
+	}
+	
+	public void setBallTexture(){
+		
+        // Load texture to our ball
+        try {
+        	InputStream stream;
+        	if( (stream = getClass().getResourceAsStream("/resource/earth-1k.png")) == null )
+        	{
+        		System.out.println("Texture not loaded..");
+        	}
+            TextureData data = TextureIO.newTextureData(GLProfile.getDefault(), stream, false, "png");
+            balltexture = TextureIO.newTexture(data);
+        }
+        catch (IOException exc) {
+            exc.printStackTrace();
+            System.exit(1);
+        }
+		
+	
 	}
 
 }

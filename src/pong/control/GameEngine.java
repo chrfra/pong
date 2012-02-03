@@ -35,13 +35,13 @@ public class GameEngine {
 	}
 	
 	public void moveX(float m){
-		System.out.println("XPos: " + m);
+		//System.out.println("XPos: " + m);
 		paddle.setxPos(m);
 		
 	}
 	
 	public void moveY(float m){
-		System.out.println("YPos: " + m);
+		//System.out.println("YPos: " + m);
 		paddle.setyPos(m);
 	}
 	
