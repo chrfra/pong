@@ -9,8 +9,8 @@ public class Const {
 	public static final int SCREEN_HEIGHT = 600;
 	
 	// Game area values
-	public static final float GAME_WIDTH = 90;
-	public static final float GAME_HEIGHT = 70;
+	public static final float GAME_WIDTH = 20;
+	public static final float GAME_HEIGHT = 14;
 	public static final float GAME_DEPTH = 2;
 	
 	// Default values for paddles

@@ -10,6 +10,7 @@ import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.InvalidClassException;
+import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -69,6 +70,9 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
 
+		//Items to be drawn
+		ArrayList<GameItem> items = ge.getGameItems();
+		
 		rotation += 1;
 		gl.glPushMatrix();
 		this.drawGamearea(gl);
@@ -79,13 +83,11 @@ public class GraphicsEngine implements GLEventListener {
 		// Draw paddles, ball etc
 		try {
 			// IMPORTANT! PopMatrix() resets glTranslatef and glRotatef to what it was before the previous PushMatrix()
-			gl.glPushMatrix();
-			//this.draw3DRectangle(gl, new Paddle(50, 50, 0, 5, 10, 2));
-			this.draw3DRectangle(gl, ge.getPaddle());
-			gl.glPopMatrix();
-			gl.glPushMatrix();
-			this.draw3DRectangle(gl, new Paddle(-30, -50, 0, 3, 40, 2));
-			gl.glPopMatrix();
+			for(GameItem item : items){
+				gl.glPushMatrix();
+				this.draw3DRectangle(gl, item);
+				gl.glPopMatrix();
+			}
 			gl.glPushMatrix();
 			renderStrokeString(gl, GLUT.STROKE_MONO_ROMAN, "Hej"); 
 			gl.glPopMatrix();
@@ -136,7 +138,7 @@ public class GraphicsEngine implements GLEventListener {
 
 		glu.gluPerspective(50.0f, h, 1.0, 1000.0);
 		// Set camera to look at Origo from 20 units away.
-		glu.gluLookAt(0.0, 0.0, 100.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+		glu.gluLookAt(0.0, 0.0, 150.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 		gl.glLoadIdentity();
 	}
