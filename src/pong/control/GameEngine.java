@@ -19,19 +19,27 @@ public class GameEngine {
 		System.out.println("Running the game...");
 		
 		
+		Physics physics = new Physics();
+		physics.create();
+		physics.addBall();
+		while(true){
+			System.out.println("Updating physics");
+			physics.update();
+		}
+		
+		
 		// Set up paddle
-		paddle.setxPos(0);
-		paddle.setyPos(0);
-		paddle.setzPos(0);
-		
-		paddle.setDepth(30);
-		paddle.setHeight(10);
-		paddle.setWidth(10);
-		
-		GraphicsEngine ge = new GraphicsEngine(this);
-		ge.setUp();
+//		paddle.setxPos(0);
+//		paddle.setyPos(0);
+//		paddle.setzPos(0);
+//		
+//		paddle.setDepth(30);
+//		paddle.setHeight(10);
+//		paddle.setWidth(10);
+//		
+//		GraphicsEngine ge = new GraphicsEngine(this);
+//		ge.setUp();
 	
-		
 	}
 	
 	public void moveX(float m){
