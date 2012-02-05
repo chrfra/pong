@@ -5,11 +5,13 @@ public class GameItem {
 	private float xPos;
 	private float yPos;
 	private float zPos;
+	private Type type;
 	
-	public GameItem(float xPos, float yPos, float zPos) {
+	public GameItem(float xPos, float yPos, float zPos, Type type) {
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.zPos = zPos;
+		this.type = type;
 	}
 	
 	public float getxPos() {
@@ -30,6 +32,11 @@ public class GameItem {
 	public void setzPos(float zPos) {
 		this.zPos = zPos;
 	}
+
+	public String getType() {
+		return type.name();
+	}
+
 	
 
 }
