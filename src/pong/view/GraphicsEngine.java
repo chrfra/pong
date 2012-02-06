@@ -96,7 +96,11 @@ public class GraphicsEngine implements GLEventListener {
 			// IMPORTANT! PopMatrix() resets glTranslatef and glRotatef to what it was before the previous PushMatrix()
 			for(GameItem item : items){
 				gl.glPushMatrix();
-				this.draw3DRectangle(gl, item);
+				if(item.getType().equals("PADDLE")){
+					this.draw3DRectangle(gl, item);
+				}else if(item.getType().equals("BALL")){
+					this.drawBall(gl, item);
+				}
 				gl.glPopMatrix();
 			}
 			gl.glPushMatrix();
@@ -194,7 +198,7 @@ public class GraphicsEngine implements GLEventListener {
 		float x, y, z, r;
 
 		// Check that item is a Paddle. Need to support all classes that have the same shape in the future.
-		if (item instanceof Ball) {
+		if (item.getType().equals("BALL")) {
 			Ball Ball = (Ball) item;
 			x = Ball.getxPos();
 			y = Ball.getyPos();

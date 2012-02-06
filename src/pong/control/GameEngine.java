@@ -31,6 +31,7 @@ public class GameEngine {
 
 		addItemToGame(new Paddle(150,10,0, 10, 10, 2));
 		addItemToGame(new Paddle(150,50,0, 10, 10, 2));
+		addItemToGame(new Ball(0,0,0,2));
 		GraphicsEngine ge = new GraphicsEngine(this);
 		ge.setUp();
 		try {

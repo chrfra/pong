@@ -48,14 +48,11 @@ public class Physics {
 		// world.setGravity(gravity);
 		world = new World(gravity, true);
 
-		// Make a Body for the ground via definition and shape binding that
-		// gives it a boundary
+		// Make a Body for the ground via definition and shape binding that gives it a boundary
 		BodyDef groundBodyDef = new BodyDef(); // body definition
 		groundBodyDef.position.set(0.0f, -140.0f); // set bodydef position
-		Body ground = world.createBody(groundBodyDef); // create body based on
-														// definition
-		PolygonShape groundBox = new PolygonShape(); // make a shape
-														// representing ground
+		Body ground = world.createBody(groundBodyDef); // create body based on definition
+		PolygonShape groundBox = new PolygonShape(); // make a shape representing ground
 		groundBox.setAsBox(200.0f, 5.0f); // shape is a rect: 100 wide, 20 high
 		ground.createFixture(groundBox, 0.0f); // bind shape to ground body
 
@@ -107,7 +104,7 @@ public class Physics {
 		FixtureDef fixtureDef = new FixtureDef(); // fixture def that we load up with the following info:
 		fixtureDef.shape = dynamicBall; // ... its shape is the dynamic box (2x2 rectangle)
 		fixtureDef.density = 1.0f; // ... its density is 1 (default is zero)
-		fixtureDef.restitution = 1.0f;
+		fixtureDef.restitution = 0.8f;
 		// fixtureDef.friction = 0.3f; // ... its surface has some friction coefficient
 		body.createFixture(fixtureDef); // bind the dense, friction-laden fixture to the body
 		body.setLinearVelocity(new Vec2(0.5f, 0.5f));
