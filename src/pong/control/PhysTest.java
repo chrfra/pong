@@ -47,12 +47,16 @@ public class PhysTest extends TestbedTest {
 		PolygonShape shape = new PolygonShape();
 		shape.setAsEdge(new Vec2(-30, -20), new Vec2(30, -20)); // Floor
 		ground.createFixture(shape, 0.0f);
+		shape = new PolygonShape();
 		shape.setAsEdge(new Vec2(-30, 20), new Vec2(30, 20)); // Roof
 		ground.createFixture(shape, 0.0f);
+		shape = new PolygonShape();
 		shape.setAsEdge(new Vec2(-30, -20), new Vec2(-30, 20)); // Left
 		ground.createFixture(shape, 0.0f);
+		shape = new PolygonShape();
 		shape.setAsEdge(new Vec2(30, -20), new Vec2(30, 20)); // right
 		ground.createFixture(shape, 0.0f);
+		shape = new PolygonShape();
 
 		PolygonShape polygonShape = new PolygonShape();
 		polygonShape.setAsBox(1, 1);

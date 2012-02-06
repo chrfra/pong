@@ -108,9 +108,9 @@ public class GraphicsEngine implements GLEventListener {
 			renderStrokeString(gl, GLUT.STROKE_MONO_ROMAN, "Hej"); 
 			gl.glPopMatrix();
 			
-			gl.glPushMatrix();
-			this.drawBall(gl, new Ball(0, 0, 0, 5));
-			gl.glPopMatrix();
+//			gl.glPushMatrix();
+//			this.drawBall(gl, new Ball(0, 0, 0, 5));
+//			gl.glPopMatrix();
 			
 
 		} catch (InvalidClassException e) {
@@ -184,7 +184,7 @@ public class GraphicsEngine implements GLEventListener {
 
 		glu.gluPerspective(50.0f, h, 1.0, 1000.0);
 		// Set camera to look at Origo from 20 units away.
-		glu.gluLookAt(0.0, 0.0, 150.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+		glu.gluLookAt(0.0, 0.0, 20.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 		gl.glLoadIdentity();
 	}
@@ -251,7 +251,7 @@ public class GraphicsEngine implements GLEventListener {
 		} else {
 			throw new InvalidClassException("Wrong class of GameItem in draw3DRectangle(GL2 gl, GameItem item)");
 		}
-
+		System.out.println("Graphics: " +y);
 		// Move to right coordinates.
 		gl.glTranslatef(x / 2f, y / 2f, z / 2f);
 		//gl.glRotatef(rotation, 1.0f, 1.0f, 1.0f);
@@ -301,19 +301,20 @@ public class GraphicsEngine implements GLEventListener {
 	 * 
 	 */
 	public void drawGamearea(GL2 gl){
-
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glColor3f(0.0f, 1.0f, 0.0f); // Set The Color To Green
-
-		gl.glVertex3f(Const.GAME_WIDTH / 2f, Const.GAME_HEIGHT / 2f, -Const.GAME_DEPTH); // Top Right Of The Quad (Top Wall)
-		gl.glVertex3f(-Const.GAME_WIDTH / 2f,Const.GAME_HEIGHT / 2f, -Const.GAME_DEPTH); // Top Left Of The Quad (Top Wall)
-		gl.glVertex3f(-Const.GAME_WIDTH / 2f, Const.GAME_HEIGHT / 2f, Const.GAME_DEPTH); // Bottom Left Of The Quad (Top Wall)
-		gl.glVertex3f(Const.GAME_WIDTH / 2f, Const.GAME_HEIGHT / 2f, Const.GAME_DEPTH); // Bottom Right Of The Quad (Top Wall)
-
-		gl.glVertex3f(Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT / 2f, -Const.GAME_DEPTH); // Top Right Of The Quad (Bottom Wall)
-		gl.glVertex3f(-Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT / 2f, -Const.GAME_DEPTH); // Top Left Of The Quad (Bottom Wall)
-		gl.glVertex3f(-Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT / 2f, Const.GAME_DEPTH); // Bottom Left Of The Quad (Bottom Wall)
-		gl.glVertex3f(Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT / 2f, Const.GAME_DEPTH); // Bottom Right Of The Quad (Bottom Wall)
+		
+		//VARFÖR DIVIDERA MED 4 OCH INTE 2??????????? ARGHHHH
+		gl.glVertex3f(Const.GAME_WIDTH / 4f, Const.GAME_HEIGHT / 4f, -Const.GAME_DEPTH/2); // Top Right Of The Quad (Top Wall)
+		gl.glVertex3f(-Const.GAME_WIDTH / 4f, Const.GAME_HEIGHT / 4f, -Const.GAME_DEPTH/2); // Top Left Of The Quad (Top Wall)
+		gl.glVertex3f(-Const.GAME_WIDTH / 4f, Const.GAME_HEIGHT / 4f, Const.GAME_DEPTH/2); // Bottom Left Of The Quad (Top Wall)
+		gl.glVertex3f(Const.GAME_WIDTH / 4f, Const.GAME_HEIGHT / 4f, Const.GAME_DEPTH/2); // Bottom Right Of The Quad (Top Wall)
+		
+		gl.glVertex3f(Const.GAME_WIDTH / 4f, -Const.GAME_HEIGHT/4f, -Const.GAME_DEPTH/2); // Top Right Of The Quad (Bottom Wall)
+		gl.glVertex3f(-Const.GAME_WIDTH / 4f, -Const.GAME_HEIGHT/4f, -Const.GAME_DEPTH/2); // Top Left Of The Quad (Bottom Wall)
+		gl.glVertex3f(-Const.GAME_WIDTH / 4f, -Const.GAME_HEIGHT/4f, Const.GAME_DEPTH/2); // Bottom Left Of The Quad (Bottom Wall)
+		gl.glVertex3f(Const.GAME_WIDTH / 4f, -Const.GAME_HEIGHT/4f, Const.GAME_DEPTH/2); // Bottom Right Of The Quad (Bottom Wall)
+		
 		gl.glEnd();
 	}
 

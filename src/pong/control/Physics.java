@@ -29,6 +29,7 @@ import org.jbox2d.testbed.framework.TestbedSetting.SettingType;
 import org.jbox2d.testbed.framework.j2d.TestPanelJ2D;
 
 import pong.model.Ball;
+import pong.model.Const;
 import pong.model.GameItem;
 import pong.model.Paddle;
 
@@ -43,18 +44,26 @@ public class Physics {
 	Body body;
 
 	public void create() {
-		Vec2 gravity = new Vec2(0.0f, -10.0f);
+		Vec2 gravity = new Vec2(0.0f, 0.0f);
+		float width = Const.GAME_WIDTH;
+		float height = Const.GAME_HEIGHT;
 		boolean doSleep = true;
-		// world.setGravity(gravity);
 		world = new World(gravity, true);
 
 		// Make a Body for the ground via definition and shape binding that gives it a boundary
 		BodyDef groundBodyDef = new BodyDef(); // body definition
-		groundBodyDef.position.set(0.0f, -140.0f); // set bodydef position
+		groundBodyDef.position.set(0.0f, 0.0f); // set bodydef position
 		Body ground = world.createBody(groundBodyDef); // create body based on definition
-		PolygonShape groundBox = new PolygonShape(); // make a shape representing ground
-		groundBox.setAsBox(200.0f, 5.0f); // shape is a rect: 100 wide, 20 high
-		ground.createFixture(groundBox, 0.0f); // bind shape to ground body
+		
+		PolygonShape shape = new PolygonShape();
+		shape.setAsEdge(new Vec2(-width/2, -height/2), new Vec2(width/2, -height/2)); // Floor
+		ground.createFixture(shape, 0.0f);
+		shape.setAsEdge(new Vec2(-width/2, height/2), new Vec2(width/2, height/2)); // Roof
+		ground.createFixture(shape, 0.0f);
+		shape.setAsEdge(new Vec2(-width/2, -height/2), new Vec2(-width/2, height/2)); // Left
+		ground.createFixture(shape, 0.0f);
+		shape.setAsEdge(new Vec2(width/2, -height/2), new Vec2(width/2, height/2)); // right
+		ground.createFixture(shape, 0.0f);
 
 		// Testbed
 		// TestbedModel model = new TestbedModel(); // create our model
@@ -104,10 +113,11 @@ public class Physics {
 		FixtureDef fixtureDef = new FixtureDef(); // fixture def that we load up with the following info:
 		fixtureDef.shape = dynamicBall; // ... its shape is the dynamic box (2x2 rectangle)
 		fixtureDef.density = 1.0f; // ... its density is 1 (default is zero)
-		fixtureDef.restitution = 0.8f;
-		// fixtureDef.friction = 0.3f; // ... its surface has some friction coefficient
+		fixtureDef.restitution = 1.0f;
+		fixtureDef.friction = 0.0f; // ... its surface has some friction coefficient
 		body.createFixture(fixtureDef); // bind the dense, friction-laden fixture to the body
-		body.setLinearVelocity(new Vec2(0.5f, 0.5f));
+//		body.setLinearVelocity(new Vec2(0.5f, 0.5f));
+		body.applyForce(new Vec2(-100, -100), new Vec2());
 		return body;
 	}
 
@@ -135,11 +145,11 @@ public class Physics {
 		box.setAsBox(w, h);
 		FixtureDef fixtureDef = new FixtureDef(); // fixture def that we load up with the following info:
 		fixtureDef.shape = box; // ... its shape is the dynamic box
-		fixtureDef.density = 1.0f; // ... its density is 1 (default is zero)
+		fixtureDef.density = 20.0f; // ... its density is 1 (default is zero)
 		fixtureDef.friction = 0.3f; // ... its surface has some friction coefficient
-		fixtureDef.restitution = 0.7f; // ... set bouncy bouncy
+		fixtureDef.restitution = 0.0f; // ... set bouncy bouncy
 		body.createFixture(fixtureDef); // bind the dense, friction-laden fixture to the body
-		// bodies.put(serialNo, body);
+		body.setFixedRotation(true);
 		return body;
 
 	}

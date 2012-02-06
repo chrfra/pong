@@ -29,9 +29,11 @@ public class GameEngine {
 		physics = new Physics();
 		physics.create();
 
-		addItemToGame(new Paddle(150,10,0, 10, 10, 2));
-		addItemToGame(new Paddle(150,50,0, 10, 10, 2));
-		addItemToGame(new Ball(0,0,0,2));
+//		addItemToGame(new Paddle(5,0,0, 2, 1, 2));
+//		addItemToGame(new Paddle(-5,0,0, 2, 1, 2));
+//		addItemToGame(new Ball(0,0,0,0.5f));
+		addItemToGame(new Ball(6,0,0,0.5f));
+		addItemToGame(paddle);
 		GraphicsEngine ge = new GraphicsEngine(this);
 		ge.setUp();
 		try {
@@ -47,6 +49,7 @@ public class GameEngine {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			System.out.println(paddle.getBody().getPosition().y+paddle.getHeight());
 			physics.update();
 			updatePos();
 		}
