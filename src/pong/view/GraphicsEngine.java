@@ -204,13 +204,13 @@ public class GraphicsEngine implements GLEventListener {
 			throw new InvalidClassException("Wrong class of GameItem in draw3DRectangle(GL2 gl, GameItem item)");
 		}
         // Apply texture.
-		setBallTexture();
-		
-        // Set white color, and enable texturing.
-        gl.glEnable(GL.GL_TEXTURE_2D);
-		
-        balltexture.enable(gl);
-        balltexture.bind(gl);
+//		setBallTexture();
+//		
+//        // Set white color, and enable texturing.
+//        gl.glEnable(GL.GL_TEXTURE_2D);
+//		
+//        balltexture.enable(gl);
+//        balltexture.bind(gl);
 		
 		gl.glTranslatef(x / 2f, y / 2f, z / 2f);
 		// Draw Ball (possible styles: FILL, LINE, POINT).

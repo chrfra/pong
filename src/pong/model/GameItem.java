@@ -1,11 +1,14 @@
 package pong.model;
 
+import org.jbox2d.dynamics.Body;
+
 public class GameItem {
 	
 	private float xPos;
 	private float yPos;
 	private float zPos;
 	private Type type;
+	private Body body;
 	
 	public GameItem(float xPos, float yPos, float zPos, Type type) {
 		this.xPos = xPos;
@@ -35,6 +38,14 @@ public class GameItem {
 
 	public String getType() {
 		return type.name();
+	}
+
+	public Body getBody() {
+		return body;
+	}
+
+	public void setBody(Body body) {
+		this.body = body;
 	}
 
 	

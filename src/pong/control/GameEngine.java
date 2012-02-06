@@ -13,8 +13,9 @@ import pong.view.*;
 public class GameEngine {
 	
 	private Physics physics;
-	//HashMap for GameItems. Needs to be synchronized?
-	private HashMap<Integer, GameItem> items = new HashMap<Integer, GameItem>();
+	//Contains the items in the game. These items will be drawn
+	private ArrayList<GameItem> items = new ArrayList<GameItem>();
+	
 	//Used as an identifier for an object in the game.
 	Integer serialNo = new Integer(0);
 
@@ -57,12 +58,15 @@ public class GameEngine {
 	 * Paddles, balls, obstacles....
 	 */
 	public void addItemToGame(GameItem item){
-		//Add object to GameEngines HashMap
-		items.put(serialNo, item);
-		//Add object to physics simulation
-		physics.addObject(serialNo, item);
-		//Increase serialNo.
-		serialNo++;
+		item.setBody(physics.addObject(item));
+		items.add(item);
+		
+//		//Add object to GameEngines HashMap
+//		items.put(serialNo, item);
+//		//Add object to physics simulation
+//		physics.addObject(serialNo, item);
+//		//Increase serialNo.
+//		serialNo++;
 	}
 	
 	/*
@@ -71,18 +75,11 @@ public class GameEngine {
 	 */
 	public void updatePos(){
 		
-		
-		HashSet<Map.Entry<Integer, Body>> physSet = physics.getObjects();
-//		HashSet<Map.Entry<Integer, GameItem>> engineSet = new HashSet<Map.Entry<Integer, GameItem>>(items.entrySet());
-		for(Map.Entry<Integer, Body> bodyEntry : physSet){
-			
-			//Gets the item in GameEngines list corresponding to body's key
-			GameItem item = items.get(bodyEntry.getKey());
-			Body body = bodyEntry.getValue();
+		for(GameItem item : items){
+			Body body;
+			body = item.getBody();
 			item.setxPos(body.getPosition().x);
 			item.setyPos(body.getPosition().y);
-			items.put(bodyEntry.getKey(), item);
-			
 		}
 	}
 	
@@ -106,6 +103,6 @@ public class GameEngine {
 	}
 	
 	public ArrayList<GameItem> getGameItems(){
-		return new ArrayList<GameItem>(items.values());
+		return items;
 	}
 }

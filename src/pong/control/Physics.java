@@ -34,15 +34,13 @@ public class Physics {
 	// public int timeStep = (1000 / targetFPS);
 	public int iterations = 5;
 
-	private HashMap<Integer,Body> bodies = new HashMap<Integer, Body>();
-
 	private World world;
 	// private PolygonDef groundShapeDef;
 
 	Body body;
 
 	public void create() {
-		Vec2 gravity = new Vec2(0.0f, -0.1f);
+		Vec2 gravity = new Vec2(0.0f, -10.0f);
 		boolean doSleep = true;
 //		world.setGravity(gravity);
 		world = new World(gravity, true);
@@ -76,7 +74,7 @@ public class Physics {
 	}
 
 	// Is actually a box
-	private void addBall() {
+	private Body addBall() {
 		// Make another Body that is dynamic, and will be subject to forces.
 		//
 		BodyDef bodyDef = new BodyDef();
@@ -90,9 +88,10 @@ public class Physics {
 		fixtureDef.density = 1.0f; // ... its density is 1 (default is zero)
 		fixtureDef.friction = 0.3f; // ... its surface has some friction coefficient
 		body.createFixture(fixtureDef); // bind the dense, friction-laden fixture to the body
+		return body;
 	}
 
-	private void addBox(Integer serialNo, GameItem item) throws InvalidClassException {
+	private Body addBox(GameItem item) throws InvalidClassException {
 		Paddle pad;
 		float x, y, w, h;
 		
@@ -120,18 +119,20 @@ public class Physics {
 		fixtureDef.friction = 0.3f; // ... its surface has some friction coefficient
 		fixtureDef.restitution = 0.7f; // ... set bouncy bouncy
 		body.createFixture(fixtureDef); // bind the dense, friction-laden fixture to the body
-		bodies.put(serialNo, body);
+//		bodies.put(serialNo, body);
+		return body;
 
 	}
 	
-	public void addObject(Integer serialNo, GameItem item){
+	public Body addObject(GameItem item){
 		if(item.getType().equals("PADDLE")){
 			try {
-				addBox(serialNo, item);
+				return addBox(item);
 			} catch (InvalidClassException e) {
 				e.printStackTrace();
 			}
 		}
+		return null;
 		
 	}
 
@@ -142,18 +143,7 @@ public class Physics {
 		int velocityIterations = 6;
 		int positionIterations = 2;
 		world.step(timeStep, velocityIterations, positionIterations);
-		for (Body body : bodies.values()) {
-
-			Vec2 position = body.getPosition();
-			float angle = body.getAngle();
-			System.out.printf("%4.2f %4.2f %4.2f\n", position.x, position.y, angle);
-//			System.out.println("x: " + body.getPosition().x + " y: " + body.getPosition().y);
-		}
 		
 
-	}
-	
-	public HashSet<Map.Entry<Integer, Body>> getObjects(){
-		return new HashSet<Map.Entry<Integer, Body>>(bodies.entrySet());
 	}
 }
