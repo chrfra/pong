@@ -1,9 +1,12 @@
 package pong.control;
 
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+
+import javax.media.opengl.GLAutoDrawable;
 
 import org.jbox2d.dynamics.Body;
 
@@ -15,7 +18,8 @@ public class GameEngine {
 	private Physics physics;
 	//Contains the items in the game. These items will be drawn
 	private ArrayList<GameItem> items = new ArrayList<GameItem>();
-
+	private ControlsInput mouse;
+	
 	Paddle paddle = new Paddle(0,0,0,1,1,1);
 	public GameEngine(){
 	}
@@ -79,6 +83,14 @@ public class GameEngine {
 			item.setxPos(body.getPosition().x);
 			item.setyPos(body.getPosition().y);
 		}
+	}
+	
+	//creates mouse object, adds key and mouse listeners
+	public void createListeners(GLAutoDrawable glDrawable){
+		mouse = new ControlsInput();
+		((Component) glDrawable).addKeyListener(mouse);
+		((Component) glDrawable).addMouseMotionListener(mouse);
+		((Component) glDrawable).addMouseListener(mouse);
 	}
 	
 	public void moveX(float m){
