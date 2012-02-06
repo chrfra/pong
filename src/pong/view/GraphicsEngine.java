@@ -159,6 +159,9 @@ public class GraphicsEngine implements GLEventListener {
         gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_AMBIENT, rgba, 0);
         gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, rgba, 0);
         gl.glMaterialf(GL2.GL_FRONT, GL2.GL_SHININESS, 0.5f);
+        
+        // Apply texture.
+		setBallTexture();
 		
 		// add listeners for keyboard and mouse input
         ge.createListeners(glDrawable);
@@ -204,19 +207,19 @@ public class GraphicsEngine implements GLEventListener {
 		} else {
 			throw new InvalidClassException("Wrong class of GameItem in draw3DRectangle(GL2 gl, GameItem item)");
 		}
-        // Apply texture.
-//		setBallTexture();
-//		
-//        // Set white color, and enable texturing.
-//        gl.glEnable(GL.GL_TEXTURE_2D);
-//		
-//        balltexture.enable(gl);
-//        balltexture.bind(gl);
+		
+        // Set white color, and enable texturing.
+        gl.glEnable(GL.GL_TEXTURE_2D);
+		
+        balltexture.enable(gl);
+        balltexture.bind(gl);
 		
 		gl.glTranslatef(x / 2f, y / 2f, z / 2f);
 		// Draw Ball (possible styles: FILL, LINE, POINT).
+		gl.glRotatef(rotation, 1.0f, 1.0f, 1.0f);
 		gl.glColor3f(0.3f, 0.5f, 1f);
 		GLUquadric ball = glu.gluNewQuadric();
+		glu.gluQuadricTexture(ball, true);
 		glu.gluQuadricDrawStyle(ball, GLU.GLU_FILL);
 		glu.gluQuadricNormals(ball, GLU.GLU_FLAT);
 		glu.gluQuadricOrientation(ball, GLU.GLU_OUTSIDE);
