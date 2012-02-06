@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.media.opengl.GLAutoDrawable;
 
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
 import pong.model.*;
@@ -61,6 +62,7 @@ public class GameEngine {
 	 */
 	public void addItemToGame(GameItem item){
 		item.setBody(physics.addObject(item));
+		item.getBody().setBullet(true);
 		items.add(item);
 		
 //		//Add object to GameEngines HashMap
@@ -76,12 +78,19 @@ public class GameEngine {
 	 * Reads from the physic simulation
 	 */
 	public void updatePos(){
-		
+		//variable i is used to identify the pad to be controlled by the user, since at this time no unique
+		//identifier for each pad exists
+		int i = 0;
 		for(GameItem item : items){
 			Body body;
 			body = item.getBody();
+			//move pad according to (mouse) input
+			if (i == 0)
+			body.setTransform(new Vec2(mouse.getXPos(),mouse.getYPos()), 0);
 			item.setxPos(body.getPosition().x);
 			item.setyPos(body.getPosition().y);
+			//body.setLinearVelocity(new Vec2(0,0));
+			i++;
 		}
 	}
 	
@@ -91,17 +100,6 @@ public class GameEngine {
 		((Component) glDrawable).addKeyListener(mouse);
 		((Component) glDrawable).addMouseMotionListener(mouse);
 		((Component) glDrawable).addMouseListener(mouse);
-	}
-	
-	public void moveX(float m){
-//		System.out.println("XPos: " + m);
-		paddle.setxPos(m);
-		
-	}
-	
-	public void moveY(float m){
-//		System.out.println("YPos: " + m);
-		paddle.setyPos(m);
 	}
 	
 	public Paddle getPaddle(){

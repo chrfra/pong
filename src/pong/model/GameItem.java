@@ -47,7 +47,4 @@ public class GameItem {
 	public void setBody(Body body) {
 		this.body = body;
 	}
-
-	
-
 }

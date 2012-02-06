@@ -5,14 +5,15 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import javax.swing.event.MouseInputListener;
 
+import pong.model.Const;
 import pong.view.GraphicsEngine;
 
 
 public class ControlsInput implements KeyListener, MouseInputListener{
-	int mouseSens = 5; //mouse sensitivity
 	private float xPos;
 	private float yPos;
-	public float getxPos() {
+	
+	public float getXPos() {
 		return xPos;
 	}
 
@@ -60,8 +61,8 @@ public class ControlsInput implements KeyListener, MouseInputListener{
 		//System.out.println(arg0.getXOnScreen());
 		float offset =40; //used to alleviate the consequences of the cursor being too far away from the quad at startup
 		// offset was previously 4
-		yPos = (-((float)arg0.getYOnScreen() / mouseSens)+offset);
-		xPos = (((float)arg0.getXOnScreen() / mouseSens)-offset-1);
+		yPos = (-((float)arg0.getYOnScreen() / Const.MOUSE_SENSE)+offset)+Const.MOUSE_OFFSET;
+		xPos = (((float)arg0.getXOnScreen() / Const.MOUSE_SENSE)-offset-1)-Const.MOUSE_OFFSET;
 		//r.delay(500);	fun effect to make game harder if using a robot object
 	}
 
