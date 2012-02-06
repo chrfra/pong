@@ -15,9 +15,6 @@ public class GameEngine {
 	private Physics physics;
 	//Contains the items in the game. These items will be drawn
 	private ArrayList<GameItem> items = new ArrayList<GameItem>();
-	
-	//Used as an identifier for an object in the game.
-	Integer serialNo = new Integer(0);
 
 	Paddle paddle = new Paddle(0,0,0,1,1,1);
 	public GameEngine(){
