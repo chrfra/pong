@@ -46,7 +46,6 @@ public class GraphicsEngine implements GLEventListener {
 	private int rotation = 0;
 	private GameEngine ge;
 	private GLUT glut = new GLUT();
-	private ControlsInput mouse;
 	private Texture balltexture;
 
 	// animator drives display method in a loop
@@ -165,10 +164,8 @@ public class GraphicsEngine implements GLEventListener {
 		setBallTexture();
 		
 		// add listeners for keyboard and mouse input
-		mouse = new ControlsInput(ge);
-		((Component) glDrawable).addKeyListener(mouse);
-		((Component) glDrawable).addMouseMotionListener(mouse);
-		((Component) glDrawable).addMouseListener(mouse);
+        ge.createListeners(glDrawable);
+
 	}
 
 	@Override
