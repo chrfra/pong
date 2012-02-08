@@ -8,7 +8,7 @@ public class GameItem {
 	private float yPos;
 	private float zPos;
 	private Type type;
-	private Body body;
+	protected Body body;
 	
 	public GameItem(float xPos, float yPos, float zPos, Type type) {
 		this.xPos = xPos;

@@ -83,17 +83,11 @@ public class GameEngine {
 	public void updatePos(){
 		//variable i is used to identify the pad to be controlled by the user, since at this time no unique
 		//identifier for each pad exists
-		int i = 0;
 		for(GameItem item : items){
 			Body body;
 			body = item.getBody();
-			//move pad according to (mouse) input
-			if (i == 0)
-			body.setTransform(new Vec2(mouse.getXPos(),mouse.getYPos()), 0);
 			item.setxPos(body.getPosition().x);
 			item.setyPos(body.getPosition().y);
-			//body.setLinearVelocity(new Vec2(0,0));
-			i++;
 		}
 	}
 	

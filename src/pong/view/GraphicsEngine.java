@@ -84,15 +84,13 @@ public class GraphicsEngine implements GLEventListener {
 		ArrayList<GameItem> items = ge.getGameItems();
 		
 		rotation += 1;
+		// IMPORTANT! PopMatrix() resets glTranslatef and glRotatef to what it was before the previous PushMatrix()
 		gl.glPushMatrix();
 		this.drawGamearea(gl);
-		gl.glPopMatrix();
-
-		//TODO Draw walls around playarea		
+		gl.glPopMatrix();	
 
 		// Draw paddles, ball etc
 		try {
-			// IMPORTANT! PopMatrix() resets glTranslatef and glRotatef to what it was before the previous PushMatrix()
 			for(GameItem item : items){
 				gl.glPushMatrix();
 				if(item.getType().equals("PADDLE")){
@@ -106,10 +104,6 @@ public class GraphicsEngine implements GLEventListener {
 			// Render a string on screen
 			renderStrokeString(gl, GLUT.STROKE_MONO_ROMAN, "Hej"); 
 			gl.glPopMatrix();
-			
-//			gl.glPushMatrix();
-//			this.drawBall(gl, new Ball(0, 0, 0, 5));
-//			gl.glPopMatrix();
 			
 
 		} catch (InvalidClassException e) {
@@ -181,7 +175,7 @@ public class GraphicsEngine implements GLEventListener {
 
 		glu.gluPerspective(50.0f, h, 1.0, 1000.0);
 		// Set camera to look at Origo from 20 units away.
-		glu.gluLookAt(0.0, 0.0, 20.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+		glu.gluLookAt(0.0, 0.0, 15.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 		gl.glLoadIdentity();
 	}
@@ -311,6 +305,17 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glVertex3f(-Const.GAME_WIDTH / 4f, -Const.GAME_HEIGHT/4f, -Const.GAME_DEPTH/2); // Top Left Of The Quad (Bottom Wall)
 		gl.glVertex3f(-Const.GAME_WIDTH / 4f, -Const.GAME_HEIGHT/4f, Const.GAME_DEPTH/2); // Bottom Left Of The Quad (Bottom Wall)
 		gl.glVertex3f(Const.GAME_WIDTH / 4f, -Const.GAME_HEIGHT/4f, Const.GAME_DEPTH/2); // Bottom Right Of The Quad (Bottom Wall)
+		
+		
+		gl.glVertex3f(-Const.GAME_WIDTH / 4f, Const.GAME_HEIGHT / 4f, Const.GAME_DEPTH/2); // Top Right Of The Quad (Left Wall)
+		gl.glVertex3f(-Const.GAME_WIDTH / 4f, Const.GAME_HEIGHT / 4f, -Const.GAME_DEPTH/2); // Top Left Of The Quad (Left Wall)
+		gl.glVertex3f(-Const.GAME_WIDTH / 4f, -Const.GAME_HEIGHT / 4f, -Const.GAME_DEPTH/2); // Bottom Left Of The Quad (Left Wall)
+		gl.glVertex3f(-Const.GAME_WIDTH / 4f, -Const.GAME_HEIGHT / 4f, Const.GAME_DEPTH/2); // Bottom Right Of The Quad (Left Wall)
+		
+		gl.glVertex3f(Const.GAME_WIDTH / 4f, Const.GAME_HEIGHT / 4f, -Const.GAME_DEPTH/2); // Top Right Of The Quad (Right Wall)
+		gl.glVertex3f(Const.GAME_WIDTH / 4f, Const.GAME_HEIGHT / 4f, Const.GAME_DEPTH/2); // Top Left Of The Quad (Right Wall)
+		gl.glVertex3f(Const.GAME_WIDTH / 4f, -Const.GAME_HEIGHT / 4f, Const.GAME_DEPTH/2); // Bottom Left Of The Quad (Right Wall)
+		gl.glVertex3f(Const.GAME_WIDTH / 4f, -Const.GAME_HEIGHT / 4f, -Const.GAME_DEPTH/2); // Bottom Right Of The Quad (Right Wall)
 		
 		gl.glEnd();
 	}
