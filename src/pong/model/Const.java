@@ -11,8 +11,8 @@ public class Const {
 	public static final int SCREEN_HEIGHT = 600;
 	
 	// Game area values
-	public static final float GAME_WIDTH = 20;
-	public static final float GAME_HEIGHT = 14;
+	public static final float GAME_WIDTH = 30;
+	public static final float GAME_HEIGHT = 20;
 	public static final float GAME_DEPTH = 2;
 	
 	// Default values for paddles
@@ -20,7 +20,11 @@ public class Const {
 	public static final float DEFAULT_PADDLE_WIDTH = 100;
 	public static final float DEFAULT_PADDLE_DEPTH = 20;
 	
-	public static final float DEFAULT_PADDLE_XPOS = 0;
-	public static final float DEFAULT_PADDLE_YPOS = 0;
-	public static final float DEFAULT_PADDLE_ZPOS = 0;
+	public static final float DEFAULT_UPADDLE_XPOS = 0;
+	public static final float DEFAULT_UPADDLE_YPOS = GAME_HEIGHT/2 - 2;
+	public static final float DEFAULT_UPADDLE_ZPOS = 0;
+	
+	public static final float DEFAULT_DPADDLE_XPOS = 0;
+	public static final float DEFAULT_DPADDLE_YPOS = -GAME_HEIGHT/2 + 2;
+	public static final float DEFAULT_DPADDLE_ZPOS = 0;
 }

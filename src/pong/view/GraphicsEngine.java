@@ -124,7 +124,7 @@ public class GraphicsEngine implements GLEventListener {
 		// Required Init-functions
 		GL2 gl = glDrawable.getGL().getGL2();
 		gl.glShadeModel(GLLightingFunc.GL_SMOOTH);
-		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 		gl.glClearDepth(1.0f);
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glDepthFunc(GL.GL_LEQUAL);

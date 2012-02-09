@@ -13,6 +13,7 @@ public class ControlsInput implements KeyListener, MouseInputListener{
 	private float xPos;
 	private float yPos;
 	
+	
 	public float getXPos() {
 		return xPos;
 	}

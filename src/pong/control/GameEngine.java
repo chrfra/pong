@@ -20,8 +20,6 @@ public class GameEngine {
 	//Contains the items in the game. These items will be drawn
 	private ArrayList<GameItem> items = new ArrayList<GameItem>();
 	private ControlsInput mouse;
-	
-	Paddle paddle = new Paddle(0,0,0,1,1,1);
 	public GameEngine(){
 	}
 	public static void main(String[] args) {
@@ -33,14 +31,17 @@ public class GameEngine {
 		System.out.println("Running the game...");
 		physics = new Physics();
 		physics.create();
-
-//		addItemToGame(new Paddle(5,0,0, 2, 1, 2));
-//		addItemToGame(new Paddle(-5,0,0, 2, 1, 2));
-//		addItemToGame(new Ball(0,0,0,0.5f));
-		addItemToGame(new Ball(6,0,0,0.5f));
-		addItemToGame(paddle);
 		GraphicsEngine ge = new GraphicsEngine(this);
 		ge.setUp();
+		
+		Player player1 = new Player("Playername1");
+		addItemToGame(new Paddle(0,Const.DEFAULT_DPADDLE_YPOS,0,1,4,1,player1));
+
+		Player player2 = new Player("Playername2");
+		addItemToGame(new Paddle(0,Const.DEFAULT_UPADDLE_YPOS,0,1,4,1,player2));
+		
+		
+		addItemToGame(new Ball(6,0,0,0.5f));
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -54,7 +55,6 @@ public class GameEngine {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			System.out.println(paddle.getBody().getPosition().y+paddle.getHeight());
 			physics.update();
 			updatePos();
 		}
@@ -97,10 +97,6 @@ public class GameEngine {
 		((Component) glDrawable).addKeyListener(mouse);
 		((Component) glDrawable).addMouseMotionListener(mouse);
 		((Component) glDrawable).addMouseListener(mouse);
-	}
-	
-	public Paddle getPaddle(){
-		return paddle;
 	}
 	
 	public void exit(){
