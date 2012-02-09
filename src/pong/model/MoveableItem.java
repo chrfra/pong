@@ -10,10 +10,8 @@ public class MoveableItem extends GameItem{
 		super(xPos, yPos, zPos, type);
 	}
 	
-	
-	//move pad according to (mouse) input
+	//move item according to (mouse) input
 	public void moveItem(ControlsInput mouse){
-		
-		body.setTransform(new Vec2(mouse.getXPos(),mouse.getYPos()), 0);
+		body.setLinearVelocity(new Vec2(mouse.getxPos(),mouse.getyPos()));
 	}
 }

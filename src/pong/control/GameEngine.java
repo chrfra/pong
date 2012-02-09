@@ -33,7 +33,6 @@ public class GameEngine {
 		System.out.println("Running the game...");
 		physics = new Physics();
 		physics.create();
-
 //		addItemToGame(new Paddle(5,0,0, 2, 1, 2));
 //		addItemToGame(new Paddle(-5,0,0, 2, 1, 2));
 //		addItemToGame(new Ball(0,0,0,0.5f));
@@ -46,8 +45,6 @@ public class GameEngine {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
-
 		while(true){
 			try {
 				Thread.sleep(1);
@@ -67,7 +64,6 @@ public class GameEngine {
 		item.setBody(physics.addObject(item));
 		item.getBody().setBullet(true);
 		items.add(item);
-		
 //		//Add object to GameEngines HashMap
 //		items.put(serialNo, item);
 //		//Add object to physics simulation
@@ -93,7 +89,7 @@ public class GameEngine {
 	
 	//creates mouse object, adds key and mouse listeners
 	public void createListeners(GLAutoDrawable glDrawable){
-		mouse = new ControlsInput();
+		mouse = new ControlsInput(paddle);
 		((Component) glDrawable).addKeyListener(mouse);
 		((Component) glDrawable).addMouseMotionListener(mouse);
 		((Component) glDrawable).addMouseListener(mouse);

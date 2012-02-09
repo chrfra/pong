@@ -4,20 +4,37 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import javax.swing.event.MouseInputListener;
-
 import pong.model.Const;
-import pong.view.GraphicsEngine;
+import pong.model.MoveableItem;
 
 
 public class ControlsInput implements KeyListener, MouseInputListener{
 	private float xPos;
 	private float yPos;
+	//updates the moveable item below every time the mouse is moved 
+	//(perhaps faster performance can be achieved if only fetching the mouseX and mouseY when the item is drawn)?
+	private MoveableItem item;
 	
-	public float getXPos() {
+	public ControlsInput(MoveableItem item){
+		this.item = item;
+	}
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		//System.out.println(arg0.getXOnScreen());
+		float offset =-100; //used to alleviate the consequences of the cursor being too far away from the quad at startup
+		// offset was previously 4
+		yPos = (-((float)arg0.getYOnScreen() / Const.MOUSE_SENSE))+Const.MOUSE_OFFSET;
+		xPos = (((float)arg0.getXOnScreen() / Const.MOUSE_SENSE))-Const.MOUSE_OFFSET;
+		//move item
+		item.moveItem(this);
+	}
+	
+	public float getxPos() {
 		return xPos;
 	}
 
-	public float getYPos() {
+	public float getyPos() {
 		return yPos;
 	}
 
@@ -46,24 +63,13 @@ public class ControlsInput implements KeyListener, MouseInputListener{
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		//System.out.println(arg0.getXOnScreen());
-		float offset =40; //used to alleviate the consequences of the cursor being too far away from the quad at startup
-		// offset was previously 4
-		yPos = (-((float)arg0.getYOnScreen() / Const.MOUSE_SENSE)+offset)+Const.MOUSE_OFFSET;
-		xPos = (((float)arg0.getXOnScreen() / Const.MOUSE_SENSE)-offset-1)-Const.MOUSE_OFFSET;
-		//r.delay(500);	fun effect to make game harder if using a robot object
 	}
 
 	public void keyPressed(KeyEvent e) {
