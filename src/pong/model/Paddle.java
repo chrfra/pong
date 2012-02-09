@@ -5,12 +5,14 @@ public class Paddle extends MoveableItem {
 	private float height;
 	private float width;
 	private float depth;
+	private Player player;
 
-	public Paddle(float xPos, float yPos, float zPos, float height, float width, float depth) {
+	public Paddle(float xPos, float yPos, float zPos, float height, float width, float depth, Player player) {
 		super(xPos, yPos, zPos, Type.PADDLE);
 		this.height = height;
 		this.width = width;
 		this.depth = depth;
+		this.player = player;
 	}
 
 	public float getHeight() {
