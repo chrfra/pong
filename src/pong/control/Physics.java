@@ -114,6 +114,7 @@ public class Physics {
 		body.createFixture(fixtureDef); // bind the dense, friction-laden fixture to the body
 //		body.setLinearVelocity(new Vec2(0.5f, 0.5f));
 		body.applyForce(new Vec2(-100, -100), new Vec2());
+		body.setLinearDamping(0.5f);
 		return body;
 	}
 

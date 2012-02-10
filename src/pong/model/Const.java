@@ -29,6 +29,9 @@ public class Const {
 	public static final float DEFAULT_DPADDLE_YPOS = -GAME_HEIGHT/2 + 2;
 	public static final float DEFAULT_DPADDLE_ZPOS = 0;
 	
+	// Default values for balls
+	public static final float BALL_MAXSPEED = 2;
+	
 	// Default values for Camera
 	public static final float CAMERA_LOOK_AT_X = 0;
 	public static final float CAMERA_LOOK_AT_Y = 0;
