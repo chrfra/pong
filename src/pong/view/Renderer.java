@@ -36,7 +36,7 @@ public class Renderer {
 	 * Loads the textures from imagefiles into Texture-objects
 	 */
 	public void setupTextures(){
-        spacetexture = loadTexture("outer_space_trip_08_by_brujo.jpg");
+        spacetexture = loadTexture("outer_space_trip.jpg");
         balltexture = loadTexture("earth-1k.png");
 	}
 	
