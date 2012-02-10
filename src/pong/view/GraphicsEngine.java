@@ -1,6 +1,7 @@
 package pong.view;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -33,6 +34,7 @@ import pong.control.*;
 import pong.model.*;
 
 import com.jogamp.opengl.util.Animator;
+import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.opengl.util.gl2.GLUT;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureData;
@@ -46,6 +48,8 @@ public class GraphicsEngine implements GLEventListener {
 	private GameEngine ge;
 	private GLUT glut = new GLUT();
 	private Renderer render;
+	private TextRenderer textrenderer;
+	private GLAutoDrawable drawable;
 
 	// animator drives display method in a loop
 	private static Animator animator = new Animator(canvas);
@@ -92,6 +96,10 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glPushMatrix();
 		render.drawBackground(gl);
 		gl.glPopMatrix();
+		
+		gl.glPushMatrix();
+		render.renderText(drawable, textrenderer, 300, 20, "Score: 100");
+		gl.glPopMatrix();
 
 		// Draw paddles, ball etc
 		try {
@@ -124,6 +132,8 @@ public class GraphicsEngine implements GLEventListener {
 
 	@Override
 	public void init(GLAutoDrawable glDrawable) {
+		
+		drawable = glDrawable;
 
 		// Required Init-functions
 		GL2 gl = glDrawable.getGL().getGL2();
@@ -134,6 +144,9 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glDepthFunc(GL.GL_LEQUAL);
 		gl.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 		
+		
+		// Setup text font
+		textrenderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 20));
 		
 		// Fix lights
 		

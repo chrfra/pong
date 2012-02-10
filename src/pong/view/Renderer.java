@@ -1,15 +1,19 @@
 package pong.view;
 
+import java.awt.Font;
+import java.awt.Graphics2D;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InvalidClassException;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
 
+import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.opengl.util.gl2.GLUT;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureData;
@@ -257,5 +261,21 @@ public class Renderer {
 		gl.glTranslatef(-width / 2f, 200, -700);
 		// Render The Text
 		glut.glutStrokeString(font, string);
+	}
+	
+	
+	/**
+	 * Draws a string in 2D, is much nicer and can be customized in the init() method to set font and size
+	 * The text is draw depending on the position it gets from the call (x, y)
+	 */
+	public void renderText(GLAutoDrawable drawable, TextRenderer textrenderer, int x, int y, String text){
+
+		textrenderer.beginRendering(drawable.getHeight(),drawable.getWidth());
+		
+		// optionally set the color
+		textrenderer.setColor(1.0f, 1.0f, 0.0f, 0.8f);
+		textrenderer.draw(text, x, y);
+		// ... more draw commands, color changes, etc.
+		textrenderer.endRendering();
 	}
 }
