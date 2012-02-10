@@ -43,11 +43,15 @@ public class GameEngine {
 		Player player2 = new Player("Playername2");
 		addItemToGame(new Paddle(0,Const.DEFAULT_UPADDLE_YPOS,0,1,4,1,player2));
 		addItemToGame(new Ball(6,0,0,0.5f));
+		
+		// Delay to start the game after the window is drawn.
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		Camera.smoothZoom(60);
+		System.out.println(Camera.getPosition()[2]);
 		while(true){
 			try {
 				Thread.sleep(1);

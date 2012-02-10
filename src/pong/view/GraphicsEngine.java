@@ -50,6 +50,7 @@ public class GraphicsEngine implements GLEventListener {
 	private Renderer render;
 	private TextRenderer textrenderer;
 	private GLAutoDrawable drawable;
+	private Camera cam = new Camera();
 
 	// animator drives display method in a loop
 	private static Animator animator = new Animator(canvas);
@@ -86,6 +87,10 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
 
+		//Uses the cameras position and direction
+		glu.gluLookAt(cam.getPosition()[0], cam.getPosition()[1], cam.getPosition()[2], cam.getLookPoint()[0], cam.getLookPoint()[1], cam.getLookPoint()[2], 0.0, 1.0, 0.0);
+		
+		
 		//Items to be drawn
 		ArrayList<GameItem> items = ge.getGameItems();
 		// IMPORTANT! PopMatrix() resets glTranslatef and glRotatef to what it was before the previous PushMatrix()
@@ -176,7 +181,7 @@ public class GraphicsEngine implements GLEventListener {
 		
 		// add listeners for keyboard and mouse input
         ge.createListeners(glDrawable);
-
+        
 	}
 
 	@Override
@@ -192,7 +197,7 @@ public class GraphicsEngine implements GLEventListener {
 
 		glu.gluPerspective(50.0f, h, 1.0, 1000.0);
 		// Set camera to look at Origo from 20 units away.
-		glu.gluLookAt(0.0, 0.0, 15.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+//		glu.gluLookAt(0.0, 0.0, 15.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 		gl.glLoadIdentity();
 	}
