@@ -96,11 +96,11 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glPushMatrix();
 		render.drawBackground(gl);
 		gl.glPopMatrix();
-		
+
 		gl.glPushMatrix();
 		render.renderText(drawable, textrenderer, 300, 20, "Score: 100");
 		gl.glPopMatrix();
-
+		
 		// Draw paddles, ball etc
 		try {
 			for(GameItem item : items){

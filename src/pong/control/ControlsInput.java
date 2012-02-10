@@ -9,8 +9,7 @@ import pong.model.MoveableItem;
 
 
 public class ControlsInput implements KeyListener, MouseInputListener{
-	private float xPos;
-	private float yPos;
+	private float xPos, yPos, dx,dy;
 	//updates the moveable item below every time the mouse is moved 
 	//(perhaps faster performance can be achieved if only fetching the mouseX and mouseY when the item is drawn)?
 	private MoveableItem item;
@@ -20,23 +19,17 @@ public class ControlsInput implements KeyListener, MouseInputListener{
 	}
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		//System.out.println(arg0.getXOnScreen());
-		float offset =-100; //used to alleviate the consequences of the cursor being too far away from the quad at startup
-		// offset was previously 4
-		yPos = (-((float)arg0.getYOnScreen() / Const.MOUSE_SENSE))+Const.MOUSE_OFFSET;
-		xPos = (((float)arg0.getXOnScreen() / Const.MOUSE_SENSE))-Const.MOUSE_OFFSET;
+		//arg0.getY() returns the coordinate of the cursor where (x,y) = (0,0) in the top left corner of the object that this listener is registered to, in this case, the glDrawable (our window).
+		//Whereas arg0.getYOnScreen() has (x,y) = (0,0) in the top left corner of the SCREEN (= useless for moving objects on the canvas)
+		yPos = -(float)arg0.getY();
+		xPos = (float)arg0.getX();
 		//move item
-		item.moveItem(this);
+		item.moveItem(xPos,yPos);
+		
+
 	}
 	
-	public float getxPos() {
-		return xPos;
-	}
 
-	public float getyPos() {
-		return yPos;
-	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {

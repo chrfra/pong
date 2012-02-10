@@ -5,7 +5,8 @@ package pong.model;
 public class Const {
 	//input constants
 	public static final float MOUSE_OFFSET = 165f;
-	public static final float MOUSE_SENSE = 2.5f;
+	public static final float MOUSE_SENSE = 1.0f;
+	public static final float MOUSE_DEADZONE = MOUSE_SENSE/20;
 	// For the screen area
 	public static final int SCREEN_WIDTH = 800;
 	public static final int SCREEN_HEIGHT = 600;

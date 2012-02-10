@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.awt.GLCanvas;
 
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -15,7 +16,7 @@ import pong.model.*;
 import pong.view.*;
 
 public class GameEngine {
-	
+	private int state = 0;
 	private Physics physics;
 	//Contains the items in the game. These items will be drawn
 	private ArrayList<GameItem> items = new ArrayList<GameItem>();
@@ -96,6 +97,7 @@ public class GameEngine {
 		((Component) glDrawable).addKeyListener(mouse);
 		((Component) glDrawable).addMouseMotionListener(mouse);
 		((Component) glDrawable).addMouseListener(mouse);
+		System.out.println(glDrawable.getWidth());
 	}
 	
 	public void exit(){
