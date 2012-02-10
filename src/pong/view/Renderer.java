@@ -27,7 +27,7 @@ import pong.model.Paddle;
 public class Renderer {
 	private GLU glu;
 
-	private float bgRotation = 0;
+	private float bgRotation = 90;
 	private Texture balltexture;
 	private Texture spacetexture;
 	
@@ -222,8 +222,8 @@ public class Renderer {
 	public void drawBackground(GL2 gl){
 		
 		gl.glTranslatef(0,0,0);
-		gl.glRotatef(bgRotation, 0.5f, 0.0f, 1.0f);
-		bgRotation+=0.1;
+		gl.glRotatef(bgRotation, 1.0f, 1.0f, 0.0f);
+		bgRotation+=0.01;
 		
 		// Set radius of background sphere
 		int r = 100;
