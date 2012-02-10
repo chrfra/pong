@@ -25,8 +25,6 @@ public class ControlsInput implements KeyListener, MouseInputListener{
 		xPos = (float)arg0.getX();
 		//move item
 		item.moveItem(xPos,yPos);
-		
-
 	}
 	
 
