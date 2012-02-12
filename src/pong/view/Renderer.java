@@ -30,6 +30,7 @@ public class Renderer {
 	private float bgRotation = 90;
 	private Texture balltexture;
 	private Texture spacetexture;
+	private Texture paddletexture;
 	
 	
 	public Renderer(GLU glu) {
@@ -42,6 +43,7 @@ public class Renderer {
 	public void setupTextures(){
         spacetexture = loadTexture("outer_space_trip.jpg");
         balltexture = loadTexture("earth-1k.png");
+        paddletexture = loadTexture("paddle_texture1.jpg");
 	}
 	
 	/** 
@@ -122,8 +124,8 @@ public class Renderer {
 	 * This can be used to draw a paddle or obstacle or something else.
 	 */
 	public void draw3DRectangle(GL2 gl, GameItem item) throws InvalidClassException {
-		// xPos, yPos, zPos, width, height, depth
 		float x, y, z, w, h, d;
+		Texture texture;
 
 		// Check that item is a Paddle. Need to support all classes that have the same shape in the future.
 		if (item.getType().equals("PADDLE")) {
@@ -134,50 +136,54 @@ public class Renderer {
 			w = pad.getWidth();
 			h = pad.getHeight();
 			d = pad.getDepth();
+			texture = this.paddletexture;
 		} else {
 			throw new InvalidClassException("Wrong class of GameItem in draw3DRectangle(GL2 gl, GameItem item)");
 		}
 		// Move to right coordinates.
 		gl.glTranslatef(x / 2f, y / 2f, z / 2f);
 		
-		//gl.glRotatef(rotation, 1.0f, 1.0f, 1.0f);
-
+        // Apply earth texture
+        texture.enable(gl);
+        texture.bind(gl);
+		
 		gl.glBegin(GL2.GL_QUADS); // Draw A Quad
-		gl.glColor3f(0.0f, 1.0f, 0.0f); // Set The Color To Green
-		gl.glVertex3f(w / 2f, h / 2f, -d / 2f); // Top Right Of The Quad (Top)
-		gl.glVertex3f(-w / 2f, h / 2f, -d / 2f); // Top Left Of The Quad (Top)
-		gl.glVertex3f(-w / 2f, h / 2f, d / 2f); // Bottom Left Of The Quad (Top)
-		gl.glVertex3f(w / 2f, h / 2f, d / 2f); // Bottom Right Of The Quad (Top)
+		
+		gl.glNormal3f(0.0f, 1.0f, 0.0f);
+		gl.glVertex3f(w / 2f, h / 2f, -d / 2f); gl.glTexCoord2d(0.0f, 0.0f);   // Top Right Of The Quad (Top)
+		gl.glVertex3f(-w / 2f, h / 2f, -d / 2f); gl.glTexCoord2d(1.0f, 0.0f);  // Top Left Of The Quad (Top)
+		gl.glVertex3f(-w / 2f, h / 2f, d / 2f); gl.glTexCoord2d(1.0f, 1.0f); // Bottom Left Of The Quad (Top)
+		gl.glVertex3f(w / 2f, h / 2f, d / 2f); gl.glTexCoord2d(0.0f, 1.0f); // Bottom Right Of The Quad (Top)
+		
+		gl.glNormal3f(0.0f, -1.0f, 0.0f);
+		gl.glVertex3f(w / 2f, -h / 2f, d / 2f); gl.glTexCoord2d(0.0f, 0.0f); // Top Right Of The Quad (Bottom)
+		gl.glVertex3f(-w / 2f, -h / 2f, d / 2f); gl.glTexCoord2d(1.0f, 0.0f);  // Top Left Of The Quad (Bottom)
+		gl.glVertex3f(-w / 2f, -h / 2f, -d / 2f); gl.glTexCoord2d(1.0f, 1.0f); // Bottom Left Of The Quad (Bottom)
+		gl.glVertex3f(w / 2f, -h / 2f, -d / 2f); gl.glTexCoord2d(0.0f, 1.0f); // Bottom Right Of The Quad (Bottom)
 
-		gl.glColor3f(1.0f, 0.5f, 0.0f); // Set The Color To Orange
-		gl.glVertex3f(w / 2f, -h / 2f, d / 2f); // Top Right Of The Quad (Bottom)
-		gl.glVertex3f(-w / 2f, -h / 2f, d / 2f); // Top Left Of The Quad (Bottom)
-		gl.glVertex3f(-w / 2f, -h / 2f, -d / 2f); // Bottom Left Of The Quad (Bottom)
-		gl.glVertex3f(w / 2f, -h / 2f, -d / 2f); // Bottom Right Of The Quad (Bottom)
+		gl.glNormal3f(0.0f, 0.0f, 1.0f);
+		gl.glVertex3f(w / 2, h / 2f, d / 2f); gl.glTexCoord2d(0.0f, 0.0f); // Top Right Of The Quad (Front)
+		gl.glVertex3f(-w / 2, h / 2f, d / 2f); gl.glTexCoord2d(1.0f, 0.0f); // Top Left Of The Quad (Front)
+		gl.glVertex3f(-w / 2, -h / 2f, d / 2f); gl.glTexCoord2d(1.0f, 1.0f); // Bottom Left Of The Quad (Front)
+		gl.glVertex3f(w / 2, -h / 2f, d / 2f); gl.glTexCoord2d(0.0f, 1.0f); // Bottom Right Of The Quad (Front)
+		
+		gl.glNormal3f(0.0f, 0.0f, -1.0f);
+		gl.glVertex3f(w / 2f, -h / 2f, -d / 2f); gl.glTexCoord2d(0.0f, 0.0f); // Bottom Left Of The Quad (Back)
+		gl.glVertex3f(-w / 2f, -h / 2f, -d / 2f); gl.glTexCoord2d(1.0f, 0.0f); // Bottom Right Of The Quad (Back)
+		gl.glVertex3f(-w / 2f, h / 2f, -d / 2f); gl.glTexCoord2d(1.0f, 1.0f); // Top Right Of The Quad (Back)
+		gl.glVertex3f(w / 2f, h / 2f, -d / 2f); gl.glTexCoord2d(0.0f, 1.0f); // Top Left Of The Quad (Back)
 
-		gl.glColor3f(1.0f, 0.0f, 0.0f); // Set The Color To Red
-		gl.glVertex3f(w / 2, h / 2f, d / 2f); // Top Right Of The Quad (Front)
-		gl.glVertex3f(-w / 2, h / 2f, d / 2f); // Top Left Of The Quad (Front)
-		gl.glVertex3f(-w / 2, -h / 2f, d / 2f); // Bottom Left Of The Quad (Front)
-		gl.glVertex3f(w / 2, -h / 2f, d / 2f); // Bottom Right Of The Quad (Front)
+		gl.glNormal3f(-1.0f, 0.0f, 0.0f);
+		gl.glVertex3f(-w / 2f, h / 2f, d / 2f); gl.glTexCoord2d(0.0f, 0.0f); // Top Right Of The Quad (Left)
+		gl.glVertex3f(-w / 2f, h / 2f, -d / 2f); gl.glTexCoord2d(1.0f, 0.0f); // Top Left Of The Quad (Left)
+		gl.glVertex3f(-w / 2f, -h / 2f, -d / 2f); gl.glTexCoord2d(1.0f, 1.0f); // Bottom Left Of The Quad (Left)
+		gl.glVertex3f(-w / 2f, -h / 2f, d / 2f); gl.glTexCoord2d(0.0f, 1.0f); // Bottom Right Of The Quad (Left)
 
-		gl.glColor3f(1.0f, 1.0f, 0.0f); // Set The Color To Yellow
-		gl.glVertex3f(w / 2f, -h / 2f, -d / 2f); // Bottom Left Of The Quad (Back)
-		gl.glVertex3f(-w / 2f, -h / 2f, -d / 2f); // Bottom Right Of The Quad (Back)
-		gl.glVertex3f(-w / 2f, h / 2f, -d / 2f); // Top Right Of The Quad (Back)
-		gl.glVertex3f(w / 2f, h / 2f, -d / 2f); // Top Left Of The Quad (Back)
-
-		gl.glColor3f(0.0f, 0.0f, 1.0f); // Set The Color To Blue
-		gl.glVertex3f(-w / 2f, h / 2f, d / 2f); // Top Right Of The Quad (Left)
-		gl.glVertex3f(-w / 2f, h / 2f, -d / 2f); // Top Left Of The Quad (Left)
-		gl.glVertex3f(-w / 2f, -h / 2f, -d / 2f); // Bottom Left Of The Quad (Left)
-		gl.glVertex3f(-w / 2f, -h / 2f, d / 2f); // Bottom Right Of The Quad (Left)
-
-		gl.glColor3f(1.0f, 0.0f, 1.0f); // Set The Color To Violet
-		gl.glVertex3f(w / 2f, h / 2f, -d / 2f); // Top Right Of The Quad (Right)
-		gl.glVertex3f(w / 2f, h / 2f, d / 2f); // Top Left Of The Quad (Right)
-		gl.glVertex3f(w / 2f, -h / 2f, d / 2f); // Bottom Left Of The Quad (Right)
-		gl.glVertex3f(w / 2f, -h / 2f, -d / 2f); // Bottom Right Of The Quad (Right)
+		gl.glNormal3f(1.0f, 0.0f, 0.0f);
+		gl.glVertex3f(w / 2f, h / 2f, -d / 2f); gl.glTexCoord2d(0.0f, 0.0f); // Top Right Of The Quad (Right)
+		gl.glVertex3f(w / 2f, h / 2f, d / 2f); gl.glTexCoord2d(1.0f, 0.0f); // Top Left Of The Quad (Right)
+		gl.glVertex3f(w / 2f, -h / 2f, d / 2f); gl.glTexCoord2d(1.0f, 1.0f); // Bottom Left Of The Quad (Right)
+		gl.glVertex3f(w / 2f, -h / 2f, -d / 2f); gl.glTexCoord2d(0.0f, 1.0f); // Bottom Right Of The Quad (Right)
 
 		gl.glEnd(); // Done Drawing The Quad
 		

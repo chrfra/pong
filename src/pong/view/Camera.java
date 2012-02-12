@@ -60,18 +60,16 @@ public class Camera {
 				// Accceleration (first 1/3 of the distance)
 				if(distTraveled <= (dist / 3)) {
 					speed = speed + acc;
-					System.out.println("acc");
 				}
 				// Constant speed (from 1/3 to 2/3 of the distance)
 				else if(distTraveled <= 2 * (dist / 3)) {
 					//Do nothing
-					System.out.println("const");
 				}
 				
 				// Deaccelerate speed (from 2/3 to the end)
 				else{
 					speed = speed - acc;
-					System.out.println("deacc");
+
 					//The camera has stopped. This is here to stop the camera when zooming out.
 					if(speed <= 0)
 						break;
