@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
 //static import below enables us to write x == IN_MENU instead of x == Const.IN_MENU
 import static pong.model.Const.*;
 import javax.media.opengl.GLAutoDrawable;
@@ -27,6 +28,7 @@ public class GameEngine {
 	private Player player1;
 	private Player player2;
 	private int gameState = IN_MENU;
+	GraphicsEngine ge;
 	
 	public GameEngine() {
 	}
@@ -40,7 +42,7 @@ public class GameEngine {
 		System.out.println("Running the game...");
 		physics = new Physics();
 		physics.create();
-		GraphicsEngine ge = new GraphicsEngine(this);
+		ge = new GraphicsEngine(this);
 		ge.setUp();
 		
 		// Show menu and let player make a choice for New Game, Quit, Highscore
@@ -63,10 +65,10 @@ public class GameEngine {
 
 
 
-
 		try {
 			// Delay to start the game after the window is drawn.
 			Thread.sleep(2000);
+			
 			Camera.smoothZoom(15);
 			System.out.println(Camera.getPosition()[2]);
 			while (true) {
@@ -76,36 +78,42 @@ public class GameEngine {
 				checkBallSpeed();
 				physics.update();
 				updatePos();
-				
-				//Put gamelogic calls here
-				if(ballOut() ){
-					
-					updateScore();
-					resetBall();
-				}
-				
-				
-				
-				
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private boolean ballOut() {
-		// TODO Auto-generated method stub
-		return false;
+	public void ballOut(Player losingPlayer) {
+		//Put gamelogic calls here
+		Player winner = new Player("");
+		if( losingPlayer == player1 ){
+			winner = player2;
+		}
+		else{
+			winner = player1;
+		}
+		
+		// Increase the winners score!
+		updateScore(winner);
+		// Set ball to default position, ready for next round
+		resetBall();
+		
 	}
 
-	private void resetBall() {
+	public void resetBall() {
 		Body ball;
 		ball = mainBall.getBody();
 		
 		// Reverse angle
 		double angle = ball.getAngle();
 		angle = Math.toDegrees(angle);
-		angle = angle*-1;
+		
+		// set +- 60 degrees randomized 
+		Random generator = new Random();
+		int r = generator.nextInt(30);
+		
+		angle = angle-180+r;
 		angle = Math.toRadians(angle);
 		float newAngle = (float) angle;
 		
@@ -116,9 +124,29 @@ public class GameEngine {
 		
 	}
 
-	private void updateScore() {
-		// TODO Auto-generated method stub
-		
+	
+	/*
+	 *  @param 
+	 * 
+	 */
+	public void updateScore(Player winner) {
+		Integer score = 0;
+		if(winner == player1){
+			score = player1.getScore();
+			// Increase points with 100
+			player1.setScore(score+100); 
+		}
+		else{
+			score = player2.getScore();
+			player2.setScore(score+100);
+		}
+	}
+	
+	public Player getPlayer1(){
+		return player1; 
+	}
+	public Player getPlayer2(){
+		return player2; 
 	}
 
 	/* USE THIS METHOD IF YOU WANT TO ADD OBJECTS TO THE GAME

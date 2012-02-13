@@ -108,8 +108,9 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glPopMatrix();
 
 		gl.glPushMatrix();
-		// Render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350) 
-		render.renderText(drawable, textrenderer, 160, -350, "Score: 100");
+		// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350) 
+		render.renderText(drawable, textrenderer, -280, -350, "Player 1: " + ge.getPlayer1().getScore());
+		render.renderText(drawable, textrenderer, 160, -350, "Player 2: " + ge.getPlayer2().getScore());
 		gl.glPopMatrix();
 		
 		// Draw paddles, ball etc
@@ -202,8 +203,6 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glLoadIdentity();
 
 		glu.gluPerspective(50.0f, h, 1.0, 1000.0);
-		// Set camera to look at Origo from 20 units away.
-//		glu.gluLookAt(0.0, 0.0, 15.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 		gl.glLoadIdentity();
 	}
@@ -213,6 +212,4 @@ public class GraphicsEngine implements GLEventListener {
 		frame.dispose();
 		System.exit(0);
 	}
-	
-
 }
