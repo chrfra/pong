@@ -22,7 +22,10 @@ public class GameEngine {
 	private ArrayList<GameItem> items = new ArrayList<GameItem>();
 	private ControlsInput mouse;
 	// references the paddle to be controlled by player 1
-	Paddle paddle;
+	private Paddle paddle;
+	private Ball mainBall;
+	private Player player1;
+	private Player player2;
 
 	public GameEngine() {
 	}
@@ -38,13 +41,16 @@ public class GameEngine {
 		physics.create();
 		GraphicsEngine ge = new GraphicsEngine(this);
 		ge.setUp();
+		
+		// Show menu and let player make a choice for New Game, Quit, Highscore
+		//showMenu();
 
-		Player player1 = new Player("Playername1");
+		player1 = new Player("Playername1");
 		paddle = new Paddle(0, Const.DEFAULT_DPADDLE_YPOS, 0, 1, 4, 1, player1);
 		addItemToGame(paddle);
-		Player player2 = new Player("Playername2");
+		player2 = new Player("Playername2");
 		addItemToGame(new Paddle(0, Const.DEFAULT_UPADDLE_YPOS, 0, 1, 4, 1, player2));
-		addItemToGame(new Ball(6, 0, 0, 0.5f));
+		addItemToGame(mainBall = new Ball(6, 0, 0, 0.5f));
 
 
 
@@ -61,10 +67,49 @@ public class GameEngine {
 				checkBallSpeed();
 				physics.update();
 				updatePos();
+				
+				//Put gamelogic calls here
+				if(ballOut() ){
+					
+					updateScore();
+					resetBall();
+				}
+				
+				
+				
+				
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private boolean ballOut() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private void resetBall() {
+		Body ball;
+		ball = mainBall.getBody();
+		
+		// Reverse angle
+		double angle = ball.getAngle();
+		angle = Math.toDegrees(angle);
+		angle = angle*-1;
+		angle = Math.toRadians(angle);
+		float newAngle = (float) angle;
+		
+		// Now set mainBall to default values.. ready for next round!
+		ball.setTransform(new Vec2(0,0), newAngle);
+		mainBall.setxPos(Const.DEFAULT_BALL_POSITION_XPOS);
+		mainBall.setyPos(Const.DEFAULT_BALL_POSITION_YPOS);
+		
+	}
+
+	private void updateScore() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	/* USE THIS METHOD IF YOU WANT TO ADD OBJECTS TO THE GAME

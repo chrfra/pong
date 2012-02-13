@@ -32,6 +32,10 @@ public class Const {
 	// Default values for balls
 	public static final float BALL_MAXSPEED = 2;
 	
+	// Default value for the main ball
+	public static final float DEFAULT_BALL_POSITION_XPOS = 6;
+	public static final float DEFAULT_BALL_POSITION_YPOS = 0;
+	
 	// Default values for Camera
 	public static final float CAMERA_LOOK_AT_X = 0;
 	public static final float CAMERA_LOOK_AT_Y = 0;

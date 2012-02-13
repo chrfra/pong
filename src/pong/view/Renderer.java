@@ -280,7 +280,7 @@ public class Renderer {
 		
 		// optionally set the color
 		textrenderer.setColor(1.0f, 1.0f, 0.0f, 0.8f);
-		textrenderer.draw(text, x, y);
+		textrenderer.draw(text, Const.SCREEN_HEIGHT/2+x, Const.SCREEN_WIDTH/2+y);
 		// ... more draw commands, color changes, etc.
 		textrenderer.endRendering();
 	}

@@ -103,7 +103,8 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glPopMatrix();
 
 		gl.glPushMatrix();
-		render.renderText(drawable, textrenderer, 300, 20, "Score: 100");
+		// Render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350) 
+		render.renderText(drawable, textrenderer, 160, -350, "Score: 100");
 		gl.glPopMatrix();
 		
 		// Draw paddles, ball etc
