@@ -3,6 +3,10 @@ package pong.model;
 /* Used for constant variables */
 
 public class Const {
+
+	public static final int IN_MENU = 0;
+	public static final int IN_GAME = 1;
+	
 	//input constants
 	public static final float MOUSE_OFFSET = 0.0f;
 	public static final float MOUSE_SENSE = 6f;

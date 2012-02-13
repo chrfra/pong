@@ -32,6 +32,7 @@ import jogamp.opengl.glu.GLUquadricImpl;
 
 import pong.control.*;
 import pong.model.*;
+import static pong.model.Const.*;
 
 import com.jogamp.opengl.util.Animator;
 import com.jogamp.opengl.util.awt.TextRenderer;
@@ -90,6 +91,10 @@ public class GraphicsEngine implements GLEventListener {
 		//Uses the cameras position and direction
 		glu.gluLookAt(cam.getPosition()[0], cam.getPosition()[1], cam.getPosition()[2], cam.getLookPoint()[0], cam.getLookPoint()[1], cam.getLookPoint()[2], 0.0, 1.0, 0.0);
 		
+		//check gamestate to determine whether to zoom out and draw menu or to draw the game 
+		if(ge.getGameState() == IN_MENU){
+			
+		}
 		
 		//Items to be drawn
 		ArrayList<GameItem> items = ge.getGameItems();

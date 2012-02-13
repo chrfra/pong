@@ -7,6 +7,7 @@ public class GameItem {
 	private float xPos;
 	private float yPos;
 	private float zPos;
+	//what type the object is, eg. ball, paddle etc. used in graphicsEngine when traversing items list and drawing them
 	private Type type;
 	protected Body body;
 	

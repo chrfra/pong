@@ -22,6 +22,7 @@ import com.jogamp.opengl.util.texture.TextureIO;
 import pong.model.Ball;
 import pong.model.Const;
 import pong.model.GameItem;
+import pong.model.MenuCube;
 import pong.model.Paddle;
 
 public class Renderer {
@@ -123,12 +124,12 @@ public class Renderer {
 	 * Renders a 3D rectangle.
 	 * This can be used to draw a paddle or obstacle or something else.
 	 */
-	public void draw3DRectangle(GL2 gl, GameItem item) throws InvalidClassException {
+	public void draw3DRectangle(GL2 gl, Object item) throws InvalidClassException {
 		float x, y, z, w, h, d;
 		Texture texture;
 
 		// Check that item is a Paddle. Need to support all classes that have the same shape in the future.
-		if (item.getType().equals("PADDLE")) {
+		if (item instanceof Paddle) {
 			Paddle pad = (Paddle) item;
 			x = pad.getxPos();
 			y = pad.getyPos();
@@ -136,6 +137,17 @@ public class Renderer {
 			w = pad.getWidth();
 			h = pad.getHeight();
 			d = pad.getDepth();
+			texture = this.paddletexture;
+		} 
+		//check if object is a menu cube, set appropriate texture for menu cube
+		else if (item instanceof MenuCube) {
+			MenuCube menuCube = (MenuCube) item;
+			x = menuCube.getxPos();
+			y = menuCube.getyPos();
+			z = menuCube.getzPos();
+			w = menuCube.getWidth();
+			h = menuCube.getHeight();
+			d = menuCube.getDepth();
 			texture = this.paddletexture;
 		} else {
 			throw new InvalidClassException("Wrong class of GameItem in draw3DRectangle(GL2 gl, GameItem item)");

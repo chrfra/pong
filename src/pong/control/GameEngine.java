@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-
+//static import below enables us to write x == IN_MENU instead of x == Const.IN_MENU
+import static pong.model.Const.*;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
@@ -16,7 +17,6 @@ import pong.model.*;
 import pong.view.*;
 
 public class GameEngine {
-	private int state = 0;
 	private Physics physics;
 	// Contains the items in the game. These items will be drawn
 	private ArrayList<GameItem> items = new ArrayList<GameItem>();
@@ -26,7 +26,8 @@ public class GameEngine {
 	private Ball mainBall;
 	private Player player1;
 	private Player player2;
-
+	private int gameState = IN_MENU;
+	
 	public GameEngine() {
 	}
 
@@ -44,20 +45,28 @@ public class GameEngine {
 		
 		// Show menu and let player make a choice for New Game, Quit, Highscore
 		//showMenu();
-
+		
+		//add player 1 to game
 		player1 = new Player("Playername1");
 		paddle = new Paddle(0, Const.DEFAULT_DPADDLE_YPOS, 0, 1, 4, 1, player1);
 		addItemToGame(paddle);
+		
+		//add player 2 to game
 		player2 = new Player("Playername2");
 		addItemToGame(new Paddle(0, Const.DEFAULT_UPADDLE_YPOS, 0, 1, 4, 1, player2));
+		
+		//add ball to game
 		addItemToGame(mainBall = new Ball(6, 0, 0, 0.5f));
+		
+		// create the menu cube
+		MenuCube  menuCube = new MenuCube(0, 0, 90, 3, 3, 3);
+
 
 
 
 		try {
 			// Delay to start the game after the window is drawn.
 			Thread.sleep(2000);
-			
 			Camera.smoothZoom(15);
 			System.out.println(Camera.getPosition()[2]);
 			while (true) {
@@ -173,5 +182,9 @@ public class GameEngine {
 
 	public ArrayList<GameItem> getGameItems() {
 		return items;
+	}
+
+	public int getGameState() {
+		return gameState;
 	}
 }
