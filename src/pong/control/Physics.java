@@ -32,6 +32,7 @@ import pong.model.Ball;
 import pong.model.Const;
 import pong.model.GameItem;
 import pong.model.Paddle;
+import pong.model.Wall;
 
 public class Physics {
 	public int targetFPS = 40;
@@ -42,6 +43,7 @@ public class Physics {
 	// private PolygonDef groundShapeDef;
 
 	Body body;
+	Body ground;
 
 	public void create() {
 		Vec2 gravity = new Vec2(0.0f, 0.0f);
@@ -53,17 +55,11 @@ public class Physics {
 		// Make a Body for the ground via definition and shape binding that gives it a boundary
 		BodyDef groundBodyDef = new BodyDef(); // body definition
 		groundBodyDef.position.set(0.0f, 0.0f); // set bodydef position
-		Body ground = world.createBody(groundBodyDef); // create body based on definition
+		ground = world.createBody(groundBodyDef); // create body based on definition
 		
-		PolygonShape shape = new PolygonShape();
-		shape.setAsEdge(new Vec2(-width/2, -height/2), new Vec2(width/2, -height/2)); // Floor
-		ground.createFixture(shape, 0.0f);
-		shape.setAsEdge(new Vec2(-width/2, height/2), new Vec2(width/2, height/2)); // Roof
-		ground.createFixture(shape, 0.0f);
-		shape.setAsEdge(new Vec2(-width/2, -height/2), new Vec2(-width/2, height/2)); // Left
-		ground.createFixture(shape, 0.0f);
-		shape.setAsEdge(new Vec2(width/2, -height/2), new Vec2(width/2, height/2)); // right
-		ground.createFixture(shape, 0.0f);
+		// Adds a collisionlistener to the world that listens for collisions. 
+		//This can be used for checking if the ball has hit a wall.
+		world.setContactListener(new HitDetection()); 
 
 		// Testbed
 //		 TestbedModel model = new TestbedModel(); // create our model
@@ -83,7 +79,28 @@ public class Physics {
 //		 testbed.setVisible(true);
 //		 testbed.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-
+	
+	/**
+	 * Adds a static wall to the simulation
+	 * @param wall
+	 */
+	public void addWall(Wall wall){
+		float x = wall.getxPos();
+		float y = wall.getyPos();
+		float len = wall.getLength();
+		PolygonShape shape = new PolygonShape();
+		
+		if(wall.isStanding()){
+			shape.setAsEdge(new Vec2(x, -len/2), new Vec2(x, len/2));
+			ground.createFixture(shape, 0.0f);
+		}else{
+			shape.setAsEdge(new Vec2(len/2, y), new Vec2(-len/2, y));
+			ground.createFixture(shape, 0.0f);
+		}
+		
+	}
+	
+	
 	private Body addBall(GameItem item) throws InvalidClassException {
 		// Make another Body that is dynamic, and will be subject to forces.
 		Ball ball;
@@ -104,7 +121,6 @@ public class Physics {
 		body = world.createBody(bodyDef);
 		CircleShape dynamicBall = new CircleShape();
 		dynamicBall.m_type = ShapeType.CIRCLE;
-		// dynamicBall.m_p = new Vec2(2.0f, 3.0f);
 		dynamicBall.m_radius = r;
 		FixtureDef fixtureDef = new FixtureDef(); // fixture def that we load up with the following info:
 		fixtureDef.shape = dynamicBall; // ... its shape is the dynamic box (2x2 rectangle)
@@ -113,8 +129,8 @@ public class Physics {
 		fixtureDef.friction = 0.0f; // ... its surface has some friction coefficient
 		body.createFixture(fixtureDef); // bind the dense, friction-laden fixture to the body
 //		body.setLinearVelocity(new Vec2(0.5f, 0.5f));
-		body.applyForce(new Vec2(-100, -100), new Vec2());
-		body.setLinearDamping(0.5f);
+		body.applyForce(new Vec2(0, -100), new Vec2());
+		body.setUserData(ball);
 		return body;
 	}
 
@@ -147,6 +163,7 @@ public class Physics {
 		fixtureDef.restitution = 0.0f; // ... set bouncy bouncy
 		body.createFixture(fixtureDef); // bind the dense, friction-laden fixture to the body
 		body.setFixedRotation(true);
+		body.setUserData(pad);
 		return body;
 
 	}

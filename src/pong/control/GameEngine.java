@@ -38,20 +38,33 @@ public class GameEngine {
 	public void run() {
 		System.out.println("Running the game...");
 		physics = new Physics();
+		//Create the world
 		physics.create();
+		
 		GraphicsEngine ge = new GraphicsEngine(this);
 		ge.setUp();
 		
 		// Show menu and let player make a choice for New Game, Quit, Highscore
 		//showMenu();
 
+		//Creates the walls that acts as goals for the player.
+		Wall goal1 = new Wall(0.0f, -Const.GAME_HEIGHT/2, 0.0f, Const.GAME_WIDTH, false);  //Lower player
+		Wall goal2 = new Wall(0.0f, Const.GAME_HEIGHT/2, 0.0f, Const.GAME_WIDTH, false);   //Upper player
+		
 		player1 = new Player("Playername1");
 		paddle = new Paddle(0, Const.DEFAULT_DPADDLE_YPOS, 0, 1, 4, 1, player1);
 		addItemToGame(paddle);
 		player2 = new Player("Playername2");
 		addItemToGame(new Paddle(0, Const.DEFAULT_UPADDLE_YPOS, 0, 1, 4, 1, player2));
 		addItemToGame(mainBall = new Ball(6, 0, 0, 0.5f));
-
+		
+		//Adds the goals to physics simulation
+		physics.addWall(goal1);
+		physics.addWall(goal2);
+		
+		//Creates the sidewalls
+		physics.addWall(new Wall(-Const.GAME_WIDTH/2, 0.0f, 0.0f, Const.GAME_HEIGHT, true)); //Left
+		physics.addWall(new Wall(Const.GAME_WIDTH/2, 0.0f, 0.0f, Const.GAME_HEIGHT, true)); //Right
 
 
 		try {
