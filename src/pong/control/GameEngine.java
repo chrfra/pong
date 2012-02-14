@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-
+import java.util.Random;
+//static import below enables us to write x == IN_MENU instead of x == Const.IN_MENU
+import static pong.model.Const.*;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
@@ -16,7 +18,6 @@ import pong.model.*;
 import pong.view.*;
 
 public class GameEngine {
-	private int state = 0;
 	private Physics physics;
 	// Contains the items in the game. These items will be drawn
 	private ArrayList<GameItem> items = new ArrayList<GameItem>();
@@ -26,7 +27,9 @@ public class GameEngine {
 	private Ball mainBall;
 	private Player player1;
 	private Player player2;
-
+	private int gameState = IN_MENU;
+	GraphicsEngine ge;
+	
 	public GameEngine() {
 	}
 
@@ -40,8 +43,7 @@ public class GameEngine {
 		physics = new Physics();
 		//Create the world
 		physics.create();
-		
-		GraphicsEngine ge = new GraphicsEngine(this);
+		ge = new GraphicsEngine(this);
 		ge.setUp();
 		
 		// Show menu and let player make a choice for New Game, Quit, Highscore
@@ -54,8 +56,12 @@ public class GameEngine {
 		player1 = new Player("Playername1");
 		paddle = new Paddle(0, Const.DEFAULT_DPADDLE_YPOS, 0, 1, 4, 1, player1);
 		addItemToGame(paddle);
+		
+		//add player 2 to game
 		player2 = new Player("Playername2");
 		addItemToGame(new Paddle(0, Const.DEFAULT_UPADDLE_YPOS, 0, 1, 4, 1, player2));
+		
+		//add ball to game
 		addItemToGame(mainBall = new Ball(6, 0, 0, 0.5f));
 		
 		//Adds the goals to physics simulation
@@ -66,6 +72,8 @@ public class GameEngine {
 		physics.addWall(new Wall(-Const.GAME_WIDTH/2, 0.0f, 0.0f, Const.GAME_HEIGHT, true)); //Left
 		physics.addWall(new Wall(Const.GAME_WIDTH/2, 0.0f, 0.0f, Const.GAME_HEIGHT, true)); //Right
 
+		// create the menu cube
+		MenuCube  menuCube = new MenuCube(0, 0, 90, 3, 3, 3);
 
 		try {
 			// Delay to start the game after the window is drawn.
@@ -80,36 +88,42 @@ public class GameEngine {
 				checkBallSpeed();
 				physics.update();
 				updatePos();
-				
-				//Put gamelogic calls here
-				if(ballOut() ){
-					
-					updateScore();
-					resetBall();
-				}
-				
-				
-				
-				
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private boolean ballOut() {
-		// TODO Auto-generated method stub
-		return false;
+	public void ballOut(Player losingPlayer) {
+		//Put gamelogic calls here
+		Player winner = new Player("");
+		if( losingPlayer == player1 ){
+			winner = player2;
+		}
+		else{
+			winner = player1;
+		}
+		
+		// Increase the winners score!
+		updateScore(winner);
+		// Set ball to default position, ready for next round
+		resetBall();
+		
 	}
 
-	private void resetBall() {
+	public void resetBall() {
 		Body ball;
 		ball = mainBall.getBody();
 		
 		// Reverse angle
 		double angle = ball.getAngle();
 		angle = Math.toDegrees(angle);
-		angle = angle*-1;
+		
+		// set +- 60 degrees randomized 
+		Random generator = new Random();
+		int r = generator.nextInt(30);
+		
+		angle = angle-180+r;
 		angle = Math.toRadians(angle);
 		float newAngle = (float) angle;
 		
@@ -120,9 +134,29 @@ public class GameEngine {
 		
 	}
 
-	private void updateScore() {
-		// TODO Auto-generated method stub
-		
+	
+	/*
+	 *  @param 
+	 * 
+	 */
+	public void updateScore(Player winner) {
+		Integer score = 0;
+		if(winner == player1){
+			score = player1.getScore();
+			// Increase points with 100
+			player1.setScore(score+100); 
+		}
+		else{
+			score = player2.getScore();
+			player2.setScore(score+100);
+		}
+	}
+	
+	public Player getPlayer1(){
+		return player1; 
+	}
+	public Player getPlayer2(){
+		return player2; 
 	}
 
 	/* USE THIS METHOD IF YOU WANT TO ADD OBJECTS TO THE GAME
@@ -186,5 +220,9 @@ public class GameEngine {
 
 	public ArrayList<GameItem> getGameItems() {
 		return items;
+	}
+
+	public int getGameState() {
+		return gameState;
 	}
 }
