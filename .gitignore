@@ -1,0 +1,3 @@
+*.class
+/JBox2d.log
+/.classpath
