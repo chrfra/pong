@@ -129,7 +129,7 @@ public class Physics {
 		fixtureDef.friction = 0.0f; // ... its surface has some friction coefficient
 		body.createFixture(fixtureDef); // bind the dense, friction-laden fixture to the body
 //		body.setLinearVelocity(new Vec2(0.5f, 0.5f));
-		body.applyForce(new Vec2(0, -100), new Vec2());
+		body.applyForce(new Vec2(0, -1000), new Vec2());
 		body.setUserData(ball);
 		return body;
 	}

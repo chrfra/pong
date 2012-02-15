@@ -16,25 +16,26 @@ public class Const {
 	public static final int SCREEN_HEIGHT = 600;
 	
 	// Game area values
-	public static final float GAME_WIDTH = 30;
-	public static final float GAME_HEIGHT = 20;
+	public static final float GAME_WIDTH = 80;
+	public static final float GAME_HEIGHT = 80;
 	public static final float GAME_DEPTH = 2;
 	
 	// Default values for paddles
-	public static final float DEFAULT_PADDLE_HEIGHT = 20;
-	public static final float DEFAULT_PADDLE_WIDTH = 100;
-	public static final float DEFAULT_PADDLE_DEPTH = 20;
+	public static final float DEFAULT_PADDLE_HEIGHT = 2;
+	public static final float DEFAULT_PADDLE_WIDTH = 8;
+	public static final float DEFAULT_PADDLE_DEPTH = 2;
 	
 	public static final float DEFAULT_UPADDLE_XPOS = 0;
-	public static final float DEFAULT_UPADDLE_YPOS = GAME_HEIGHT/2 - 2;
+	public static final float DEFAULT_UPADDLE_YPOS = GAME_HEIGHT/2 - DEFAULT_PADDLE_HEIGHT;
 	public static final float DEFAULT_UPADDLE_ZPOS = 0;
 	
 	public static final float DEFAULT_DPADDLE_XPOS = 0;
-	public static final float DEFAULT_DPADDLE_YPOS = -GAME_HEIGHT/2 + 2;
+	public static final float DEFAULT_DPADDLE_YPOS = -GAME_HEIGHT/2 + DEFAULT_PADDLE_HEIGHT;
 	public static final float DEFAULT_DPADDLE_ZPOS = 0;
 	
 	// Default values for balls
 	public static final float BALL_MAXSPEED = 2;
+	public static final float BALL_RADIUS = 1.5f;
 	
 	// Default value for the main ball
 	public static final float DEFAULT_BALL_POSITION_XPOS = 6;
@@ -47,5 +48,5 @@ public class Const {
 	
 	public static final float CAMERA_POSITION_X = 0;
 	public static final float CAMERA_POSITION_Y = 0;
-	public static final float CAMERA_POSITION_Z = 50;
+	public static final float CAMERA_POSITION_Z = 100;
 }

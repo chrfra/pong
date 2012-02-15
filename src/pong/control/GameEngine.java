@@ -58,19 +58,19 @@ public class GameEngine {
 		Wall goal2 = new Wall(0.0f, Const.GAME_HEIGHT/2, 0.0f, Const.GAME_WIDTH, false);   //Upper player
 		
 		//add player 1 to game
-		paddle1 = new Paddle(0, Const.DEFAULT_DPADDLE_YPOS, 0, 1, 4, 1);
+		paddle1 = new Paddle(0, Const.DEFAULT_DPADDLE_YPOS, 0, Const.DEFAULT_PADDLE_HEIGHT, Const.DEFAULT_PADDLE_WIDTH, Const.DEFAULT_PADDLE_DEPTH);
 		player1 = new Player("Playername1", paddle1);
 		player1.addGoal(goal1);
 		addItemToGame(paddle1);
 		
 		//add player 2 to game
-		paddle2 = new Paddle(0, Const.DEFAULT_UPADDLE_YPOS, 0, 1, 4, 1);
+		paddle2 = new Paddle(0, Const.DEFAULT_UPADDLE_YPOS, 0, Const.DEFAULT_PADDLE_HEIGHT, Const.DEFAULT_PADDLE_WIDTH, Const.DEFAULT_PADDLE_DEPTH);
 		player2 = new Player("Playername2", paddle2);
 		player2.addGoal(goal2);
 		addItemToGame(paddle2);
 		
 		//add ball to game
-		addItemToGame(mainBall = new Ball(6, 0, 0, 0.5f));
+		addItemToGame(mainBall = new Ball(6, 0, 0, Const.BALL_RADIUS));
 		
 		//Adds the goals to physics simulation
 		physics.addWall(goal1);
@@ -87,7 +87,7 @@ public class GameEngine {
 			// Delay to start the game after the window is drawn.
 			Thread.sleep(2000);
 			
-			Camera.smoothZoom(15);
+			Camera.smoothZoom(60);
 			System.out.println(Camera.getPosition()[2]);
 			while (true) {
 				Thread.sleep(1);
