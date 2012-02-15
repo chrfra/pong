@@ -53,13 +53,17 @@ public class GameEngine {
 		Wall goal1 = new Wall(0.0f, -Const.GAME_HEIGHT/2, 0.0f, Const.GAME_WIDTH, false);  //Lower player
 		Wall goal2 = new Wall(0.0f, Const.GAME_HEIGHT/2, 0.0f, Const.GAME_WIDTH, false);   //Upper player
 		
-		player1 = new Player("Playername1");
-		paddle = new Paddle(0, Const.DEFAULT_DPADDLE_YPOS, 0, 1, 4, 1, player1);
+		//add player 1 to game
+		paddle = new Paddle(0, Const.DEFAULT_DPADDLE_YPOS, 0, 1, 4, 1);
+		player1 = new Player("Playername1", paddle);
+		player1.addGoal(goal1);
 		addItemToGame(paddle);
 		
 		//add player 2 to game
-		player2 = new Player("Playername2");
-		addItemToGame(new Paddle(0, Const.DEFAULT_UPADDLE_YPOS, 0, 1, 4, 1, player2));
+		paddle = new Paddle(0, Const.DEFAULT_UPADDLE_YPOS, 0, 1, 4, 1);
+		player2 = new Player("Playername2", paddle);
+		player2.addGoal(goal2);
+		addItemToGame(paddle);
 		
 		//add ball to game
 		addItemToGame(mainBall = new Ball(6, 0, 0, 0.5f));
@@ -96,7 +100,7 @@ public class GameEngine {
 
 	public void ballOut(Player losingPlayer) {
 		//Put gamelogic calls here
-		Player winner = new Player("");
+		Player winner = new Player("", null);
 		if( losingPlayer == player1 ){
 			winner = player2;
 		}

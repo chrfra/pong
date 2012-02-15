@@ -1,10 +1,19 @@
 package pong.model;
 
+import java.util.ArrayList;
+
 public class Player {
 	private String name;
+	private Paddle paddle;
 	private int score = 0;
+	private ArrayList<GameItem> goals = new ArrayList<GameItem>();
 	
-	public Player(String name) {
+	
+	public void addGoal(GameItem goal){
+		goals.add(goal);
+	}
+	
+	public Player(String name, Paddle paddle) {
 		this.setName(name);
 	}
 
