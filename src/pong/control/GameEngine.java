@@ -42,7 +42,7 @@ public class GameEngine {
 		System.out.println("Running the game...");
 		physics = new Physics();
 		//Create the world
-		physics.create();
+		physics.create(this);
 		ge = new GraphicsEngine(this);
 		ge.setUp();
 		
@@ -139,7 +139,7 @@ public class GameEngine {
 	 *  @param 
 	 * 
 	 */
-	public void updateScore(Player winner) {
+	private void updateScore(Player winner) {
 		Integer score = 0;
 		if(winner == player1){
 			score = player1.getScore();

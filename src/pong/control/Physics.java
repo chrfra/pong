@@ -35,31 +35,22 @@ import pong.model.Paddle;
 import pong.model.Wall;
 
 public class Physics {
-	public int targetFPS = 40;
-	// public int timeStep = (1000 / targetFPS);
-	public int iterations = 5;
 
 	private World world;
 	// private PolygonDef groundShapeDef;
 
 	Body body;
-	Body ground;
 
-	public void create() {
+	public void create(GameEngine ge) {
 		Vec2 gravity = new Vec2(0.0f, 0.0f);
 		float width = Const.GAME_WIDTH;
 		float height = Const.GAME_HEIGHT;
 		boolean doSleep = true;
 		world = new World(gravity, true);
 
-		// Make a Body for the ground via definition and shape binding that gives it a boundary
-		BodyDef groundBodyDef = new BodyDef(); // body definition
-		groundBodyDef.position.set(0.0f, 0.0f); // set bodydef position
-		ground = world.createBody(groundBodyDef); // create body based on definition
-		
 		// Adds a collisionlistener to the world that listens for collisions. 
 		//This can be used for checking if the ball has hit a wall.
-		world.setContactListener(new HitDetection()); 
+		world.setContactListener(new HitDetection(ge)); 
 
 		// Testbed
 //		 TestbedModel model = new TestbedModel(); // create our model
@@ -88,14 +79,23 @@ public class Physics {
 		float x = wall.getxPos();
 		float y = wall.getyPos();
 		float len = wall.getLength();
+		
+		// Make a Body for the ground via definition and shape binding that gives it a boundary
+		BodyDef groundBodyDef = new BodyDef(); // body definition
+		groundBodyDef.position.set(0.0f, 0.0f); // set bodydef position
+		Body physWall = world.createBody(groundBodyDef); // create body based on definition
+		
+		//Add the wall to the body's userdata
+		physWall.setUserData(wall);
+		
 		PolygonShape shape = new PolygonShape();
 		
 		if(wall.isStanding()){
 			shape.setAsEdge(new Vec2(x, -len/2), new Vec2(x, len/2));
-			ground.createFixture(shape, 0.0f);
+			physWall.createFixture(shape, 0.0f);
 		}else{
 			shape.setAsEdge(new Vec2(len/2, y), new Vec2(-len/2, y));
-			ground.createFixture(shape, 0.0f);
+			physWall.createFixture(shape, 0.0f);
 		}
 		
 	}
