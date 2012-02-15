@@ -61,8 +61,7 @@ public class HitDetection implements ContactListener {
 		}
 		else if( !(player.getGoals().contains(wall)) && !(ge.getPlayer1().getGoals().contains(wall)) ){
 			// Regular wall has been hit, play wallsound
-			System.out.println("hej");
-			ge.playSound("wallsound.wav");
+			ge.playSound("wallsound2.wav");
 		}
 	}
 	
