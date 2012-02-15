@@ -26,7 +26,8 @@ public class GameEngine {
 	private ArrayList<GameItem> items = new ArrayList<GameItem>();
 	private ControlsInput mouse;
 	// references the paddle to be controlled by player 1
-	private Paddle paddle;
+	private Paddle paddle1;
+	private Paddle paddle2;
 	private Ball mainBall;
 	private Player player1;
 	private Player player2;
@@ -57,16 +58,16 @@ public class GameEngine {
 		Wall goal2 = new Wall(0.0f, Const.GAME_HEIGHT/2, 0.0f, Const.GAME_WIDTH, false);   //Upper player
 		
 		//add player 1 to game
-		paddle = new Paddle(0, Const.DEFAULT_DPADDLE_YPOS, 0, 1, 4, 1);
-		player1 = new Player("Playername1", paddle);
+		paddle1 = new Paddle(0, Const.DEFAULT_DPADDLE_YPOS, 0, 1, 4, 1);
+		player1 = new Player("Playername1", paddle1);
 		player1.addGoal(goal1);
-		addItemToGame(paddle);
+		addItemToGame(paddle1);
 		
 		//add player 2 to game
-		paddle = new Paddle(0, Const.DEFAULT_UPADDLE_YPOS, 0, 1, 4, 1);
-		player2 = new Player("Playername2", paddle);
+		paddle2 = new Paddle(0, Const.DEFAULT_UPADDLE_YPOS, 0, 1, 4, 1);
+		player2 = new Player("Playername2", paddle2);
 		player2.addGoal(goal2);
-		addItemToGame(paddle);
+		addItemToGame(paddle2);
 		
 		//add ball to game
 		addItemToGame(mainBall = new Ball(6, 0, 0, 0.5f));
@@ -210,7 +211,7 @@ public class GameEngine {
 	// creates mouse object, adds key and mouse listeners
 	public void createListeners(GLAutoDrawable glDrawable) {
 		// create mouse listener and connect it to the moveableItem to be controlled
-		mouse = new ControlsInput(paddle);
+		mouse = new ControlsInput(paddle1);
 		((Component) glDrawable).addKeyListener(mouse);
 		((Component) glDrawable).addMouseMotionListener(mouse);
 		((Component) glDrawable).addMouseListener(mouse);
