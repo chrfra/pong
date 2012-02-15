@@ -31,9 +31,10 @@ public class GameEngine {
 	private Ball mainBall;
 	private Player player1;
 	private Player player2;
-	private int gameState = IN_MENU;
+	//gameState tells graphics engine whether to render in menu-mode or game-mode, start in menu-mode
+	private int gameState = STARTUP_STATE;
 	GraphicsEngine ge;
-	
+	MenuCube menu;	//the menu
 	public GameEngine() {
 	}
 
@@ -49,9 +50,6 @@ public class GameEngine {
 		physics.create(this);
 		ge = new GraphicsEngine(this);
 		ge.setUp();
-		
-		// Show menu and let player make a choice for New Game, Quit, Highscore
-		//showMenu();
 
 		//Creates the walls that acts as goals for the player.
 		Wall goal1 = new Wall(0.0f, -Const.GAME_HEIGHT/2, 0.0f, Const.GAME_WIDTH, false);  //Lower player
@@ -68,7 +66,10 @@ public class GameEngine {
 		player2 = new Player("Playername2", paddle2);
 		player2.addGoal(goal2);
 		addItemToGame(paddle2);
-		
+
+		//create the menu cube
+		menu = new MenuCube(0,0,MENU_ZPOS,MENU_SIZE,MENU_SIZE,MENU_SIZE);
+
 		//add ball to game
 		addItemToGame(mainBall = new Ball(6, 0, 0, Const.BALL_RADIUS));
 		
@@ -79,11 +80,10 @@ public class GameEngine {
 		//Creates the sidewalls
 		physics.addWall(new Wall(-Const.GAME_WIDTH/2, 0.0f, 0.0f, Const.GAME_HEIGHT, true)); //Left
 		physics.addWall(new Wall(Const.GAME_WIDTH/2, 0.0f, 0.0f, Const.GAME_HEIGHT, true)); //Right
-
-		// create the menu cube
-		MenuCube menuCube = new MenuCube(0, 0, 90, 3, 3, 3);
-
 		try {
+		//run game, draw score, zoom etc. if starting/resuming the game
+		if(gameState == IN_GAME){
+
 			// Delay to start the game after the window is drawn.
 			Thread.sleep(2000);
 			
@@ -96,6 +96,7 @@ public class GameEngine {
 				checkBallSpeed();
 				physics.update();
 				updatePos();
+			}
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -159,6 +160,10 @@ public class GameEngine {
 	}
 	public Player getPlayer2(){
 		return player2; 
+	}
+
+	public MenuCube getMenu(){
+		return menu; 
 	}
 
 	/* USE THIS METHOD IF YOU WANT TO ADD OBJECTS TO THE GAME

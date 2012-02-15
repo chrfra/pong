@@ -70,7 +70,20 @@ public class Renderer {
         }
 		return null;
 	}
-	
+	/**
+	 * 
+	 * @param GL2
+	 * @param menu
+	 */
+	public void renderMenu(GL2 gl, MenuCube menu){
+		//draw the cube
+		try {
+			this.draw3DRectangle(gl, menu);
+		} catch (InvalidClassException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	/********************************************
 	 * 											*
@@ -152,6 +165,7 @@ public class Renderer {
 		} else {
 			throw new InvalidClassException("Wrong class of GameItem in draw3DRectangle(GL2 gl, GameItem item)");
 		}
+	
 		// Move to right coordinates.
 		gl.glTranslatef(x / 2f, y / 2f, z / 2f);
 		
@@ -296,4 +310,5 @@ public class Renderer {
 		// ... more draw commands, color changes, etc.
 		textrenderer.endRendering();
 	}
+
 }
