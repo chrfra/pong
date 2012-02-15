@@ -20,19 +20,22 @@ public class HitDetection implements ContactListener {
 	public void beginContact(Contact arg0) {
 		GameItem item1 = (GameItem)arg0.getFixtureA().getBody().getUserData();
 		GameItem item2 = (GameItem)arg0.getFixtureB().getBody().getUserData();
-		Ball ball;
-		Wall wall;
-
 
 		//Has a ball hit a wall?
 		if((item1 instanceof Ball && item2 instanceof Wall) || (item2 instanceof Ball && item1 instanceof Wall) ){
 			ballHitWall(item1, item2);	
 		}
-		
-		
+		//Has a ball hit a paddle?
+		if((item1 instanceof Paddle && item2 instanceof Ball) || (item2 instanceof Ball && item1 instanceof Paddle) ){
+			ballHitPaddle(item1, item2);	
+		}
 
 		
-		
+	}
+
+	private void ballHitPaddle(GameItem item1, GameItem item2) {
+		// Play sound effect when a ball hits a paddle
+		ge.playSound("blip.wav");
 	}
 
 	private void ballHitWall(GameItem item1, GameItem item2){
@@ -55,6 +58,11 @@ public class HitDetection implements ContactListener {
 		if(player.getGoals().contains(wall)){
 			//Player 2's goal has been hit
 			ge.ballOut(player);
+		}
+		else if( !(player.getGoals().contains(wall)) && !(ge.getPlayer1().getGoals().contains(wall)) ){
+			// Regular wall has been hit, play wallsound
+			System.out.println("hej");
+			ge.playSound("wallsound.wav");
 		}
 	}
 	

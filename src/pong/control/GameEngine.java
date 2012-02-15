@@ -114,8 +114,6 @@ public class GameEngine {
 		
 		// Increase the winners score!
 		updateScore(winner);
-		String url = "blip.wav";
-		playSound(url);
 		// Set ball to default position, ready for next round
 		resetBall();
 		

@@ -156,9 +156,6 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glDepthFunc(GL.GL_LEQUAL);
 		gl.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 		
-		// Test sound
-		ge.playSound("blip.wav");
-		
 		// Setup text font
 		textrenderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 20));
 		
