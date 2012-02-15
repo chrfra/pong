@@ -45,7 +45,7 @@ public class GameEngine {
 		System.out.println("Running the game...");
 		physics = new Physics();
 		//Create the world
-		physics.create();
+		physics.create(this);
 		ge = new GraphicsEngine(this);
 		ge.setUp();
 		
@@ -148,7 +148,7 @@ public class GameEngine {
 		int score = 0;
 		score = winner.getScore();
 		// Increase points with 100
-		winner.setScore(score+100); 
+		winner.setScore(score+100);
 	}
 	
 	public Player getPlayer1(){
