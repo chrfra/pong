@@ -14,6 +14,7 @@ import org.jbox2d.collision.AABB;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.collision.shapes.ShapeType;
+import org.jbox2d.common.Settings;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
@@ -47,7 +48,8 @@ public class Physics {
 		float height = Const.GAME_HEIGHT;
 		boolean doSleep = true;
 		world = new World(gravity, true);
-
+		//Makes stuff bounce at lower velocities.
+		Settings.velocityThreshold = 0.0f;
 		// Adds a collisionlistener to the world that listens for collisions. 
 		//This can be used for checking if the ball has hit a wall.
 		world.setContactListener(new HitDetection(ge)); 
