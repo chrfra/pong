@@ -59,7 +59,7 @@ public class GraphicsEngine implements GLEventListener {
 	public GraphicsEngine(GameEngine ge) {
 		this.ge = ge;
 	}
-	
+
 
 	public void setUp() {
 		System.out.println("Setting up the frame...");
@@ -82,56 +82,64 @@ public class GraphicsEngine implements GLEventListener {
 	@Override
 	public void display(GLAutoDrawable gLDrawable) {
 		GL2 gl = gLDrawable.getGL().getGL2();
-//		render.setGl(gl);
-		
+		//Items to be drawn
+		ArrayList<GameItem> items = ge.getGameItems();
+		//		render.setGl(gl);
+
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
 
+
+
 		//Uses the cameras position and direction
 		glu.gluLookAt(cam.getPosition()[0], cam.getPosition()[1], cam.getPosition()[2], cam.getLookPoint()[0], cam.getLookPoint()[1], cam.getLookPoint()[2], 0.0, 1.0, 0.0);
-		
-		//check gamestate to determine whether to zoom out and draw menu or to draw the game 
-		if(ge.getGameState() == IN_MENU){
-			
-		}
-		
-		//Items to be drawn
-		ArrayList<GameItem> items = ge.getGameItems();
-		// IMPORTANT! PopMatrix() resets glTranslatef and glRotatef to what it was before the previous PushMatrix()
-		gl.glPushMatrix();
-		render.drawGamearea(gl);
-		gl.glPopMatrix();
-		
+
+
 		gl.glPushMatrix();
 		render.drawBackground(gl);
 		gl.glPopMatrix();
 
-		gl.glPushMatrix();
-		// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350) 
-		render.renderText(drawable, textrenderer, -280, -350, "Player 1: " + ge.getPlayer1().getScore());
-		render.renderText(drawable, textrenderer, 160, -350, "Player 2: " + ge.getPlayer2().getScore());
-		gl.glPopMatrix();
-		
-		// Draw paddles, ball etc
-		try {
-			for(GameItem item : items){
-				gl.glPushMatrix();
-				if(item.getType().equals("PADDLE")){
-					render.draw3DRectangle(gl, item);
-				}else if(item.getType().equals("BALL")){
-					render.drawBall(gl, item);
-				}
-				gl.glPopMatrix();
-			}
+		//check gameState to determine whether to zoom out and draw menu or to draw the game 
+		if(ge.getGameState() == IN_MENU){
 			gl.glPushMatrix();
-			// Render a string on screen
-			render.renderStrokeString(gl, GLUT.STROKE_MONO_ROMAN, "Hej"); 
+			render.renderMenu(gl, ge.getMenu());
 			gl.glPopMatrix();
-			
+		}
+		//if game started/resumed, draw all game related components
+		else{
+			// IMPORTANT! PopMatrix() resets glTranslatef and glRotatef to what it was before the previous PushMatrix()
+			gl.glPushMatrix();
+			render.drawGamearea(gl);
+			gl.glPopMatrix();
 
-		} catch (InvalidClassException e) {
-			e.printStackTrace();
+
+			gl.glPushMatrix();
+			// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350) 
+			render.renderText(drawable, textrenderer, -280, -350, "Player 1: " + ge.getPlayer1().getScore());
+			render.renderText(drawable, textrenderer, 160, -350, "Player 2: " + ge.getPlayer2().getScore());
+			gl.glPopMatrix();
+
+			// Draw paddles, ball etc
+			try {
+				for(GameItem item : items){
+					gl.glPushMatrix();
+					if(item.getType().equals("PADDLE")){
+						render.draw3DRectangle(gl, item);
+					}else if(item.getType().equals("BALL")){
+						render.drawBall(gl, item);
+					}
+					gl.glPopMatrix();
+				}
+				gl.glPushMatrix();
+				// Render a string on screen
+				render.renderStrokeString(gl, GLUT.STROKE_MONO_ROMAN, "Hej"); 
+				gl.glPopMatrix();
+
+
+			} catch (InvalidClassException e) {
+				e.printStackTrace();
+			}
 		}
 
 	}
@@ -144,7 +152,7 @@ public class GraphicsEngine implements GLEventListener {
 
 	@Override
 	public void init(GLAutoDrawable glDrawable) {
-		
+
 		drawable = glDrawable;
 
 		// Required Init-functions
@@ -155,39 +163,39 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glDepthFunc(GL.GL_LEQUAL);
 		gl.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
-		
+
 		// Setup text font
 		textrenderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 20));
-		
+
 		// Fix lights
-		
-        // Prepare light parameters.
-        float SHINE_ALL_DIRECTIONS = 1;
-        float[] lightPos = {20, 0, 0, SHINE_ALL_DIRECTIONS};
-        float[] lightColorAmbient = {0.2f, 0.2f, 0.2f, 1f};
-        float[] lightColorSpecular = {0.8f, 0.8f, 0.8f, 1f};
 
-        // Set light parameters.
-        gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_POSITION, lightPos, 0);
-        gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_AMBIENT, lightColorAmbient, 0);
-        gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_SPECULAR, lightColorSpecular, 0);
+		// Prepare light parameters.
+		float SHINE_ALL_DIRECTIONS = 1;
+		float[] lightPos = {20, 0, 0, SHINE_ALL_DIRECTIONS};
+		float[] lightColorAmbient = {0.2f, 0.2f, 0.2f, 1f};
+		float[] lightColorSpecular = {0.8f, 0.8f, 0.8f, 1f};
 
-        // Enable lighting in GL.
-        gl.glEnable(GL2.GL_LIGHT1);
-        gl.glEnable(GL2.GL_LIGHTING);
+		// Set light parameters.
+		gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_POSITION, lightPos, 0);
+		gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_AMBIENT, lightColorAmbient, 0);
+		gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_SPECULAR, lightColorSpecular, 0);
 
-        // Set material properties.
-        float[] rgba = {1f, 1f, 1f};
-        gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_AMBIENT, rgba, 0);
-        gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, rgba, 0);
-        gl.glMaterialf(GL2.GL_FRONT, GL2.GL_SHININESS, 0.5f);
-        
-        // Set textures
-        render.setupTextures();
-		
+		// Enable lighting in GL.
+		gl.glEnable(GL2.GL_LIGHT1);
+		gl.glEnable(GL2.GL_LIGHTING);
+
+		// Set material properties.
+		float[] rgba = {1f, 1f, 1f};
+		gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_AMBIENT, rgba, 0);
+		gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, rgba, 0);
+		gl.glMaterialf(GL2.GL_FRONT, GL2.GL_SHININESS, 0.5f);
+
+		// Set textures
+		render.setupTextures();
+
 		// add listeners for keyboard and mouse input
-        ge.createListeners(glDrawable);
-        
+		ge.createListeners(glDrawable);
+
 	}
 
 	@Override

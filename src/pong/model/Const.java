@@ -6,15 +6,21 @@ public class Const {
 
 	public static final int IN_MENU = 0;
 	public static final int IN_GAME = 1;
+	public static final int STARTUP_STATE = IN_MENU;	//starts the game in menu-mode/game-mode
 	
 	//input constants
 	public static final float MOUSE_OFFSET = 0.0f;
 	public static final float MOUSE_SENSE = 6f;
 	public static final float MOUSE_DEADZONE = 0.1f;
+	
 	// For the screen area
 	public static final int SCREEN_WIDTH = 800;
 	public static final int SCREEN_HEIGHT = 600;
 	
+	//size of the (cubic) menu
+	public static final float MENU_SIZE = 9f;
+	public static final float MENU_ZPOS = 65;
+			
 	// Game area values
 	public static final float GAME_WIDTH = 30;
 	public static final float GAME_HEIGHT = 20;

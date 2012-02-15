@@ -31,7 +31,7 @@ public class ControlsInput implements KeyListener, MouseInputListener{
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

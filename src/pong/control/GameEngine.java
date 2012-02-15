@@ -31,9 +31,10 @@ public class GameEngine {
 	private Ball mainBall;
 	private Player player1;
 	private Player player2;
-	private int gameState = IN_MENU;
+	//gameState tells graphics engine whether to render in menu-mode or game-mode, start in menu-mode
+	private int gameState = STARTUP_STATE;
 	GraphicsEngine ge;
-	
+	MenuCube menu;	//the menu
 	public GameEngine() {
 	}
 
@@ -46,59 +47,59 @@ public class GameEngine {
 		System.out.println("Running the game...");
 		physics = new Physics();
 		//Create the world
-		physics.create(this);
+		physics.create(this);		
 		ge = new GraphicsEngine(this);
 		ge.setUp();
-		
-		// Show menu and let player make a choice for New Game, Quit, Highscore
-		//showMenu();
+
+
 
 		//Creates the walls that acts as goals for the player.
 		Wall goal1 = new Wall(0.0f, -Const.GAME_HEIGHT/2, 0.0f, Const.GAME_WIDTH, false);  //Lower player
 		Wall goal2 = new Wall(0.0f, Const.GAME_HEIGHT/2, 0.0f, Const.GAME_WIDTH, false);   //Upper player
-		
+
 		//add player 1 to game
 		paddle1 = new Paddle(0, Const.DEFAULT_DPADDLE_YPOS, 0, 1, 4, 1);
 		player1 = new Player("Playername1", paddle1);
 		player1.addGoal(goal1);
 		addItemToGame(paddle1);
-		
+
 		//add player 2 to game
 		paddle2 = new Paddle(0, Const.DEFAULT_UPADDLE_YPOS, 0, 1, 4, 1);
 		player2 = new Player("Playername2", paddle2);
 		player2.addGoal(goal2);
 		addItemToGame(paddle2);
-		
+
+		//create the menu cube
+		menu = new MenuCube(0,0,MENU_ZPOS,MENU_SIZE,MENU_SIZE,MENU_SIZE);
+
 		//add ball to game
 		addItemToGame(mainBall = new Ball(6, 0, 0, 0.5f));
-		
+
 		//Adds the goals to physics simulation
 		physics.addWall(goal1);
 		physics.addWall(goal2);
-		
+
 		//Creates the sidewalls
 		physics.addWall(new Wall(-Const.GAME_WIDTH/2, 0.0f, 0.0f, Const.GAME_HEIGHT, true)); //Left
 		physics.addWall(new Wall(Const.GAME_WIDTH/2, 0.0f, 0.0f, Const.GAME_HEIGHT, true)); //Right
+		
+		//run game, draw score, zoom etc. if starting/resuming the game
+		if(gameState == IN_GAME){
+			try {
+				// Delay to start the game after the window is drawn.
+				Thread.sleep(2000);
+				Camera.smoothZoom(15);
 
-		// create the menu cube
-		MenuCube menuCube = new MenuCube(0, 0, 90, 3, 3, 3);
-
-		try {
-			// Delay to start the game after the window is drawn.
-			Thread.sleep(2000);
-			
-			Camera.smoothZoom(15);
-			System.out.println(Camera.getPosition()[2]);
-			while (true) {
-				Thread.sleep(1);
-				
-				//Checks if the balls have ludicrous speed.
-				checkBallSpeed();
-				physics.update();
-				updatePos();
+				while (true) {
+					Thread.sleep(1);
+					//Checks if the balls have ludicrous speed.
+					checkBallSpeed();
+					physics.update();
+					updatePos();
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -111,36 +112,36 @@ public class GameEngine {
 		else{
 			winner = player1;
 		}
-		
+
 		// Increase the winners score!
 		updateScore(winner);
 		// Set ball to default position, ready for next round
 		resetBall();
-		
+
 		// TODO Print next-round string?
 	}
 
 	public void resetBall() {
 		Body ball;
 		ball = mainBall.getBody();
-		
+
 		// Reverse angle
 		double angle = ball.getAngle();
 		angle = Math.toDegrees(angle);
-		
+
 		// set +- 60 degrees randomized 
 		Random generator = new Random();
 		int r = generator.nextInt(30);
-		
+
 		angle = angle-180+r;
 		angle = Math.toRadians(angle);
 		float newAngle = (float) angle;
-		
+
 		// Now set mainBall to default values.. ready for next round!
 		ball.setTransform(new Vec2(0,0), newAngle);
 		mainBall.setxPos(Const.DEFAULT_BALL_POSITION_XPOS);
 		mainBall.setyPos(Const.DEFAULT_BALL_POSITION_YPOS);
-		
+
 	}
 
 	/*	
@@ -153,12 +154,16 @@ public class GameEngine {
 		// Increase points with 100
 		winner.setScore(score+100);
 	}
-	
+
 	public Player getPlayer1(){
 		return player1; 
 	}
 	public Player getPlayer2(){
 		return player2; 
+	}
+
+	public MenuCube getMenu(){
+		return menu; 
 	}
 
 	/* USE THIS METHOD IF YOU WANT TO ADD OBJECTS TO THE GAME
@@ -189,21 +194,21 @@ public class GameEngine {
 	 * 
 	 */
 	public void checkBallSpeed(){
-		
+
 		for(GameItem item : items){
 			if(item.getType().equals("BALL")){
 				Body body = item.getBody();
 				float speed = body.getLinearVelocity().length();
-	
+
 				if(speed > Const.BALL_MAXSPEED){
 					body.setLinearDamping(0.8f);
 				}else{
 					body.setLinearDamping(0.0f);
 				}
-				
+
 			}
 		}
-		
+
 	}
 
 	// creates mouse object, adds key and mouse listeners
