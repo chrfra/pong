@@ -10,6 +10,9 @@ import java.util.Random;
 import static pong.model.Const.*;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -77,7 +80,7 @@ public class GameEngine {
 		physics.addWall(new Wall(Const.GAME_WIDTH/2, 0.0f, 0.0f, Const.GAME_HEIGHT, true)); //Right
 
 		// create the menu cube
-		MenuCube  menuCube = new MenuCube(0, 0, 90, 3, 3, 3);
+		MenuCube menuCube = new MenuCube(0, 0, 90, 3, 3, 3);
 
 		try {
 			// Delay to start the game after the window is drawn.
@@ -110,9 +113,12 @@ public class GameEngine {
 		
 		// Increase the winners score!
 		updateScore(winner);
+		String url = "blip.wav";
+		playSound(url);
 		// Set ball to default position, ready for next round
 		resetBall();
 		
+		// TODO Print next-round string?
 	}
 
 	public void resetBall() {
@@ -138,22 +144,15 @@ public class GameEngine {
 		
 	}
 
-	
-	/*
-	 *  @param 
-	 * 
+	/*	
+	 * 	Increase the winning players score by 100
+	 *  @param winner
 	 */
-	private void updateScore(Player winner) {
-		Integer score = 0;
-		if(winner == player1){
-			score = player1.getScore();
-			// Increase points with 100
-			player1.setScore(score+100); 
-		}
-		else{
-			score = player2.getScore();
-			player2.setScore(score+100);
-		}
+	public void updateScore(Player winner) {
+		int score = 0;
+		score = winner.getScore();
+		// Increase points with 100
+		winner.setScore(score+100);
 	}
 	
 	public Player getPlayer1(){
@@ -228,5 +227,25 @@ public class GameEngine {
 
 	public int getGameState() {
 		return gameState;
+	}
+
+	/*
+	 * Play sound testing
+	 * http://www.soundbyter.com/2011/04/free-sci-fi-tone-sound-effect/ blip sound source
+	 * @param Takes in a filename for the sound to be played, plays it in a own thread
+	 */
+	public synchronized void playSound(final String url) {
+		new Thread(new Runnable() { // the wrapper thread is unnecessary, unless it blocks on the Clip finishing, see comments
+			public void run() {
+				try {
+					Clip clip = AudioSystem.getClip();
+					AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/resource/" + url));
+					clip.open(inputStream);
+					clip.start(); 
+				} catch (Exception e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		}).start();
 	}
 }
