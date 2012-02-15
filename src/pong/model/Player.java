@@ -9,10 +9,6 @@ public class Player {
 	private ArrayList<GameItem> goals = new ArrayList<GameItem>();
 	
 	
-	public void addGoal(GameItem goal){
-		goals.add(goal);
-	}
-	
 	public Player(String name, Paddle paddle) {
 		this.setName(name);
 	}
@@ -20,7 +16,15 @@ public class Player {
 	public String getName() {
 		return name;
 	}
+	
+	public void addGoal(GameItem goal){
+		goals.add(goal);
+	}
 
+	public ArrayList<GameItem> getGoals() {
+		return goals;
+	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
