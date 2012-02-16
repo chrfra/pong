@@ -35,6 +35,7 @@ public class GameEngine {
 	private int gameState = STARTUP_STATE;
 	GraphicsEngine ge;
 	MenuCube menu;	//the menu
+	private boolean resetGame = false; 
 	public GameEngine() {
 	}
 
@@ -96,6 +97,9 @@ public class GameEngine {
 				checkBallSpeed();
 				physics.update();
 				updatePos();
+				if(resetGame == true){
+					resetBall();
+				}
 			}
 			}
 		} catch (InterruptedException e) {
@@ -116,7 +120,7 @@ public class GameEngine {
 		// Increase the winners score!
 		updateScore(winner);
 		// Set ball to default position, ready for next round
-		resetBall();
+		resetGame = true;
 		
 		// TODO Print next-round string?
 	}
@@ -125,22 +129,24 @@ public class GameEngine {
 		Body ball;
 		ball = mainBall.getBody();
 		
-		// Reverse angle
-		double angle = ball.getAngle();
-		angle = Math.toDegrees(angle);
-		
-		// set +- 60 degrees randomized 
 		Random generator = new Random();
-		int r = generator.nextInt(30);
+		float r = generator.nextFloat();
 		
-		angle = angle-180+r;
-		angle = Math.toRadians(angle);
-		float newAngle = (float) angle;
+		Vec2 vec = new Vec2(ball.getLinearVelocity());
 		
 		// Now set mainBall to default values.. ready for next round!
-		ball.setTransform(new Vec2(0,0), newAngle);
+		ball.setTransform(new Vec2(0,0), 0);
 		mainBall.setxPos(Const.DEFAULT_BALL_POSITION_XPOS);
 		mainBall.setyPos(Const.DEFAULT_BALL_POSITION_YPOS);
+		float x = vec.x;
+		float y = vec.y;
+		x = x*-1+r;
+		y = y*-1;
+		vec.set(x, y);
+		
+		ball.setLinearVelocity(vec);
+
+		resetGame = false;
 		
 	}
 
