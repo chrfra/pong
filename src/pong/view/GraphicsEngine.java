@@ -35,7 +35,6 @@ import pong.model.*;
 import static pong.model.Const.*;
 
 import com.jogamp.opengl.util.Animator;
-import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.opengl.util.gl2.GLUT;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureData;
@@ -49,7 +48,6 @@ public class GraphicsEngine implements GLEventListener {
 	private GameEngine ge;
 	private GLUT glut = new GLUT();
 	private Renderer render;
-	private TextRenderer textrenderer;
 	private GLAutoDrawable drawable;
 	private Camera cam = new Camera();
 
@@ -116,8 +114,8 @@ public class GraphicsEngine implements GLEventListener {
 
 			gl.glPushMatrix();
 			// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350) 
-			render.renderText(drawable, textrenderer, -280, -350, "Player 1: " + ge.getPlayer1().getScore());
-			render.renderText(drawable, textrenderer, 160, -350, "Player 2: " + ge.getPlayer2().getScore());
+			//render.render2DText(drawable, -280, -350, "Player 1: " + ge.getPlayer1().getScore());
+			render.render3DText(drawable, 0, 0, "START");
 			gl.glPopMatrix();
 
 			// Draw paddles, ball etc
@@ -163,10 +161,6 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glDepthFunc(GL.GL_LEQUAL);
 		gl.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
-
-		// Setup text font
-		textrenderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 20));
-
 		// Fix lights
 
 		// Prepare light parameters.
