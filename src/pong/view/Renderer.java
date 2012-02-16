@@ -34,6 +34,7 @@ public class Renderer {
 	private Texture balltexture;
 	private Texture spacetexture;
 	private Texture paddletexture;
+	private Texture washedtexture;
 	
 	public Renderer(GLU glu) {
 		this.glu = glu;
@@ -46,6 +47,7 @@ public class Renderer {
         spacetexture = loadTexture("outer_space_trip.jpg");
         balltexture = loadTexture("earth-1k.png");
         paddletexture = loadTexture("paddle_texture1.jpg");
+        washedtexture = loadTexture("washedtexture4.jpg");
 	}
 	
 	/** 
@@ -221,30 +223,33 @@ public class Renderer {
 	 * Draws the gamearea.
 	 */
 	public void drawGamearea(GL2 gl){
+		washedtexture.enable(gl);
+		washedtexture.bind(gl);
 		gl.glBegin(GL2.GL_QUADS);
-		gl.glColor3f(0.0f, 1.0f, 0.0f); // Set The Color To Green
-		
 
-		gl.glVertex3f(Const.GAME_WIDTH / 2f, Const.GAME_HEIGHT / 2f, -Const.GAME_DEPTH/2); // Top Right Of The Quad (Top Wall)
-		gl.glVertex3f(-Const.GAME_WIDTH / 2, Const.GAME_HEIGHT / 2f, -Const.GAME_DEPTH/2); // Top Left Of The Quad (Top Wall)
-		gl.glVertex3f(-Const.GAME_WIDTH / 2f, Const.GAME_HEIGHT / 2f, Const.GAME_DEPTH/2); // Bottom Left Of The Quad (Top Wall)
-		gl.glVertex3f(Const.GAME_WIDTH / 2f, Const.GAME_HEIGHT / 2f, Const.GAME_DEPTH/2); // Bottom Right Of The Quad (Top Wall)
-		
-		gl.glVertex3f(Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT/2f, -Const.GAME_DEPTH/2); // Top Right Of The Quad (Bottom Wall)
-		gl.glVertex3f(-Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT/2f, -Const.GAME_DEPTH/2); // Top Left Of The Quad (Bottom Wall)
-		gl.glVertex3f(-Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT/2f, Const.GAME_DEPTH/2); // Bottom Left Of The Quad (Bottom Wall)
-		gl.glVertex3f(Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT/2f, Const.GAME_DEPTH/2); // Bottom Right Of The Quad (Bottom Wall)
-		
-		
-		gl.glVertex3f(-Const.GAME_WIDTH / 2f, Const.GAME_HEIGHT / 2f, Const.GAME_DEPTH/2); // Top Right Of The Quad (Left Wall)
-		gl.glVertex3f(-Const.GAME_WIDTH / 2f, Const.GAME_HEIGHT / 2f, -Const.GAME_DEPTH/2); // Top Left Of The Quad (Left Wall)
-		gl.glVertex3f(-Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT / 2f, -Const.GAME_DEPTH/2); // Bottom Left Of The Quad (Left Wall)
-		gl.glVertex3f(-Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT / 2f, Const.GAME_DEPTH/2); // Bottom Right Of The Quad (Left Wall)
-		
-		gl.glVertex3f(Const.GAME_WIDTH / 2f, Const.GAME_HEIGHT / 2f, -Const.GAME_DEPTH/2); // Top Right Of The Quad (Right Wall)
-		gl.glVertex3f(Const.GAME_WIDTH / 2f, Const.GAME_HEIGHT / 2f, Const.GAME_DEPTH/2); // Top Left Of The Quad (Right Wall)
-		gl.glVertex3f(Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT / 2f, Const.GAME_DEPTH/2); // Bottom Left Of The Quad (Right Wall)
-		gl.glVertex3f(Const.GAME_WIDTH / 2f, -Const.GAME_HEIGHT / 2f, -Const.GAME_DEPTH/2); // Bottom Right Of The Quad (Right Wall)
+		gl.glNormal3f(1.0f, 0.0f, 0.0f);
+		gl.glVertex3f(GAME_WIDTH / 2f, GAME_HEIGHT / 2f, -GAME_DEPTH/2); gl.glTexCoord2d(1.0f, 1.0f); // Top Right Of The Quad (Top Wall)
+		gl.glVertex3f(-GAME_WIDTH / 2, GAME_HEIGHT / 2f, -GAME_DEPTH/2); gl.glTexCoord2d(0.0f, 1.0f); // Top Left Of The Quad (Top Wall)
+		gl.glVertex3f(-GAME_WIDTH / 2f, GAME_HEIGHT / 2f, GAME_DEPTH/2); gl.glTexCoord2d(0.0f, 0.0f); // Bottom Left Of The Quad (Top Wall)
+		gl.glVertex3f(GAME_WIDTH / 2f, GAME_HEIGHT / 2f, GAME_DEPTH/2);  gl.glTexCoord2d(1.0f, 0.0f);// Bottom Right Of The Quad (Top Wall)
+
+		gl.glNormal3f(1.0f, 0.0f, 0.0f);
+		gl.glVertex3f(GAME_WIDTH / 2f, -GAME_HEIGHT/2f, -GAME_DEPTH/2); gl.glTexCoord2d(1.0f, 1.0f); // Top Right Of The Quad (Bottom Wall)
+		gl.glVertex3f(-GAME_WIDTH / 2f, -GAME_HEIGHT/2f, -GAME_DEPTH/2); gl.glTexCoord2d(0.0f, 1.0f); // Top Left Of The Quad (Bottom Wall)
+		gl.glVertex3f(-GAME_WIDTH / 2f, -GAME_HEIGHT/2f, GAME_DEPTH/2);  gl.glTexCoord2d(0.0f, 0.0f); // Bottom Left Of The Quad (Bottom Wall)
+		gl.glVertex3f(GAME_WIDTH / 2f, -GAME_HEIGHT/2f, GAME_DEPTH/2); gl.glTexCoord2d(1.0f, 0.0f); // Bottom Right Of The Quad (Bottom Wall)
+
+		gl.glNormal3f(1.0f, 0.0f, 0.0f);
+		gl.glVertex3f(-GAME_WIDTH / 2f, GAME_HEIGHT / 2f, GAME_DEPTH/2); gl.glTexCoord2d(1.0f, 1.0f); // Top Right Of The Quad (Left Wall)
+		gl.glVertex3f(-GAME_WIDTH / 2f, GAME_HEIGHT / 2f, -GAME_DEPTH/2); gl.glTexCoord2d(0.0f, 1.0f); // Top Left Of The Quad (Left Wall)
+		gl.glVertex3f(-GAME_WIDTH / 2f, -GAME_HEIGHT / 2f, -GAME_DEPTH/2); gl.glTexCoord2d(0.0f, 0.0f); // Bottom Left Of The Quad (Left Wall)
+		gl.glVertex3f(-GAME_WIDTH / 2f, -GAME_HEIGHT / 2f, GAME_DEPTH/2); gl.glTexCoord2d(1.0f, 0.0f); // Bottom Right Of The Quad (Left Wall)
+
+		gl.glNormal3f(1.0f, 0.0f, 0.0f);
+		gl.glVertex3f(GAME_WIDTH / 2f, GAME_HEIGHT / 2f, -GAME_DEPTH/2); gl.glTexCoord2d(1.0f, 1.0f); // Top Right Of The Quad (Right Wall)
+		gl.glVertex3f(GAME_WIDTH / 2f, GAME_HEIGHT / 2f, GAME_DEPTH/2); gl.glTexCoord2d(0.0f, 1.0f); // Top Left Of The Quad (Right Wall)
+		gl.glVertex3f(GAME_WIDTH / 2f, -GAME_HEIGHT / 2f, GAME_DEPTH/2); gl.glTexCoord2d(0.0f, 0.0f); // Bottom Left Of The Quad (Right Wall)
+		gl.glVertex3f(GAME_WIDTH / 2f, -GAME_HEIGHT / 2f, -GAME_DEPTH/2); gl.glTexCoord2d(1.0f, 0.0f); // Bottom Right Of The Quad (Right Wall)
 		
 		gl.glEnd();
 	}

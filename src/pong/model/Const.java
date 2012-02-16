@@ -24,7 +24,7 @@ public class Const {
 	// Game area values
 	public static final float GAME_WIDTH = 80;
 	public static final float GAME_HEIGHT = 80;
-	public static final float GAME_DEPTH = 2;
+	public static final float GAME_DEPTH = 5;
 	
 	// Default values for paddles
 	public static final float DEFAULT_PADDLE_HEIGHT = 2;
