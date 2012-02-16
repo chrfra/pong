@@ -123,6 +123,7 @@ public class Physics {
 		body = world.createBody(bodyDef);
 		CircleShape dynamicBall = new CircleShape();
 		dynamicBall.m_type = ShapeType.CIRCLE;
+		//Sets size to radius r
 		dynamicBall.m_radius = r;
 		FixtureDef fixtureDef = new FixtureDef(); // fixture def that we load up with the following info:
 		fixtureDef.shape = dynamicBall; // ... its shape is the dynamic box (2x2 rectangle)
@@ -156,8 +157,8 @@ public class Physics {
 		bodyDef.position.set(x, y);
 		body = world.createBody(bodyDef);
 		PolygonShape box = new PolygonShape();
-		// Set size.
-		box.setAsBox(w, h);
+		// Set size. Takes the half-width and half-height
+		box.setAsBox(w/2, h/2);
 		FixtureDef fixtureDef = new FixtureDef(); // fixture def that we load up with the following info:
 		fixtureDef.shape = box; // ... its shape is the dynamic box
 		fixtureDef.density = 20.0f; // ... its density is 1 (default is zero)

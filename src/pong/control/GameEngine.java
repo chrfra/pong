@@ -87,7 +87,7 @@ public class GameEngine {
 			// Delay to start the game after the window is drawn.
 			Thread.sleep(2000);
 			
-			Camera.smoothZoom(60);
+			Camera.smoothZoom(90);
 			System.out.println(Camera.getPosition()[2]);
 			while (true) {
 				Thread.sleep(1);
