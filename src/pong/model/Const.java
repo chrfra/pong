@@ -45,8 +45,8 @@ public class Const {
 	public static final float BALL_RADIUS = 1.5f;
 	
 	// Default value for the main ball
-	public static final float DEFAULT_BALL_POSITION_XPOS = 6;
-	public static final float DEFAULT_BALL_POSITION_YPOS = 0;
+	public static final float BALL_DEFAULT_XPOS = 0;
+	public static final float BALL_DEFAULT_YPOS = 0;
 	
 	// Default values for Camera
 	public static final float CAMERA_LOOK_AT_X = 0;
