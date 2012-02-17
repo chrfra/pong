@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 
 import javax.swing.JFrame;
@@ -131,8 +132,6 @@ public class Physics {
 		fixtureDef.restitution = 1.0f;
 		fixtureDef.friction = 0.0f; // ... its surface has some friction coefficient
 		body.createFixture(fixtureDef); // bind the dense, friction-laden fixture to the body
-//		body.setLinearVelocity(new Vec2(0.5f, 0.5f));
-		body.applyForce(new Vec2(0, -1000), new Vec2());
 		body.setUserData(ball);
 		return body;
 	}
@@ -176,7 +175,24 @@ public class Physics {
 			if (item.getType().equals("PADDLE")) {
 				return addBox(item);
 			} else if (item.getType().equals("BALL")) {
-				return addBall(item);
+				Random rnd = new Random();
+				boolean positiveY = rnd.nextBoolean(), positiveX = rnd.nextBoolean();
+				Body ball = addBall(item);
+				//Set random starting velocity
+				if (positiveX) {
+					if (positiveY) {
+						ball.setLinearVelocity(new Vec2(rnd.nextFloat()+0.5f, rnd.nextFloat()+0.5f));
+					} else {
+						ball.setLinearVelocity(new Vec2(rnd.nextFloat()+0.5f, -rnd.nextFloat()-0.5f));
+					}
+				} else {
+					if (positiveY) {
+						ball.setLinearVelocity(new Vec2(-rnd.nextFloat()-0.5f, rnd.nextFloat()+0.5f));
+					} else {
+						ball.setLinearVelocity(new Vec2(-rnd.nextFloat()-0.5f, -rnd.nextFloat()-0.5f));
+					}
+				}
+				return ball;
 			}
 		} catch (InvalidClassException e) {
 			e.printStackTrace();
