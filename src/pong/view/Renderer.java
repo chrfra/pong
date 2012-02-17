@@ -306,20 +306,20 @@ public class Renderer {
 	 * Draws a string in 2D, is much nicer and can be customized in the init() method to set font and size
 	 * The text is draw depending on the position it gets from the call (x, y)
 	 */
-	public void renderText(GLAutoDrawable drawable, int x, int y, String text){
+	public void render2DText(GLAutoDrawable drawable, int x, int y, String text){
 
 		// Setup text font
 		TextRenderer textrenderer = new TextRenderer(new Font("SansSerif", Font.BOLD, 20));
-		textrenderer.begin3DRendering();
+		textrenderer.beginRendering(drawable.getHeight(),drawable.getWidth());
 		
 		// optionally set the color
 		textrenderer.setColor(1.0f, 1.0f, 0.0f, 0.8f);
-		//textrenderer.draw(text, Const.SCREEN_HEIGHT/2+x, Const.SCREEN_WIDTH/2+y);
-		//MENU_ZPOS+MENU_SIZE/2
-		textrenderer.draw3D(text, SCREEN_HEIGHT/2+x, SCREEN_WIDTH/2+y, 0, 2f);
+		textrenderer.draw(text, SCREEN_HEIGHT/2+x,SCREEN_WIDTH/2+y);
+
 		// ... more draw commands, color changes, etc.
-		textrenderer.end3DRendering();
+		textrenderer.endRendering();
 	}
+	
 	public void render3DText(GLAutoDrawable drawable, int x, int y, String text){
 
 		// Setup text font

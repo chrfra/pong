@@ -55,13 +55,13 @@ public class GameEngine {
 		//Creates the walls that acts as goals for the player.
 		Wall goal1 = new Wall(0.0f, -Const.GAME_HEIGHT/2, 0.0f, Const.GAME_WIDTH, false);  //Lower player
 		Wall goal2 = new Wall(0.0f, Const.GAME_HEIGHT/2, 0.0f, Const.GAME_WIDTH, false);   //Upper player
-		
+
 		//add player 1 to game
 		paddle1 = new Paddle(0, Const.DEFAULT_DPADDLE_YPOS, 0, Const.DEFAULT_PADDLE_HEIGHT, Const.DEFAULT_PADDLE_WIDTH, Const.DEFAULT_PADDLE_DEPTH);
 		player1 = new Player("Playername1", paddle1);
 		player1.addGoal(goal1);
 		addItemToGame(paddle1);
-		
+
 		//add player 2 to game
 		paddle2 = new Paddle(0, Const.DEFAULT_UPADDLE_YPOS, 0, Const.DEFAULT_PADDLE_HEIGHT, Const.DEFAULT_PADDLE_WIDTH, Const.DEFAULT_PADDLE_DEPTH);
 		player2 = new Player("Playername2", paddle2);
@@ -73,40 +73,40 @@ public class GameEngine {
 
 		//add ball to game
 		addItemToGame(mainBall = new Ball(6, 0, 0, Const.BALL_RADIUS));
-		
+
 		//Adds the goals to physics simulation
 		physics.addWall(goal1);
 		physics.addWall(goal2);
-		
+
 		//Creates the sidewalls
 		physics.addWall(new Wall(-Const.GAME_WIDTH/2, 0.0f, 0.0f, Const.GAME_HEIGHT, true)); //Left
 		physics.addWall(new Wall(Const.GAME_WIDTH/2, 0.0f, 0.0f, Const.GAME_HEIGHT, true)); //Right
-		
+
 		//Run the game.
 		this.run();
 	}
 	public void run() {
 		System.out.println("Running the game...");
 		try {
-		//run game, draw score, zoom etc. if starting/resuming the game
-		if(gameState == IN_GAME){
+			//run game, draw score, zoom etc. if starting/resuming the game
+			if(gameState == IN_GAME){
 
-			// Delay to start the game after the window is drawn.
-			Thread.sleep(2000);
-			
-			Camera.smoothZoom(90);
-			System.out.println(Camera.getPosition()[2]);
-			while (true) {
-				Thread.sleep(1);
-				
-				//Checks if the balls have ludicrous speed.
-				checkBallSpeed();
-				physics.update();
-				updatePos();
-				if(resetGame == true){
-					resetBall();
+				// Delay to start the game after the window is drawn.
+				Thread.sleep(2000);
+
+				Camera.smoothZoom(90);
+				System.out.println(Camera.getPosition()[2]);
+				while (true) {
+					Thread.sleep(1);
+
+					//Checks if the balls have ludicrous speed.
+					checkBallSpeed();
+					physics.update();
+					updatePos();
+					if(resetGame == true){
+						resetBall();
+					}
 				}
-			}
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -118,28 +118,46 @@ public class GameEngine {
 		Player winner = new Player("", null);
 		if( losingPlayer == player1 ){
 			winner = player2;
+			losingPlayer.setLives(losingPlayer.getLives()-1);
 		}
 		else{
 			winner = player1;
+			losingPlayer.setLives(losingPlayer.getLives()-1);
 		}
-		
+
 		// Increase the winners score!
 		updateScore(winner);
+
+		if(losingPlayer.getLives() < 1 ){
+			
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			resetScoresAndLives();
+			
+			// No lifes left for player!
+			// Print winner on screen!
+			// New round?
+
+		}
 		// Set ball to default position, ready for next round
 		resetGame = true;
-		
+
 		// TODO Print next-round string?
 	}
 
 	public void resetBall() {
 		Body ball;
 		ball = mainBall.getBody();
-		
+
 		Random generator = new Random();
 		float r = generator.nextFloat();
-		
+
 		Vec2 vec = new Vec2(ball.getLinearVelocity());
-		
+
 		// Now set mainBall to default values.. ready for next round!
 		ball.setTransform(new Vec2(0,0), 0);
 		mainBall.setxPos(Const.DEFAULT_BALL_POSITION_XPOS);
@@ -149,11 +167,11 @@ public class GameEngine {
 		x = x*-1+r;
 		y = y*-1;
 		vec.set(x, y);
-		
+
 		ball.setLinearVelocity(vec);
 
 		resetGame = false;
-		
+
 	}
 
 	/*	
@@ -165,6 +183,16 @@ public class GameEngine {
 		score = winner.getScore();
 		// Increase points with 100
 		winner.setScore(score+100);
+	}
+	
+	/*
+	 * Reset players stats
+	 */
+	public void resetScoresAndLives() {
+		player1.setScore(DEFAULT_STARTING_SCORE);
+		player2.setScore(DEFAULT_STARTING_SCORE);
+		player1.setLives(DEFAULT_AMOUNT_PLAYER_LIVES);
+		player2.setLives(DEFAULT_AMOUNT_PLAYER_LIVES);
 	}
 
 	/* USE THIS METHOD IF YOU WANT TO ADD OBJECTS TO THE GAME
@@ -195,21 +223,21 @@ public class GameEngine {
 	 * 
 	 */
 	public void checkBallSpeed(){
-		
+
 		for(GameItem item : items){
 			if(item.getType().equals("BALL")){
 				Body body = item.getBody();
 				float speed = body.getLinearVelocity().length();
-	
+
 				if(speed > Const.BALL_MAXSPEED){
 					body.setLinearDamping(0.8f);
 				}else{
 					body.setLinearDamping(0.0f);
 				}
-				
+
 			}
 		}
-		
+
 	}
 
 	// creates mouse object, adds key and mouse listeners
@@ -220,7 +248,7 @@ public class GameEngine {
 		((Component) glDrawable).addMouseMotionListener(mouse);
 		((Component) glDrawable).addMouseListener(mouse);
 	}
-	
+
 	/*
 	 * Play sound testing
 	 * http://www.soundbyter.com/2011/04/free-sci-fi-tone-sound-effect/ blip sound source
@@ -252,7 +280,7 @@ public class GameEngine {
 	public int getGameState() {
 		return gameState;
 	}
-	
+
 	public Player getPlayer1(){
 		return player1; 
 	}

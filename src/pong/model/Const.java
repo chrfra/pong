@@ -55,4 +55,9 @@ public class Const {
 	public static final float CAMERA_POSITION_X = 0;
 	public static final float CAMERA_POSITION_Y = 0;
 	public static final float CAMERA_POSITION_Z = 100;
+	
+	// Default values for Players
+	public static final int DEFAULT_STARTING_SCORE = 0;
+	public static final int DEFAULT_AMOUNT_PLAYER_LIVES = 10;
+	
 }
