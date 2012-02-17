@@ -6,7 +6,23 @@ public class Ball extends MoveableItem {
 		super(xPos, yPos, zPos, Type.BALL);
 		this.radius=radius;
 	}
+	
+	/**
+	 * Adjusts the ball's speed if too fast.
+	 * @return
+	 */
+	public void adjustSpeed(){
+		float speed = body.getLinearVelocity().length();
+		
+		if(speed > Const.BALL_MAXSPEED){
+			body.setLinearDamping(0.8f);
+		}else{
+			body.setLinearDamping(0.0f);
+		}
+	}
+	
 	public float getRadius(){
 		return radius;
 	}
+
 }

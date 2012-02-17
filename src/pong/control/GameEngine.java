@@ -98,7 +98,6 @@ public class GameEngine {
 			System.out.println(Camera.getPosition()[2]);
 			while (true) {
 				Thread.sleep(1);
-				
 				//Checks if the balls have ludicrous speed.
 				checkBallSpeed();
 				physics.update();
@@ -198,15 +197,8 @@ public class GameEngine {
 		
 		for(GameItem item : items){
 			if(item.getType().equals("BALL")){
-				Body body = item.getBody();
-				float speed = body.getLinearVelocity().length();
-	
-				if(speed > Const.BALL_MAXSPEED){
-					body.setLinearDamping(0.8f);
-				}else{
-					body.setLinearDamping(0.0f);
-				}
-				
+				Ball ball = (Ball)item;
+				ball.adjustSpeed();
 			}
 		}
 		
