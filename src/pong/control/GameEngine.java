@@ -23,7 +23,7 @@ import pong.view.*;
 public class GameEngine {
 	private Physics physics;
 	// Contains the items in the game. These items will be drawn
-	private ArrayList<GameItem> items = new ArrayList<GameItem>();
+	private ArrayList<GameItem> items;
 	//Controls a paddle with the mouse
 	private MouseInput mouse;
 	// references the paddle to be controlled by player 1
@@ -50,6 +50,8 @@ public class GameEngine {
 
 	public void initGame(){
 		System.out.println("Initializing the game...");
+		
+		items = new ArrayList<GameItem>();
 		physics = new Physics();
 		//Create the world
 		physics.create(this);
@@ -103,7 +105,7 @@ public class GameEngine {
 			}
 			
 			Camera.smoothZoom(90);
-			System.out.println(Camera.getPosition()[2]);
+			
 			while (true) {
 				//Thread.sleep(1);
 				//Checks if the balls have ludicrous speed.
