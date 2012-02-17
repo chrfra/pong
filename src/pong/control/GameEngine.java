@@ -24,7 +24,7 @@ public class GameEngine {
 	private Physics physics;
 	// Contains the items in the game. These items will be drawn
 	private ArrayList<GameItem> items = new ArrayList<GameItem>();
-	private ControlsInput mouse;
+	private MouseInput mouse;
 	// references the paddle to be controlled by player 1
 	private Paddle paddle1;
 	private Paddle paddle2;
@@ -207,7 +207,7 @@ public class GameEngine {
 	// creates mouse object, adds key and mouse listeners
 	public void createListeners(GLAutoDrawable glDrawable) {
 		// create mouse listener and connect it to the moveableItem to be controlled
-		mouse = new ControlsInput(paddle1);
+		mouse = new MouseInput(paddle1);
 		((Component) glDrawable).addKeyListener(mouse);
 		((Component) glDrawable).addMouseMotionListener(mouse);
 		((Component) glDrawable).addMouseListener(mouse);

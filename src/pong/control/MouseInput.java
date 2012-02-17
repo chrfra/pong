@@ -8,13 +8,13 @@ import pong.model.Const;
 import pong.model.MoveableItem;
 
 
-public class ControlsInput implements KeyListener, MouseInputListener{
+public class MouseInput implements KeyListener, MouseInputListener{
 	private float xPos, yPos, dx,dy;
 	//updates the moveable item below every time the mouse is moved 
 	//(perhaps faster performance can be achieved if only fetching the mouseX and mouseY when the item is drawn)?
 	private MoveableItem item;
 	
-	public ControlsInput(MoveableItem item){
+	public MouseInput(MoveableItem item){
 		this.item = item;
 	}
 	@Override

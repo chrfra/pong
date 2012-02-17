@@ -2,7 +2,7 @@ package pong.model;
 
 import org.jbox2d.common.Vec2;
 
-import pong.control.ControlsInput;
+import pong.control.MouseInput;
 
 public class MoveableItem extends GameItem{
 
