@@ -41,11 +41,11 @@ public class GameEngine {
 
 	public static void main(String[] args) {
 		GameEngine ge = new GameEngine();
-		ge.run();
+		ge.initGame();
 	}
 
-	public void run() {
-		System.out.println("Running the game...");
+	public void initGame(){
+		System.out.println("Initializing the game...");
 		physics = new Physics();
 		//Create the world
 		physics.create(this);
@@ -81,6 +81,12 @@ public class GameEngine {
 		//Creates the sidewalls
 		physics.addWall(new Wall(-Const.GAME_WIDTH/2, 0.0f, 0.0f, Const.GAME_HEIGHT, true)); //Left
 		physics.addWall(new Wall(Const.GAME_WIDTH/2, 0.0f, 0.0f, Const.GAME_HEIGHT, true)); //Right
+		
+		//Run the game.
+		this.run();
+	}
+	public void run() {
+		System.out.println("Running the game...");
 		try {
 		//run game, draw score, zoom etc. if starting/resuming the game
 		if(gameState == IN_GAME){
@@ -160,17 +166,6 @@ public class GameEngine {
 		// Increase points with 100
 		winner.setScore(score+100);
 	}
-	
-	public Player getPlayer1(){
-		return player1; 
-	}
-	public Player getPlayer2(){
-		return player2; 
-	}
-
-	public MenuCube getMenu(){
-		return menu; 
-	}
 
 	/* USE THIS METHOD IF YOU WANT TO ADD OBJECTS TO THE GAME
 	 * Paddles, balls, obstacles....
@@ -224,21 +219,8 @@ public class GameEngine {
 		((Component) glDrawable).addKeyListener(mouse);
 		((Component) glDrawable).addMouseMotionListener(mouse);
 		((Component) glDrawable).addMouseListener(mouse);
-		System.out.println(glDrawable.getWidth());
 	}
-
-	public void exit() {
-		System.exit(0);
-	}
-
-	public ArrayList<GameItem> getGameItems() {
-		return items;
-	}
-
-	public int getGameState() {
-		return gameState;
-	}
-
+	
 	/*
 	 * Play sound testing
 	 * http://www.soundbyter.com/2011/04/free-sci-fi-tone-sound-effect/ blip sound source
@@ -258,4 +240,29 @@ public class GameEngine {
 			}
 		}).start();
 	}
+
+	public void exit() {
+		System.exit(0);
+	}
+
+	public ArrayList<GameItem> getGameItems() {
+		return items;
+	}
+
+	public int getGameState() {
+		return gameState;
+	}
+	
+	public Player getPlayer1(){
+		return player1; 
+	}
+	public Player getPlayer2(){
+		return player2; 
+	}
+
+	public MenuCube getMenu(){
+		return menu; 
+	}
+
+
 }
