@@ -26,6 +26,8 @@ public class GameEngine {
 	private ArrayList<GameItem> items;
 	//Controls a paddle with the mouse
 	private MouseInput mouse;
+	//Listens for commands to do something with the game
+	private CommandInput cmdInput;
 	// references the paddle to be controlled by player 1
 	private Paddle paddle1;
 	// references the paddle to be controlled by player 2
@@ -57,7 +59,6 @@ public class GameEngine {
 		physics.create(this);
 		ge = new GraphicsEngine(this);
 		ge.setUp();
-		new CommandInput(this);
 
 		//Creates the walls that acts as goals for the player.
 		Wall goal1 = new Wall(0.0f, -Const.GAME_HEIGHT/2, 0.0f, Const.GAME_WIDTH, false);  //Lower player
@@ -248,9 +249,10 @@ public class GameEngine {
 	public void createListeners(GLAutoDrawable glDrawable) {
 		// create mouse listener and connect it to the moveableItem to be controlled
 		mouse = new MouseInput(paddle1);
-		((Component) glDrawable).addKeyListener(mouse);
 		((Component) glDrawable).addMouseMotionListener(mouse);
 		((Component) glDrawable).addMouseListener(mouse);
+		cmdInput = new CommandInput(this);
+		((Component) glDrawable).addKeyListener(cmdInput);
 	}
 
 	/*

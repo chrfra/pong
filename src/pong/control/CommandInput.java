@@ -3,6 +3,10 @@ package pong.control;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import pong.model.Ball;
+
+import static pong.model.Const.*;
+
 
 /**
  * Listens for general commands that control the application. Compared to MouseInput and MotionInput this isn't connected to a player or paddle.
@@ -22,7 +26,11 @@ public class CommandInput implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 
-		if(arg0.getKeyCode() == KeyEvent.VK_A){
+		//Add ball to game
+		if(arg0.getKeyCode() == KeyEvent.VK_B){
+			ge.addItemToGame(new Ball(BALL_DEFAULT_XPOS, BALL_DEFAULT_YPOS, 0, BALL_RADIUS));
+			System.out.println("add ball");
+		}else if(arg0.getKeyCode() == KeyEvent.VK_V){
 			
 		}
 		
