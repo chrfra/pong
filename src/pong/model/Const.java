@@ -7,6 +7,7 @@ public class Const {
 	public static final int IN_MENU = 0;
 	public static final int IN_GAME = 1;
 	public static final int STARTUP_STATE = IN_GAME;	//starts the game in menu-mode/game-mode
+	public static final int GAME_ENDED = 3;
 	
 	//input constants
 	public static final float MOUSE_OFFSET = 0.0f;
@@ -58,6 +59,6 @@ public class Const {
 	
 	// Default values for Players
 	public static final int DEFAULT_STARTING_SCORE = 0;
-	public static final int DEFAULT_AMOUNT_PLAYER_LIVES = 10;
+	public static final int DEFAULT_AMOUNT_PLAYER_LIVES = 3;
 	
 }

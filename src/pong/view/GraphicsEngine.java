@@ -105,7 +105,7 @@ public class GraphicsEngine implements GLEventListener {
 			gl.glPopMatrix();
 		}
 		//if game started/resumed, draw all game related components
-		else{
+		else if(ge.getGameState() == IN_GAME){
 			// IMPORTANT! PopMatrix() resets glTranslatef and glRotatef to what it was before the previous PushMatrix()
 			gl.glPushMatrix();
 			render.drawGamearea(gl);
@@ -139,6 +139,17 @@ public class GraphicsEngine implements GLEventListener {
 			} catch (InvalidClassException e) {
 				e.printStackTrace();
 			}
+		}
+		else if(ge.getGameState() == GAME_ENDED){
+			if(ge.getPlayer1().getLives() > ge.getPlayer2().getLives()){
+				render.render2DText(drawable, -100, 30, "Player 1 WINS!!");
+				render.render2DText(drawable, -100, 0, "Score: " + ge.getPlayer1().getScore());
+			}
+			else{
+				render.render2DText(drawable, -100, 30, "Player 2 WINS!!");
+				render.render2DText(drawable, -100, 0, "Score: " + ge.getPlayer2().getScore());
+			}
+			render.render2DText(drawable, -100, -30, "New Game coming up...");
 		}
 
 	}
