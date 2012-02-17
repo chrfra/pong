@@ -110,6 +110,7 @@ public class GameEngine {
 			while (true) {
 				//Thread.sleep(1);
 				//Checks if the balls have ludicrous speed.
+				gameState = IN_GAME;
 				try {
 					Thread.sleep(1);
 				} catch (InterruptedException e) {
@@ -142,8 +143,9 @@ public class GameEngine {
 
 		if(losingPlayer.getLives() < 1 ){
 			
+			gameState = GAME_ENDED;
 			try {
-				Thread.sleep(2000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
