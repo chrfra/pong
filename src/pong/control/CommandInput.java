@@ -29,7 +29,7 @@ public class CommandInput implements KeyListener {
 		//Add ball to game
 		if(arg0.getKeyCode() == KeyEvent.VK_B){
 			ge.addItemToGame(new Ball(BALL_DEFAULT_XPOS, BALL_DEFAULT_YPOS, 0, BALL_RADIUS));
-			System.out.println("add ball");
+			System.out.println("Adding ball...");
 		}else if(arg0.getKeyCode() == KeyEvent.VK_V){
 			
 		}

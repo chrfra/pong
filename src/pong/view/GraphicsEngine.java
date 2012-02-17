@@ -200,7 +200,7 @@ public class GraphicsEngine implements GLEventListener {
 		render.setupTextures();
 
 		// add listeners for keyboard and mouse input
-		ge.createListeners(glDrawable);
+		ge.createCommandListener(glDrawable);
 
 	}
 
@@ -224,5 +224,8 @@ public class GraphicsEngine implements GLEventListener {
 		animator.stop();
 		frame.dispose();
 		System.exit(0);
+	}
+	public GLAutoDrawable getDrawable() {
+		return drawable;
 	}
 }

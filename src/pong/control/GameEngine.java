@@ -39,26 +39,35 @@ public class GameEngine {
 	private Player player2;
 	//gameState tells graphics engine whether to render in menu-mode or game-mode, start in menu-mode
 	private int gameState = STARTUP_STATE;
-	GraphicsEngine ge;
-	MenuCube menu;	//the menu
+	private GraphicsEngine ge;
+	private MenuCube menu;	//the menu
 	private boolean resetGame = false; 
 	public GameEngine() {
 	}
 
 	public static void main(String[] args) {
 		GameEngine ge = new GameEngine();
-		ge.initGame();
+		ge.initApplication();
+	}
+	
+	public void initApplication(){
+		System.out.println("Initializing graphics...");
+		ge = new GraphicsEngine(this);
+		ge.setUp();
+		
+		initNewGame();
 	}
 
-	public void initGame(){
-		System.out.println("Initializing the game...");
-		
+	/**
+	 * Called when a new game is started. Resets all the players, items and physics.
+	 */
+	public void initNewGame(){
+
+		System.out.println("Initializing new game...");
 		items = new ArrayList<GameItem>();
 		physics = new Physics();
 		//Create the world
 		physics.create(this);
-		ge = new GraphicsEngine(this);
-		ge.setUp();
 
 		//Creates the walls that acts as goals for the player.
 		Wall goal1 = new Wall(0.0f, -Const.GAME_HEIGHT/2, 0.0f, Const.GAME_WIDTH, false);  //Lower player
@@ -89,12 +98,15 @@ public class GameEngine {
 		//Creates the sidewalls
 		physics.addWall(new Wall(-Const.GAME_WIDTH/2, 0.0f, 0.0f, Const.GAME_HEIGHT, true)); //Left
 		physics.addWall(new Wall(Const.GAME_WIDTH/2, 0.0f, 0.0f, Const.GAME_HEIGHT, true)); //Right
+		
+		//Add listeners for the new paddleobjects.
+		createControlListeners(ge.getDrawable());
 
 		//Run the game.
-		this.run();
+		startGame();
 	}
 	
-	public void run() {
+	private void startGame() {
 		System.out.println("Running the game...");
 		//run game, draw score, zoom etc. if starting/resuming the game
 		if(gameState == IN_GAME){
@@ -150,17 +162,17 @@ public class GameEngine {
 				e.printStackTrace();
 			}
 			
-			resetScoresAndLives();
-			
 			// No lifes left for player!
 			// Print winner on screen!
 			// New round?
 
+			
+			//Starts new round
+			initNewGame();
+			
 		}
-		// Set ball to default position, ready for next round
-		resetGame = true;
-
-		// TODO Print next-round string?
+		//Resets the ball to the center.
+		resetGame=true;
 	}
 
 	public void resetBall() {
@@ -199,15 +211,6 @@ public class GameEngine {
 		winner.setScore(score+100);
 	}
 	
-	/*
-	 * Reset players stats
-	 */
-	public void resetScoresAndLives() {
-		player1.setScore(DEFAULT_STARTING_SCORE);
-		player2.setScore(DEFAULT_STARTING_SCORE);
-		player1.setLives(DEFAULT_AMOUNT_PLAYER_LIVES);
-		player2.setLives(DEFAULT_AMOUNT_PLAYER_LIVES);
-	}
 
 	/* USE THIS METHOD IF YOU WANT TO ADD OBJECTS TO THE GAME
 	 * Paddles, balls, obstacles....
@@ -247,17 +250,27 @@ public class GameEngine {
 		
 	}
 
-	// creates mouse object, adds key and mouse listeners
-	public void createListeners(GLAutoDrawable glDrawable) {
+	/**
+	 * Creates mouse object, adds listeners that control paddles
+	 * @param glDrawable
+	 */
+	public void createControlListeners(GLAutoDrawable glDrawable) {
 		// create mouse listener and connect it to the moveableItem to be controlled
 		mouse = new MouseInput(paddle1);
 		((Component) glDrawable).addMouseMotionListener(mouse);
 		((Component) glDrawable).addMouseListener(mouse);
+
+	}
+	/**
+	 * Creates commandlistener. This listener is persistent during the whole runtime.
+	 * @param glDrawable
+	 */
+	public void createCommandListener(GLAutoDrawable glDrawable){
 		cmdInput = new CommandInput(this);
 		((Component) glDrawable).addKeyListener(cmdInput);
 	}
 
-	/*
+	/**
 	 * Play sound testing
 	 * http://www.soundbyter.com/2011/04/free-sci-fi-tone-sound-effect/ blip sound source
 	 * @param Takes in a filename for the sound to be played, plays it in a own thread
