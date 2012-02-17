@@ -24,11 +24,15 @@ public class GameEngine {
 	private Physics physics;
 	// Contains the items in the game. These items will be drawn
 	private ArrayList<GameItem> items = new ArrayList<GameItem>();
+	//Controls a paddle with the mouse
 	private MouseInput mouse;
 	// references the paddle to be controlled by player 1
 	private Paddle paddle1;
+	// references the paddle to be controlled by player 2
 	private Paddle paddle2;
+	//The main ball in the game. This ball will never die
 	private Ball mainBall;
+	
 	private Player player1;
 	private Player player2;
 	//gameState tells graphics engine whether to render in menu-mode or game-mode, start in menu-mode
@@ -51,6 +55,7 @@ public class GameEngine {
 		physics.create(this);
 		ge = new GraphicsEngine(this);
 		ge.setUp();
+		new CommandInput(this);
 
 		//Creates the walls that acts as goals for the player.
 		Wall goal1 = new Wall(0.0f, -Const.GAME_HEIGHT/2, 0.0f, Const.GAME_WIDTH, false);  //Lower player
@@ -72,7 +77,7 @@ public class GameEngine {
 		menu = new MenuCube(0,0,MENU_ZPOS,MENU_SIZE,MENU_SIZE,MENU_SIZE);
 
 		//add ball to game
-		addItemToGame(mainBall = new Ball(6, 0, 0, Const.BALL_RADIUS));
+		addItemToGame(mainBall = new Ball(BALL_DEFAULT_XPOS, BALL_DEFAULT_YPOS, 0, Const.BALL_RADIUS));
 		
 		//Adds the goals to physics simulation
 		physics.addWall(goal1);
@@ -141,8 +146,8 @@ public class GameEngine {
 		
 		// Now set mainBall to default values.. ready for next round!
 		ball.setTransform(new Vec2(0,0), 0);
-		mainBall.setxPos(Const.DEFAULT_BALL_POSITION_XPOS);
-		mainBall.setyPos(Const.DEFAULT_BALL_POSITION_YPOS);
+		mainBall.setxPos(Const.BALL_DEFAULT_XPOS);
+		mainBall.setyPos(Const.BALL_DEFAULT_YPOS);
 		float x = vec.x;
 		float y = vec.y;
 		x = x*-1+r;
