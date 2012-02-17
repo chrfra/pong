@@ -114,8 +114,9 @@ public class GraphicsEngine implements GLEventListener {
 
 			gl.glPushMatrix();
 			// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350) 
-			//render.render2DText(drawable, -280, -350, "Player 1: " + ge.getPlayer1().getScore());
-			render.render3DText(drawable, 0, 0, "START");
+			render.render2DText(drawable, SCREEN_WIDTH-1100, SCREEN_HEIGHT-950, "Player 1: " + ge.getPlayer1().getScore() + " Lives: " + ge.getPlayer1().getLives());
+			render.render2DText(drawable, SCREEN_WIDTH-800, SCREEN_HEIGHT-950, "Player 2: " + ge.getPlayer2().getScore() + " Lives: " + ge.getPlayer2().getLives());
+			//render.render3DText(drawable, 0, 0, "START");
 			gl.glPopMatrix();
 
 			// Draw paddles, ball etc
@@ -131,7 +132,7 @@ public class GraphicsEngine implements GLEventListener {
 				}
 				gl.glPushMatrix();
 				// Render a string on screen
-				render.renderStrokeString(gl, GLUT.STROKE_MONO_ROMAN, "Hej"); 
+				//render.renderStrokeString(gl, GLUT.STROKE_MONO_ROMAN, "Hej"); 
 				gl.glPopMatrix();
 
 
