@@ -24,7 +24,7 @@ public class GameEngine {
 	private Physics physics;
 	// Contains the items in the game. These items will be drawn
 	private ArrayList<GameItem> items = new ArrayList<GameItem>();
-	private ControlsInput mouse;
+	private MouseInput mouse;
 	// references the paddle to be controlled by player 1
 	private Paddle paddle1;
 	private Paddle paddle2;
@@ -73,7 +73,7 @@ public class GameEngine {
 
 		//add ball to game
 		addItemToGame(mainBall = new Ball(6, 0, 0, Const.BALL_RADIUS));
-
+		
 		//Adds the goals to physics simulation
 		physics.addWall(goal1);
 		physics.addWall(goal2);
@@ -85,31 +85,35 @@ public class GameEngine {
 		//Run the game.
 		this.run();
 	}
+	
 	public void run() {
 		System.out.println("Running the game...");
-		try {
-			//run game, draw score, zoom etc. if starting/resuming the game
-			if(gameState == IN_GAME){
-
-				// Delay to start the game after the window is drawn.
+		//run game, draw score, zoom etc. if starting/resuming the game
+		if(gameState == IN_GAME){
+			// Delay to start the game after the window is drawn.
+			try {
 				Thread.sleep(2000);
-
-				Camera.smoothZoom(90);
-				System.out.println(Camera.getPosition()[2]);
-				while (true) {
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			Camera.smoothZoom(90);
+			System.out.println(Camera.getPosition()[2]);
+			while (true) {
+				//Thread.sleep(1);
+				//Checks if the balls have ludicrous speed.
+				try {
 					Thread.sleep(1);
-
-					//Checks if the balls have ludicrous speed.
-					checkBallSpeed();
-					physics.update();
-					updatePos();
-					if(resetGame == true){
-						resetBall();
-					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				checkBallSpeed();
+				physics.update();
+				updatePos();
+				if(resetGame == true){
+					resetBall();
 				}
 			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -226,24 +230,17 @@ public class GameEngine {
 
 		for(GameItem item : items){
 			if(item.getType().equals("BALL")){
-				Body body = item.getBody();
-				float speed = body.getLinearVelocity().length();
-
-				if(speed > Const.BALL_MAXSPEED){
-					body.setLinearDamping(0.8f);
-				}else{
-					body.setLinearDamping(0.0f);
-				}
-
+				Ball ball = (Ball)item;
+				ball.adjustSpeed();
 			}
 		}
-
+		
 	}
 
 	// creates mouse object, adds key and mouse listeners
 	public void createListeners(GLAutoDrawable glDrawable) {
 		// create mouse listener and connect it to the moveableItem to be controlled
-		mouse = new ControlsInput(paddle1);
+		mouse = new MouseInput(paddle1);
 		((Component) glDrawable).addKeyListener(mouse);
 		((Component) glDrawable).addMouseMotionListener(mouse);
 		((Component) glDrawable).addMouseListener(mouse);
