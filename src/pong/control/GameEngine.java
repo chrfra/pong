@@ -40,8 +40,10 @@ public class GameEngine {
 	//gameState tells graphics engine whether to render in menu-mode or game-mode, start in menu-mode
 	private int gameState = STARTUP_STATE;
 	private GraphicsEngine ge;
-	private MenuCube menu;	//the menu
+	//the menu cube
+	private MenuCube menu;	
 	private boolean resetGame = false; 
+	
 	public GameEngine() {
 	}
 
@@ -86,8 +88,8 @@ public class GameEngine {
 		addItemToGame(paddle2);
 
 		//create the menu cube
-		menu = new MenuCube(0,0,MENU_ZPOS,MENU_SIZE,MENU_SIZE,MENU_SIZE);
-
+		initCube();
+		
 		//add ball to game
 		addItemToGame(mainBall = new Ball(BALL_DEFAULT_XPOS, BALL_DEFAULT_YPOS, 0, Const.BALL_RADIUS));
 		
@@ -249,7 +251,42 @@ public class GameEngine {
 		}
 		
 	}
-
+	
+	/*
+	 * creates the menu cube, adds the options (strings) to print on each side
+	 */
+	private void initCube(){
+		menu = new MenuCube(0,0,MENU_ZPOS,MENU_SIZE,MENU_SIZE,MENU_SIZE);
+		//add the options to be shown on the menu cube's sides
+		ArrayList<ArrayList<String>> options = new ArrayList<ArrayList<String>>();
+		
+		ArrayList<String> topOptions = new ArrayList<String>();
+		topOptions.add("Top");
+		options.add(topOptions);
+		
+		ArrayList<String> frontOptions = new ArrayList<String>();
+		frontOptions.add("Front");
+		options.add(frontOptions);
+		
+		ArrayList<String> rightOptions = new ArrayList<String>();
+		rightOptions.add("Right");
+		options.add(rightOptions);
+		
+		ArrayList<String> backOptions = new ArrayList<String>();
+		backOptions.add("Back");
+		options.add(backOptions);
+		
+		ArrayList<String> leftOptions = new ArrayList<String>();
+		leftOptions.add("Left");
+		options.add(leftOptions);
+		
+		ArrayList<String> bottomOptions = new ArrayList<String>();
+		bottomOptions.add("Bottom");
+		options.add(bottomOptions);
+		
+		menu.setOptions(options);
+		
+	}
 	/**
 	 * Creates mouse object, adds listeners that control paddles
 	 * @param glDrawable

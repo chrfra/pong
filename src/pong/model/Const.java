@@ -20,7 +20,15 @@ public class Const {
 	
 	//size of the (cubic) menu
 	public static final float MENU_SIZE = 9f;
-	public static final float MENU_ZPOS = 65;
+	public static final float MENU_ZPOS = 95;
+	
+	//identifiers for the different sides of the cube, used to draw different text to each side
+	public static final int MENU_TOP = 0;
+	public static final int MENU_FRONT = 1;
+	public static final int MENU_RIGHT = 2;
+	public static final int MENU_BACK = 3;
+	public static final int MENU_LEFT = 4;
+	public static final int MENU_BOTTOM= 5;
 			
 	// Game area values
 	public static final float GAME_WIDTH = 80;
@@ -60,8 +68,4 @@ public class Const {
 	// Default values for Players
 	public static final int DEFAULT_STARTING_SCORE = 0;
 	public static final int DEFAULT_AMOUNT_PLAYER_LIVES = 3;
-	
-	//Constants for renderer class
-	public static final int MENU_CUBE = 0;
-	public static final int PADDLE = 1;
 }

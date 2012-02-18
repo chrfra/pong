@@ -1,5 +1,7 @@
 package pong.model;
 
+import java.util.ArrayList;
+
 import org.jbox2d.dynamics.Body;
 
 public class MenuCube {
@@ -8,6 +10,9 @@ public class MenuCube {
 	private float zPos;
 	private float height;
 	private float width;
+	//two dimensional list holding the menu options, 
+	//first list holds the list of all strings for each side of the menu
+	private ArrayList<ArrayList<String>> options;
 	public float getxPos() {
 		return xPos;
 	}
@@ -65,5 +70,21 @@ public class MenuCube {
 		this.height = height;
 		this.width = width;
 		this.depth = depth;
+		options = new ArrayList<ArrayList<String>>();
+	}
+
+	public ArrayList<ArrayList<String>> getOptions() {
+		return options;
+	}
+	/*
+	 * returns all the options for a specified side of the menu
+	 * @param int (number of the side for which you would like the list of options)
+	 */
+	public ArrayList<String> getOptionsBySide(int x) {
+		return options.get(x);
+	}
+	//add entire menu system
+	public void setOptions(ArrayList<ArrayList<String>> options) {
+		this.options = options;
 	}
 }

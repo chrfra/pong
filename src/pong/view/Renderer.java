@@ -76,20 +76,7 @@ public class Renderer {
 		}
 		return null;
 	}
-	/**
-	 * 
-	 * @param GL2
-	 * @param menu
-	 */
-	public void renderMenu(GL2 gl, MenuCube menu){
-		//draw the cube
-		try {
-			this.draw3DRectangle(gl, menu);
-		} catch (InvalidClassException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+
 
 	/********************************************
 	 * 											*
@@ -146,7 +133,6 @@ public class Renderer {
 	public void draw3DRectangle(GL2 gl, Object item) throws InvalidClassException {
 		float x, y, z, w, h, d;
 		Texture texture;
-		int type;
 
 		// Check that item is a Paddle. Need to support all classes that have the same shape in the future.
 		if (item instanceof Paddle) {
@@ -157,9 +143,7 @@ public class Renderer {
 			w = pad.getWidth();
 			h = pad.getHeight();
 			d = pad.getDepth();
-			//remembers what type of 3D rectangle object is to be drawn, eg. menucube => overlay text...
 			texture = this.paddletexture;
-			type = PADDLE;
 		} 
 		//check if object is a menu cube, set appropriate texture for menu cube
 		else if (item instanceof MenuCube) {
@@ -171,8 +155,6 @@ public class Renderer {
 			h = menuCube.getHeight();
 			d = menuCube.getDepth();
 			texture = this.paddletexture;
-			//overlay text
-			type = MENU_CUBE;
 		} else {
 			throw new InvalidClassException("Wrong class of GameItem in draw3DRectangle(GL2 gl, GameItem item)");
 		}
@@ -191,7 +173,7 @@ public class Renderer {
 		gl.glVertex3f(-w / 2f, h / 2f, -d / 2f); gl.glTexCoord2d(1.0f, 0.0f);  // Top Left Of The Quad (Top)
 		gl.glVertex3f(-w / 2f, h / 2f, d / 2f); gl.glTexCoord2d(1.0f, 1.0f); // Bottom Left Of The Quad (Top)
 		gl.glVertex3f(w / 2f, h / 2f, d / 2f); gl.glTexCoord2d(0.0f, 1.0f); // Bottom Right Of The Quad (Top)
-
+		
 		gl.glNormal3f(0.0f, -1.0f, 0.0f);
 		gl.glVertex3f(w / 2f, -h / 2f, d / 2f); gl.glTexCoord2d(0.0f, 0.0f); // Top Right Of The Quad (Bottom)
 		gl.glVertex3f(-w / 2f, -h / 2f, d / 2f); gl.glTexCoord2d(1.0f, 0.0f);  // Top Left Of The Quad (Bottom)
@@ -342,46 +324,46 @@ public class Renderer {
 	 * @param drawable
 	 */
 	//draws the menu cube
-	public void drawMenu(GLAutoDrawable drawable) {
+	public void drawMenu(GLAutoDrawable drawable, MenuCube menu) {
 
 		//setup the text properties, size etc.
 		setUpText(drawable);
 
 		GL2 gl = drawable.getGL().getGL2();
 
-		gl.glMatrixMode(GL2.GL_MODELVIEW);
-		gl.glLoadIdentity();
-		glu.gluLookAt(0, 0, 3,
+		//gl.glMatrixMode(GL2.GL_MODELVIEW);
+		//gl.glLoadIdentity();
+		/*glu.gluLookAt(0, 0, 2,
 				0, 0, 0,
-				0, 1, 0);
-
+				0, 1, 0);*/
+		gl.glTranslatef(menu.getxPos(),menu.getyPos(), menu.getzPos());
 		//rotate the cube
-		gl.glRotatef(15, 1, 0, 0);
+		gl.glRotatef(30, 1, 0, 0);
 		gl.glRotatef(60, 0, 1, 0);
 
 		// draw the six faces of the cube
 		// Top face
 		gl.glPushMatrix();
 		gl.glRotatef(-90, 1, 0, 0);
-		drawFace(gl, 1.0f, 0.2f, 0.2f, 0.8f, "Top");
+		drawFace(gl, 1.0f, 0.2f, 0.2f, 0.8f, menu.getOptionsBySide(MENU_TOP).get(0));
 		gl.glPopMatrix();
 		// Front face
-		drawFace(gl, 1.0f, 0.8f, 0.2f, 0.2f, "Front");
+		drawFace(gl, 1.0f, 0.8f, 0.2f, 0.2f, menu.getOptionsBySide(MENU_FRONT).get(0));
 		// Right face
 		gl.glPushMatrix();
 		gl.glRotatef(90, 0, 1, 0);
-		drawFace(gl, 1.0f, 0.2f, 0.8f, 0.2f, "Right");
+		drawFace(gl, 1.0f, 0.2f, 0.8f, 0.2f, menu.getOptionsBySide(MENU_RIGHT).get(0));
 		// Back face    
 		gl.glRotatef(90, 0, 1, 0);
-		drawFace(gl, 1.0f, 0.8f, 0.8f, 0.2f, "Back");
+		drawFace(gl, 1.0f, 0.8f, 0.8f, 0.2f, menu.getOptionsBySide(MENU_BACK).get(0));
 		// Left face    
 		gl.glRotatef(90, 0, 1, 0);
-		drawFace(gl, 1.0f, 0.2f, 0.8f, 0.8f, "Left");
+		drawFace(gl, 1.0f, 0.2f, 0.8f, 0.8f, menu.getOptionsBySide(MENU_LEFT).get(0));
 		gl.glPopMatrix();
 		// Bottom face
 		gl.glPushMatrix();
 		gl.glRotatef(90, 1, 0, 0);
-		drawFace(gl, 1.0f, 0.8f, 0.2f, 0.8f, "Bottom");
+		drawFace(gl, 1.0f, 0.8f, 0.2f, 0.8f, menu.getOptionsBySide(MENU_BOTTOM).get(0));
 		gl.glPopMatrix();
 	}
 
@@ -398,15 +380,25 @@ public class Renderer {
 		//https://github.com/sgothel/jogl-utils/commit/bac504811d3fde4675b9a8f464a74f1c41be77d5#diff-2
 		//C:\Users\cf\Downloads\java3declipse-20090302	
 		
+		//set texture for the menu
+		Texture texture = this.paddletexture;
+		
 		float halfFaceSize = faceSize / 2;
 		gl.glColor3f(r, g, b);
 		
+		// Apply the texture
+		texture.enable(gl);
+		texture.bind(gl);
+
+		//draw side of cube+texture
 		gl.glBegin(GL2.GL_QUADS);
-		gl.glVertex3f(-halfFaceSize, -halfFaceSize, halfFaceSize);
-		gl.glVertex3f( halfFaceSize, -halfFaceSize, halfFaceSize);
-		gl.glVertex3f( halfFaceSize,  halfFaceSize, halfFaceSize);
-		gl.glVertex3f(-halfFaceSize,  halfFaceSize, halfFaceSize);
+		gl.glVertex3f(-halfFaceSize, -halfFaceSize, halfFaceSize);gl.glTexCoord2d(1.0f, 1.0f);//bottom left
+		gl.glVertex3f( halfFaceSize, -halfFaceSize, halfFaceSize);gl.glTexCoord2d(0.0f, 1.0f);//bottom right
+		gl.glVertex3f( halfFaceSize,  halfFaceSize, halfFaceSize);gl.glTexCoord2d(0.0f, 0.0f);//top right
+		gl.glVertex3f(-halfFaceSize,  halfFaceSize, halfFaceSize);gl.glTexCoord2d(1.0f, 0.0f);//top left
 		gl.glEnd();
+
+		gl.glDisable(GL.GL_TEXTURE_2D);
 		
 		textrenderer.begin3DRendering();
 		
@@ -426,6 +418,7 @@ public class Renderer {
 				textScaleFactor);
 		
 		textrenderer.end3DRendering();
+		
 	}
 
 	//readies settings for printing 3D text
