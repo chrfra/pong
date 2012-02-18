@@ -145,17 +145,17 @@ public class GraphicsEngine implements GLEventListener {
 			}
 		}
 		//game has ended, print score
-		else if(ge.getGameState() == GAME_ENDED){
-			if(ge.getPlayer1().getLives() > ge.getPlayer2().getLives()){
-				render.render2DText(drawable, -100, 30, "Player 1 WINS!!");
-				render.render2DText(drawable, -100, 0, "Score: " + ge.getPlayer1().getScore());
-			}
-			else{
-				render.render2DText(drawable, -100, 30, "Player 2 WINS!!");
-				render.render2DText(drawable, -100, 0, "Score: " + ge.getPlayer2().getScore());
-			}
-			render.render2DText(drawable, -100, -30, "New Game coming up...");
-		}
+//		else if(ge.getGameState() == GAME_ENDED){
+//			if(ge.getPlayer1().getLives() > ge.getPlayer2().getLives()){
+//				render.render2DText(drawable, -100, 30, "Player 1 WINS!!");
+//				render.render2DText(drawable, -100, 0, "Score: " + ge.getPlayer1().getScore());
+//			}
+//			else{
+//				render.render2DText(drawable, -100, 30, "Player 2 WINS!!");
+//				render.render2DText(drawable, -100, 0, "Score: " + ge.getPlayer2().getScore());
+//			}
+//			render.render2DText(drawable, -100, -30, "New Game coming up...");
+//		}
 
 	}
 

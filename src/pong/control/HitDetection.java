@@ -52,12 +52,12 @@ public class HitDetection implements ContactListener {
 		player = ge.getPlayer1();
 		if(player.getGoals().contains(wall)){
 			//Player 1's goal has been hit
-			ge.ballOut(player);
+			ge.ballOut(player, ball);
 		}
 		player = ge.getPlayer2();
 		if(player.getGoals().contains(wall)){
 			//Player 2's goal has been hit
-			ge.ballOut(player);
+			ge.ballOut(player, ball);
 		}
 		else if( !(player.getGoals().contains(wall)) && !(ge.getPlayer1().getGoals().contains(wall)) ){
 			// Regular wall has been hit, play wallsound

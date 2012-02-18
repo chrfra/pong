@@ -6,7 +6,7 @@ public class Const {
 
 	public static final int IN_MENU = 0;
 	public static final int IN_GAME = 1;
-	public static final int STARTUP_STATE = IN_MENU;	//starts the game in menu-mode/game-mode
+	public static final int STARTUP_STATE = IN_GAME;	//starts the game in menu-mode/game-mode
 	public static final int GAME_ENDED = 3;
 	
 	//input constants

@@ -75,6 +75,14 @@ public class Physics {
 	}
 	
 	/**
+	 * 
+	 */
+	public void destroyBody(Body body){
+		world.destroyBody(body);
+	}
+	
+	
+	/**
 	 * Adds a static wall to the simulation
 	 * @param wall
 	 */

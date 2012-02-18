@@ -119,7 +119,7 @@ public class GameEngine {
 				e.printStackTrace();
 			}
 			
-			Camera.smoothZoom(90);
+			Camera.smoothZoom(100);
 			
 			while (true) {
 				//Thread.sleep(1);
@@ -140,8 +140,15 @@ public class GameEngine {
 		}
 	}
 
-	public void ballOut(Player losingPlayer) {
-		//Put gamelogic calls here
+	public void ballOut(Player losingPlayer, Ball ball) {
+		
+		//Resets the ball to the center if the ball is the mainball. All other balls are deleted.
+		if (ball == mainBall) {
+			resetGame=true;
+		} else {
+			this.removeItemFromGame(ball);
+		}
+
 		Player winner = new Player("", null);
 		if( losingPlayer == player1 ){
 			winner = player2;
@@ -151,10 +158,10 @@ public class GameEngine {
 			winner = player1;
 			losingPlayer.setLives(losingPlayer.getLives()-1);
 		}
-
+		
 		// Increase the winners score!
 		updateScore(winner);
-
+		
 		if(losingPlayer.getLives() < 1 ){
 			
 			gameState = GAME_ENDED;
@@ -163,18 +170,9 @@ public class GameEngine {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			
-			// No lifes left for player!
-			// Print winner on screen!
-			// New round?
-
-			
-			//Starts new round
 			initNewGame();
-			
 		}
-		//Resets the ball to the center.
-		resetGame=true;
+
 	}
 
 	public void resetBall() {
@@ -214,13 +212,23 @@ public class GameEngine {
 	}
 	
 
-	/* USE THIS METHOD IF YOU WANT TO ADD OBJECTS TO THE GAME
+	/**
+	 * USE THIS METHOD IF YOU WANT TO ADD OBJECTS TO THE GAME
 	 * Paddles, balls, obstacles....
 	 */
 	public void addItemToGame(GameItem item) {
 		item.setBody(physics.addObject(item));
 		item.getBody().setBullet(true);
 		items.add(item);
+	}
+	
+	/**
+	 * Use this method when you want to remove a object from the game.
+	 * @param item
+	 */
+	public void removeItemFromGame(GameItem item) {
+		physics.destroyBody(item.getBody());
+		items.remove(item);
 	}
 
 	/*
