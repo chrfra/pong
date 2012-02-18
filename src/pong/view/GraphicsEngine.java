@@ -100,13 +100,19 @@ public class GraphicsEngine implements GLEventListener {
 
 		//check gameState to determine whether to zoom out and draw menu or to draw the game 
 		if(ge.getGameState() == IN_MENU){
+			
+			//render the Menu Cube
+			render.drawMenu(drawable);
+			
 			gl.glPushMatrix();
 			render.renderMenu(gl, ge.getMenu());
 			gl.glPopMatrix();
+			
 		}
 		//if game started/resumed, draw all game related components
 		else if(ge.getGameState() == IN_GAME){
 			// IMPORTANT! PopMatrix() resets glTranslatef and glRotatef to what it was before the previous PushMatrix()
+			
 			gl.glPushMatrix();
 			render.drawGamearea(gl);
 			gl.glPopMatrix();
@@ -114,8 +120,10 @@ public class GraphicsEngine implements GLEventListener {
 
 			gl.glPushMatrix();
 			// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350) 
-			render.render2DText(drawable, SCREEN_WIDTH-1100, SCREEN_HEIGHT-950, "Player 1: " + ge.getPlayer1().getScore() + " Lives: " + ge.getPlayer1().getLives());
-			render.render2DText(drawable, SCREEN_WIDTH-800, SCREEN_HEIGHT-950, "Player 2: " + ge.getPlayer2().getScore() + " Lives: " + ge.getPlayer2().getLives());
+			//render.render2DText(drawable, SCREEN_WIDTH-1100, SCREEN_HEIGHT-950, "Player 1: " + ge.getPlayer1().getScore() + " Lives: " + ge.getPlayer1().getLives());
+			//render.render2DText(drawable, SCREEN_WIDTH-800, SCREEN_HEIGHT-950, "Player 2: " + ge.getPlayer2().getScore() + " Lives: " + ge.getPlayer2().getLives());
+			render.render3DText(drawable, SCREEN_WIDTH-800, SCREEN_HEIGHT-950, "Player 2: " + ge.getPlayer2().getScore() + " Lives: " + ge.getPlayer2().getLives());
+			
 			//render.render3DText(drawable, 0, 0, "START");
 			gl.glPopMatrix();
 
