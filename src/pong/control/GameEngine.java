@@ -193,14 +193,16 @@ public class GameEngine {
 		updateScore(winner);
 
 		if (losingPlayer.getLives() < 1) {
-
+			
 			gameState = GAME_ENDED;
+			PlayMp3.playNow("win.mp3");
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			initNewGame();
+			PlayMp3.stopMp3();
 		}
 
 	}
