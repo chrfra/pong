@@ -122,32 +122,32 @@ public class GameEngine {
 		// Add listeners for the new paddleobjects.
 		createControlListeners(ge.getDrawable());
 
-		// Run the game.
+		// Run the game method for the first time, then graphics engine draw() takes over @60hz.
 		startGame();
 	}
 
-	private void startGame() {
+	public void startGame() {
 		System.out.println("Running the game...");
 		// run game, draw score, zoom etc. if starting/resuming the game
 		if (gameState == IN_GAME) {
 			// Delay to start the game after the window is drawn.
-			try {
+		/*	try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}
+			}*/
 
-			Camera.smoothZoom(100);
+			//Camera.smoothZoom(100);
 
-			while (true) {
+			//while (true) {
 				// Thread.sleep(1);
 				// Checks if the balls have ludicrous speed.
 				gameState = IN_GAME;
-				try {
+				/*try {
 					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
-				}
+				}*/
 				synchronized (items) {
 					// Remove items that are set to be removed
 					for (GameItem item : itemsToRemove) {
@@ -169,7 +169,7 @@ public class GameEngine {
 				}
 			}
 		}
-	}
+	//}
 
 	public void ballOut(Player losingPlayer, Ball ball) {
 

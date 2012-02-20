@@ -79,6 +79,8 @@ public class GraphicsEngine implements GLEventListener {
 
 	@Override
 	public void display(GLAutoDrawable gLDrawable) {
+		//calculate physics, item positions etc. before drawing them
+		ge.startGame();
 		GL2 gl = gLDrawable.getGL().getGL2();
 		// Items to be drawn
 		List<GameItem> items = ge.getGameItems();
