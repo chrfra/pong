@@ -52,7 +52,7 @@ public class GameEngine {
 
 	public GameEngine() {
 	}
-
+	//create the game engine, initiate game
 	public static void main(String[] args) {
 		GameEngine ge = new GameEngine();
 		ge.initApplication();

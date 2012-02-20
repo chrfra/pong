@@ -36,6 +36,7 @@ public class Renderer {
 	private Texture spacetexture;
 	private Texture paddletexture;
 	private Texture washedtexture;
+	//textrenderer is global, and will be  overwritten each time a 2d or cube text is rendered, good?
 	private TextRenderer textrenderer;
 	private float textScaleFactor;
 
@@ -117,9 +118,7 @@ public class Renderer {
 		glu.gluQuadricDrawStyle(ball, GLU.GLU_FILL);
 		glu.gluQuadricNormals(ball, GLU.GLU_FLAT);
 		glu.gluQuadricOrientation(ball, GLU.GLU_OUTSIDE);
-		final int slices = 16;
-		final int stacks = 16;
-		glu.gluSphere(ball, r, slices, stacks);
+		glu.gluSphere(ball, r, SLICES, STACKS);
 		glu.gluDeleteQuadric(ball);
 
 		gl.glDisable(GL.GL_TEXTURE_2D);
@@ -297,6 +296,7 @@ public class Renderer {
 	 * The text is draw depending on the position it gets from the call (x, y)
 	 */
 	public void render2DText(GLAutoDrawable drawable, int x, int y, String text){
+		textrenderer = new TextRenderer(new Font("SansSerif", Font.PLAIN, 72));
 		textrenderer.beginRendering(drawable.getHeight(),drawable.getWidth());
 
 		// optionally set the color
