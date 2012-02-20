@@ -129,6 +129,7 @@ public class GameEngine {
 	private void startGame() {
 		System.out.println("Running the game...");
 		// run game, draw score, zoom etc. if starting/resuming the game
+
 		if (gameState == IN_GAME) {
 			// Delay to start the game after the window is drawn.
 			try {
@@ -163,6 +164,9 @@ public class GameEngine {
 					}
 					itemsToAdd.clear();
 					
+					//get mousepointer position on canvas, move the player controlled paddle
+					paddle1.moveItem(mouse.getxPos(),mouse.getyPos());
+					//restrict maximum ball speed by lineardampening it over a certain speed
 					checkBallSpeed();
 					physics.update();
 					updatePos();
@@ -339,7 +343,7 @@ public class GameEngine {
 	 */
 	public void createControlListeners(GLAutoDrawable glDrawable) {
 		// create mouse listener and connect it to the moveableItem to be controlled
-		mouse = new MouseInput(paddle1);
+		mouse = new MouseInput(this);
 		((Component) glDrawable).addMouseMotionListener(mouse);
 		((Component) glDrawable).addMouseListener(mouse);
 
