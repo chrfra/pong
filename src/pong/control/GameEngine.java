@@ -52,7 +52,7 @@ public class GameEngine {
 
 	public GameEngine() {
 	}
-	//create the game engine, initiate game
+
 	public static void main(String[] args) {
 		GameEngine ge = new GameEngine();
 		ge.initApplication();
@@ -101,9 +101,8 @@ public class GameEngine {
 		player2.addGoal(goal2);
 		addItemToGame(paddle2);
 
-		//create the menu cube, add the options (strings) to print on each side (performed in constructor)
-		menu = new MenuCube(0,0,MENU_ZPOS,MENU_SIZE,MENU_SIZE,MENU_SIZE);
-		
+		// create the menu cube
+		initCube();
 
 		// add ball to game
 		addItemToGame(mainBall = new Ball(BALL_DEFAULT_XPOS, BALL_DEFAULT_YPOS,
@@ -122,32 +121,33 @@ public class GameEngine {
 		// Add listeners for the new paddleobjects.
 		createControlListeners(ge.getDrawable());
 
-		// Run the game method for the first time, then graphics engine draw() takes over @60hz.
+		// Run the game.
 		startGame();
 	}
 
-	public void startGame() {
+	private void startGame() {
 		System.out.println("Running the game...");
 		// run game, draw score, zoom etc. if starting/resuming the game
+
 		if (gameState == IN_GAME) {
 			// Delay to start the game after the window is drawn.
-		/*	try {
+			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}*/
+			}
 
-			//Camera.smoothZoom(100);
+			Camera.smoothZoom(100);
 
-			//while (true) {
+			while (true) {
 				// Thread.sleep(1);
 				// Checks if the balls have ludicrous speed.
 				gameState = IN_GAME;
-				/*try {
+				try {
 					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
-				}*/
+				}
 				synchronized (items) {
 					// Remove items that are set to be removed
 					for (GameItem item : itemsToRemove) {
@@ -160,6 +160,9 @@ public class GameEngine {
 					}
 					itemsToAdd.clear();
 					
+					//get mousepointer position on canvas, move the player controlled paddle
+					paddle1.moveItem(mouse.getxPos(),mouse.getyPos());
+					//restrict maximum ball speed by lineardampening it over a certain speed
 					checkBallSpeed();
 					physics.update();
 					updatePos();
@@ -169,7 +172,7 @@ public class GameEngine {
 				}
 			}
 		}
-	//}
+	}
 
 	public void ballOut(Player losingPlayer, Ball ball) {
 
@@ -294,6 +297,41 @@ public class GameEngine {
 
 	}
 
+	/*
+	 * creates the menu cube, adds the options (strings) to print on each side
+	 */
+	private void initCube() {
+		menu = new MenuCube(0, 0, MENU_ZPOS, MENU_SIZE, MENU_SIZE, MENU_SIZE);
+		// add the options to be shown on the menu cube's sides
+		ArrayList<ArrayList<String>> options = new ArrayList<ArrayList<String>>();
+
+		ArrayList<String> topOptions = new ArrayList<String>();
+		topOptions.add("Top");
+		options.add(topOptions);
+
+		ArrayList<String> frontOptions = new ArrayList<String>();
+		frontOptions.add("Front");
+		options.add(frontOptions);
+
+		ArrayList<String> rightOptions = new ArrayList<String>();
+		rightOptions.add("Right");
+		options.add(rightOptions);
+
+		ArrayList<String> backOptions = new ArrayList<String>();
+		backOptions.add("Back");
+		options.add(backOptions);
+
+		ArrayList<String> leftOptions = new ArrayList<String>();
+		leftOptions.add("Left");
+		options.add(leftOptions);
+
+		ArrayList<String> bottomOptions = new ArrayList<String>();
+		bottomOptions.add("Bottom");
+		options.add(bottomOptions);
+
+		menu.setOptions(options);
+
+	}
 
 	/**
 	 * Creates mouse object, adds listeners that control paddles
@@ -302,7 +340,7 @@ public class GameEngine {
 	 */
 	public void createControlListeners(GLAutoDrawable glDrawable) {
 		// create mouse listener and connect it to the moveableItem to be controlled
-		mouse = new MouseInput(paddle1);
+		mouse = new MouseInput(this);
 		((Component) glDrawable).addMouseMotionListener(mouse);
 		((Component) glDrawable).addMouseListener(mouse);
 

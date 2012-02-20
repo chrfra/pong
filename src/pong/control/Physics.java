@@ -42,6 +42,7 @@ public class Physics {
 	// private PolygonDef groundShapeDef;
 
 	Body body;
+
 	public void create(GameEngine ge) {
 		Vec2 gravity = new Vec2(0.0f, 0.0f);
 		float width = Const.GAME_WIDTH;

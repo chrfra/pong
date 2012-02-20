@@ -68,13 +68,4 @@ public class Const {
 	// Default values for Players
 	public static final int DEFAULT_STARTING_SCORE = 0;
 	public static final int DEFAULT_AMOUNT_PLAYER_LIVES = 3;
-	
-	/*
-	 * Rendering constants
-	 */
-	
-	//slices,stacks determine how detailed/smooth the balls will be
-	//2012-02-20: performance is roughly doubled when going from 16,16 to 8,8! 
-	public static final int SLICES = 8;
-	public static final int STACKS = 8;
 }

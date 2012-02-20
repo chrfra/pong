@@ -12,19 +12,17 @@ public class MouseInput implements KeyListener, MouseInputListener{
 	private float xPos, yPos, dx,dy;
 	//updates the moveable item below every time the mouse is moved 
 	//(perhaps faster performance can be achieved if only fetching the mouseX and mouseY when the item is drawn)?
-	private MoveableItem item;
+	private GameEngine ge;
 	
-	public MouseInput(MoveableItem item){
-		this.item = item;
+	public MouseInput(GameEngine ge){
+		this.ge = ge;
 	}
 	@Override
 	public void mouseMoved(MouseEvent arg0) {
 		//arg0.getY() returns the coordinate of the cursor where (x,y) = (0,0) in the top left corner of the object that this listener is registered to, in this case, the glDrawable (our window).
 		//Whereas arg0.getYOnScreen() has (x,y) = (0,0) in the top left corner of the SCREEN (= useless for moving objects on the canvas)
-		yPos = -(float)arg0.getY();
-		xPos = (float)arg0.getX();
-		//move item
-		item.moveItem(xPos,yPos);
+		yPos = (-(float)arg0.getY());
+		xPos = ((float)arg0.getX());
 	}
 	
 
@@ -90,5 +88,10 @@ public class MouseInput implements KeyListener, MouseInputListener{
 
 	public void keyTyped(KeyEvent e) {
 	}
-
+	public float getxPos() {
+		return xPos;
+	}
+	public float getyPos() {
+		return yPos;
+	}
 }
