@@ -26,8 +26,10 @@ public class GameEngine {
 	private Physics physics;
 	// Contains the items in the game. These items will be drawn
 	private List<GameItem> items;
-	// Contains the items to be removed next update.
+	// Contains the items to be removed before next update.
 	private ArrayList<GameItem> itemsToRemove;
+	// Contains the items to be added before next update.
+	private ArrayList<GameItem> itemsToAdd;
 	// Controls a paddle with the mouse
 	private MouseInput mouse;
 	// Listens for commands to do something with the game
@@ -72,6 +74,7 @@ public class GameEngine {
 		System.out.println("Initializing new game...");
 		items = Collections.synchronizedList(new ArrayList<GameItem>());
 		itemsToRemove = new ArrayList<GameItem>();
+		itemsToAdd = new ArrayList<GameItem>();
 		physics = new Physics();
 		// Create the world
 		physics.create(this);
@@ -149,7 +152,13 @@ public class GameEngine {
 					for (GameItem item : itemsToRemove) {
 						removeItemFromGame(item);
 					}
-
+					itemsToRemove.clear();
+					// Add items that are queued up to be added
+					for(GameItem item : itemsToAdd){
+						createObject(item);
+					}
+					itemsToAdd.clear();
+					
 					checkBallSpeed();
 					physics.update();
 					updatePos();
@@ -231,14 +240,18 @@ public class GameEngine {
 		// Increase points with 100
 		winner.setScore(score + 100);
 	}
+	
+	private void createObject(GameItem item){
+		item.setBody(physics.addObject(item));
+		item.getBody().setBullet(true);
+		items.add(item);
+	}
 
 	/**
 	 * USE THIS METHOD IF YOU WANT TO ADD OBJECTS TO THE GAME Paddles, balls, obstacles....
 	 */
 	public void addItemToGame(GameItem item) {
-		item.setBody(physics.addObject(item));
-		item.getBody().setBullet(true);
-		items.add(item);
+		itemsToAdd.add(item);
 	}
 
 	/**
@@ -367,7 +380,7 @@ public class GameEngine {
 	public void exit() {
 		System.exit(0);
 	}
-
+	
 	public List<GameItem> getGameItems() {
 		return items;
 	}
