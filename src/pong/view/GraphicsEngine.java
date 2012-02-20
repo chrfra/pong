@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InvalidClassException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -58,7 +59,6 @@ public class GraphicsEngine implements GLEventListener {
 		this.ge = ge;
 	}
 
-
 	public void setUp() {
 		System.out.println("Setting up the frame...");
 		// First setup of the frame
@@ -80,82 +80,87 @@ public class GraphicsEngine implements GLEventListener {
 	@Override
 	public void display(GLAutoDrawable gLDrawable) {
 		GL2 gl = gLDrawable.getGL().getGL2();
-		//Items to be drawn
-		ArrayList<GameItem> items = ge.getGameItems();
-		//		render.setGl(gl);
+		// Items to be drawn
+		List<GameItem> items = ge.getGameItems();
+
+		// render.setGl(gl);
 
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
 
-
-
-		//Uses the cameras position and direction
-		glu.gluLookAt(cam.getPosition()[0], cam.getPosition()[1], cam.getPosition()[2], cam.getLookPoint()[0], cam.getLookPoint()[1], cam.getLookPoint()[2], 0.0, 1.0, 0.0);
-
+		// Uses the cameras position and direction
+		glu.gluLookAt(cam.getPosition()[0], cam.getPosition()[1],
+				cam.getPosition()[2], cam.getLookPoint()[0],
+				cam.getLookPoint()[1], cam.getLookPoint()[2], 0.0, 1.0, 0.0);
 
 		gl.glPushMatrix();
 		render.drawBackground(gl);
 		gl.glPopMatrix();
 
-		//check gameState to determine whether to zoom out and draw menu or to draw the game 
-		if(ge.getGameState() == IN_MENU){
-			
-			//render the Menu Cube
+		// check gameState to determine whether to zoom out and draw menu or to draw the game
+		if (ge.getGameState() == IN_MENU) {
+
+			// render the Menu Cube
 			render.drawMenu(drawable, ge.getMenu());
-			
+
 		}
-		//game has started/resumed, draw all game related components
-		else if(ge.getGameState() == IN_GAME){
+		// game has started/resumed, draw all game related components
+		else if (ge.getGameState() == IN_GAME) {
 			// IMPORTANT! PopMatrix() resets glTranslatef and glRotatef to what it was before the previous PushMatrix()
-			
+
 			gl.glPushMatrix();
 			render.drawGamearea(gl);
 			gl.glPopMatrix();
 
-
 			gl.glPushMatrix();
-			// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350) 
-			//render.render2DText(drawable, SCREEN_WIDTH-1100, SCREEN_HEIGHT-950, "Player 1: " + ge.getPlayer1().getScore() + " Lives: " + ge.getPlayer1().getLives());
-			//render.render2DText(drawable, SCREEN_WIDTH-800, SCREEN_HEIGHT-950, "Player 2: " + ge.getPlayer2().getScore() + " Lives: " + ge.getPlayer2().getLives());
-			//render.render3DText(drawable, SCREEN_WIDTH-800, SCREEN_HEIGHT-950, "Player 2: " + ge.getPlayer2().getScore() + " Lives: " + ge.getPlayer2().getLives());
-			
-			//render.render3DText(drawable, 0, 0, "START");
+			// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350)
+			// render.render2DText(drawable, SCREEN_WIDTH-1100, SCREEN_HEIGHT-950, "Player 1: " +
+			// ge.getPlayer1().getScore() + " Lives: " + ge.getPlayer1().getLives());
+			// render.render2DText(drawable, SCREEN_WIDTH-800, SCREEN_HEIGHT-950, "Player 2: " +
+			// ge.getPlayer2().getScore() + " Lives: " + ge.getPlayer2().getLives());
+			// render.render3DText(drawable, SCREEN_WIDTH-800, SCREEN_HEIGHT-950, "Player 2: " +
+			// ge.getPlayer2().getScore() + " Lives: " + ge.getPlayer2().getLives());
+
+			// render.render3DText(drawable, 0, 0, "START");
 			gl.glPopMatrix();
 
 			// Draw paddles, ball etc
 			try {
-				for(GameItem item : items){
-					gl.glPushMatrix();
-					if(item.getType().equals("PADDLE")){
-						render.draw3DRectangle(gl, item);
-					}else if(item.getType().equals("BALL")){
-						render.drawBall(gl, item);
+				synchronized (items) {
+					items = ge.getGameItems();
+
+					for (GameItem item : items) {
+						gl.glPushMatrix();
+						if (item.getType().equals("PADDLE")) {
+							render.draw3DRectangle(gl, item);
+						} else if (item.getType().equals("BALL")) {
+							render.drawBall(gl, item);
+						}
+						gl.glPopMatrix();
 					}
-					gl.glPopMatrix();
 				}
 				gl.glPushMatrix();
 				// Render a string on screen
-				//render.renderStrokeString(gl, GLUT.STROKE_MONO_ROMAN, "Hej"); 
+				// render.renderStrokeString(gl, GLUT.STROKE_MONO_ROMAN, "Hej");
 				gl.glPopMatrix();
-
 
 			} catch (InvalidClassException e) {
 				e.printStackTrace();
 			}
 		}
-		//game has ended, print score
-//		else if(ge.getGameState() == GAME_ENDED){
-//			if(ge.getPlayer1().getLives() > ge.getPlayer2().getLives()){
-//				render.render2DText(drawable, -100, 30, "Player 1 WINS!!");
-//				render.render2DText(drawable, -100, 0, "Score: " + ge.getPlayer1().getScore());
-//			}
-//			else{
-//				render.render2DText(drawable, -100, 30, "Player 2 WINS!!");
-//				render.render2DText(drawable, -100, 0, "Score: " + ge.getPlayer2().getScore());
-//			}
-//			render.render2DText(drawable, -100, -30, "New Game coming up...");
-//		}
+		// game has ended, print score
+		// else if(ge.getGameState() == GAME_ENDED){
+		// if(ge.getPlayer1().getLives() > ge.getPlayer2().getLives()){
+		// render.render2DText(drawable, -100, 30, "Player 1 WINS!!");
+		// render.render2DText(drawable, -100, 0, "Score: " + ge.getPlayer1().getScore());
+		// }
+		// else{
+		// render.render2DText(drawable, -100, 30, "Player 2 WINS!!");
+		// render.render2DText(drawable, -100, 0, "Score: " + ge.getPlayer2().getScore());
+		// }
+		// render.render2DText(drawable, -100, -30, "New Game coming up...");
+		// }
 
 	}
 
@@ -182,9 +187,9 @@ public class GraphicsEngine implements GLEventListener {
 
 		// Prepare light parameters.
 		float SHINE_ALL_DIRECTIONS = 1;
-		float[] lightPos = {20, 0, 0, SHINE_ALL_DIRECTIONS};
-		float[] lightColorAmbient = {0.2f, 0.2f, 0.2f, 1f};
-		float[] lightColorSpecular = {0.8f, 0.8f, 0.8f, 1f};
+		float[] lightPos = { 20, 0, 0, SHINE_ALL_DIRECTIONS };
+		float[] lightColorAmbient = { 0.2f, 0.2f, 0.2f, 1f };
+		float[] lightColorSpecular = { 0.8f, 0.8f, 0.8f, 1f };
 
 		// Set light parameters.
 		gl.glLightfv(GL2.GL_LIGHT1, GL2.GL_POSITION, lightPos, 0);
@@ -196,7 +201,7 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glEnable(GL2.GL_LIGHTING);
 
 		// Set material properties.
-		float[] rgba = {1f, 1f, 1f};
+		float[] rgba = { 1f, 1f, 1f };
 		gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_AMBIENT, rgba, 0);
 		gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, rgba, 0);
 		gl.glMaterialf(GL2.GL_FRONT, GL2.GL_SHININESS, 0.5f);
@@ -210,7 +215,8 @@ public class GraphicsEngine implements GLEventListener {
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable gLDrawable, int x, int y, int width, int height) {
+	public void reshape(GLAutoDrawable gLDrawable, int x, int y, int width,
+			int height) {
 		GL2 gl = gLDrawable.getGL().getGL2();
 		if (height <= 0) {
 			height = 1;
@@ -230,6 +236,7 @@ public class GraphicsEngine implements GLEventListener {
 		frame.dispose();
 		System.exit(0);
 	}
+
 	public GLAutoDrawable getDrawable() {
 		return drawable;
 	}
