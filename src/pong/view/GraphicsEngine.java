@@ -115,12 +115,10 @@ public class GraphicsEngine implements GLEventListener {
 
 			gl.glPushMatrix();
 			// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350)
-			// render.render2DText(drawable, SCREEN_WIDTH-1100, SCREEN_HEIGHT-950, "Player 1: " +
-			// ge.getPlayer1().getScore() + " Lives: " + ge.getPlayer1().getLives());
-			// render.render2DText(drawable, SCREEN_WIDTH-800, SCREEN_HEIGHT-950, "Player 2: " +
-			// ge.getPlayer2().getScore() + " Lives: " + ge.getPlayer2().getLives());
-			// render.render3DText(drawable, SCREEN_WIDTH-800, SCREEN_HEIGHT-950, "Player 2: " +
-			// ge.getPlayer2().getScore() + " Lives: " + ge.getPlayer2().getLives());
+			 render.render2DText(SCREEN_WIDTH-860, SCREEN_HEIGHT-645, "Player 1: " +
+			 ge.getPlayer1().getScore() + " Lives: " + ge.getPlayer1().getLives(), gl);
+			 render.render2DText(SCREEN_WIDTH-800, SCREEN_HEIGHT-645, "Player 2: " +
+			 ge.getPlayer2().getScore() + " Lives: " + ge.getPlayer2().getLives(), gl);
 
 			// render.render3DText(drawable, 0, 0, "START");
 			gl.glPopMatrix();
@@ -150,17 +148,17 @@ public class GraphicsEngine implements GLEventListener {
 			}
 		}
 		// game has ended, print score
-		// else if(ge.getGameState() == GAME_ENDED){
-		// if(ge.getPlayer1().getLives() > ge.getPlayer2().getLives()){
-		// render.render2DText(drawable, -100, 30, "Player 1 WINS!!");
-		// render.render2DText(drawable, -100, 0, "Score: " + ge.getPlayer1().getScore());
-		// }
-		// else{
-		// render.render2DText(drawable, -100, 30, "Player 2 WINS!!");
-		// render.render2DText(drawable, -100, 0, "Score: " + ge.getPlayer2().getScore());
-		// }
-		// render.render2DText(drawable, -100, -30, "New Game coming up...");
-		// }
+		 else if(ge.getGameState() == GAME_ENDED){
+		 if(ge.getPlayer1().getLives() > ge.getPlayer2().getLives()){
+		 render.render2DText(-30, 0, "Player 1 WINS!!", gl);
+		 render.render2DText(-30, -5, "Score: " + ge.getPlayer1().getScore(), gl);
+		 }
+		 else{
+		 render.render2DText(-30, 0, "Player 2 WINS!!", gl);
+		 render.render2DText(-30, -5, "Score: " + ge.getPlayer2().getScore(), gl);
+		 }
+		 render.render2DText(-30, -10, "New Game coming up...", gl);
+		 }
 
 	}
 

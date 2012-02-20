@@ -296,15 +296,17 @@ public class Renderer {
 	 * Draws a string in 2D, is much nicer and can be customized in the init() method to set font and size
 	 * The text is draw depending on the position it gets from the call (x, y)
 	 */
-	public void render2DText(GLAutoDrawable drawable, int x, int y, String text){
-		textrenderer.beginRendering(drawable.getHeight(),drawable.getWidth());
-
-		// optionally set the color
-		textrenderer.setColor(1.0f, 1.0f, 0.0f, 0.8f);
-		textrenderer.draw(text, SCREEN_HEIGHT/2+x,SCREEN_WIDTH/2+y);
-
-		// ... more draw commands, color changes, etc.
-		textrenderer.endRendering();
+	public void render2DText(int x, int y, String text, GL2 gl){
+		
+		GLUT glut = new GLUT();
+		
+		// screen in an 18-point Helvetica font
+		gl.glRasterPos2i(x, y);
+		//gl.glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
+		gl.glColor4f( 1f, 0.1f, 0.2f, .5f );
+	    gl.glTranslatef(0, 0, 0);
+	    //gl.glColor3f(1, 0, 0);
+		glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, text);
 	}
 
 	public void render3DText(GLAutoDrawable drawable, int x, int y, String text){
