@@ -22,7 +22,10 @@ public class MoveableItem extends GameItem{
 		if(Math.abs(normalizedY) <= Const.MOUSE_DEADZONE)
 			normalizedY=0;
 		//apply force to object
-		body.setLinearVelocity(new Vec2( normalizedX , -normalizedY));
+		if(body != null){
+			body.setLinearVelocity(new Vec2( normalizedX , -normalizedY));
+		}
+		
 	}
 	
 	//maps a value in one given range to another given range

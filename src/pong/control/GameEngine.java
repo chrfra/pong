@@ -107,6 +107,7 @@ public class GameEngine {
 		// add ball to game
 		addItemToGame(mainBall = new Ball(BALL_DEFAULT_XPOS, BALL_DEFAULT_YPOS,
 				0, Const.BALL_RADIUS));
+		resetGame=false;
 
 		// Adds the goals to physics simulation
 		physics.addWall(goal1);
@@ -149,6 +150,9 @@ public class GameEngine {
 					e.printStackTrace();
 				}
 				synchronized (items) {
+					if (resetGame == true) {
+						resetBall();
+					}
 					// Remove items that are set to be removed
 					for (GameItem item : itemsToRemove) {
 						removeItemFromGame(item);
@@ -166,9 +170,6 @@ public class GameEngine {
 					checkBallSpeed();
 					physics.update();
 					updatePos();
-					if (resetGame == true) {
-						resetBall();
-					}
 				}
 			}
 		}
