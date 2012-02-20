@@ -1,5 +1,8 @@
 package pong.model;
 
+import static pong.model.Const.MENU_SIZE;
+import static pong.model.Const.MENU_ZPOS;
+
 import java.util.ArrayList;
 
 import org.jbox2d.dynamics.Body;
@@ -71,6 +74,40 @@ public class MenuCube {
 		this.width = width;
 		this.depth = depth;
 		options = new ArrayList<ArrayList<String>>();
+		this.initCube();
+	}
+	
+	private void initCube(){
+		//add the options to be shown on the menu cube's sides
+		ArrayList<ArrayList<String>> options = new ArrayList<ArrayList<String>>();
+		
+		//Add the options  (strings) to be printed on each side of the cube
+		ArrayList<String> topOptions = new ArrayList<String>();
+		topOptions.add("Top");
+		options.add(topOptions);
+		
+		ArrayList<String> frontOptions = new ArrayList<String>();
+		frontOptions.add("Front");
+		options.add(frontOptions);
+		
+		ArrayList<String> rightOptions = new ArrayList<String>();
+		rightOptions.add("Right");
+		options.add(rightOptions);
+		
+		ArrayList<String> backOptions = new ArrayList<String>();
+		backOptions.add("Back");
+		options.add(backOptions);
+		
+		ArrayList<String> leftOptions = new ArrayList<String>();
+		leftOptions.add("Left");
+		options.add(leftOptions);
+		
+		ArrayList<String> bottomOptions = new ArrayList<String>();
+		bottomOptions.add("Bottom");
+		options.add(bottomOptions);
+		
+		setOptions(options);
+		
 	}
 
 	public ArrayList<ArrayList<String>> getOptions() {

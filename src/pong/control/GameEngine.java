@@ -8,12 +8,14 @@ import java.util.Map;
 import java.util.Random;
 //static import below enables us to write x == IN_MENU instead of x == Const.IN_MENU
 import static pong.model.Const.*;
+
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
+import org.box2d.proto.Box2D;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
@@ -90,8 +92,9 @@ public class GameEngine {
 		player2.addGoal(goal2);
 		addItemToGame(paddle2);
 
-		//create the menu cube
-		initCube();
+		//create the menu cube, add the options (strings) to print on each side (performed in constructor)
+		menu = new MenuCube(0,0,MENU_ZPOS,MENU_SIZE,MENU_SIZE,MENU_SIZE);
+		
 		
 		//add ball to game
 		addItemToGame(mainBall = new Ball(BALL_DEFAULT_XPOS, BALL_DEFAULT_YPOS, 0, Const.BALL_RADIUS));
@@ -267,42 +270,7 @@ public class GameEngine {
 		}
 		
 	}
-	
-	/*
-	 * creates the menu cube, adds the options (strings) to print on each side
-	 */
-	private void initCube(){
-		menu = new MenuCube(0,0,MENU_ZPOS,MENU_SIZE,MENU_SIZE,MENU_SIZE);
-		//add the options to be shown on the menu cube's sides
-		ArrayList<ArrayList<String>> options = new ArrayList<ArrayList<String>>();
-		
-		ArrayList<String> topOptions = new ArrayList<String>();
-		topOptions.add("Top");
-		options.add(topOptions);
-		
-		ArrayList<String> frontOptions = new ArrayList<String>();
-		frontOptions.add("Front");
-		options.add(frontOptions);
-		
-		ArrayList<String> rightOptions = new ArrayList<String>();
-		rightOptions.add("Right");
-		options.add(rightOptions);
-		
-		ArrayList<String> backOptions = new ArrayList<String>();
-		backOptions.add("Back");
-		options.add(backOptions);
-		
-		ArrayList<String> leftOptions = new ArrayList<String>();
-		leftOptions.add("Left");
-		options.add(leftOptions);
-		
-		ArrayList<String> bottomOptions = new ArrayList<String>();
-		bottomOptions.add("Bottom");
-		options.add(bottomOptions);
-		
-		menu.setOptions(options);
-		
-	}
+
 	/**
 	 * Creates mouse object, adds listeners that control paddles
 	 * @param glDrawable
