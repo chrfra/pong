@@ -24,6 +24,8 @@ public class GameEngine {
 	private Physics physics;
 	// Contains the items in the game. These items will be drawn
 	private ArrayList<GameItem> items;
+	// Contains the items to be removed next update.
+	private ArrayList<GameItem> itemsToRemove;
 	//Controls a paddle with the mouse
 	private MouseInput mouse;
 	//Listens for commands to do something with the game
@@ -67,6 +69,7 @@ public class GameEngine {
 
 		System.out.println("Initializing new game...");
 		items = new ArrayList<GameItem>();
+		itemsToRemove = new ArrayList<GameItem>();
 		physics = new Physics();
 		//Create the world
 		physics.create(this);
@@ -130,6 +133,11 @@ public class GameEngine {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				//Remove items that are set to be removed
+				for(GameItem item : itemsToRemove){
+					removeItemFromGame(item);
+				}
+				
 				checkBallSpeed();
 				physics.update();
 				updatePos();
@@ -146,7 +154,7 @@ public class GameEngine {
 		if (ball == mainBall) {
 			resetGame=true;
 		} else {
-			this.removeItemFromGame(ball);
+			itemsToRemove.add(ball);
 		}
 
 		Player winner = new Player("", null);
