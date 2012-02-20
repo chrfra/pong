@@ -148,6 +148,9 @@ public class GameEngine {
 					e.printStackTrace();
 				}
 				synchronized (items) {
+					if (resetGame == true) {
+						resetBall();
+					}
 					// Remove items that are set to be removed
 					for (GameItem item : itemsToRemove) {
 						removeItemFromGame(item);
@@ -162,9 +165,6 @@ public class GameEngine {
 					checkBallSpeed();
 					physics.update();
 					updatePos();
-					if (resetGame == true) {
-						resetBall();
-					}
 				}
 			}
 		}
