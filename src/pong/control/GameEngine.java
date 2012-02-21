@@ -199,14 +199,14 @@ public class GameEngine {
 		if (losingPlayer.getLives() < 1) {
 			
 			gameState = GAME_ENDED;
-			PlayMp3.playNow("win.mp3");
+			SoundPlayer.playMP3("win.mp3");
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			initNewGame();
-			PlayMp3.stopMp3();
+			SoundPlayer.stopMp3();
 		}
 
 	}
@@ -357,31 +357,6 @@ public class GameEngine {
 	public void createCommandListener(GLAutoDrawable glDrawable) {
 		cmdInput = new CommandInput(this);
 		((Component) glDrawable).addKeyListener(cmdInput);
-	}
-
-	/**
-	 * Play sound testing http://www.soundbyter.com/2011/04/free-sci-fi-tone-sound-effect/ blip sound source
-	 * 
-	 * @param Takes
-	 *            in a filename for the sound to be played, plays it in a own thread
-	 */
-	public synchronized void playSound(final String url) {
-		new Thread(new Runnable() { // the wrapper thread is unnecessary, unless it blocks on the Clip finishing, see
-					// comments
-					public void run() {
-						try {
-							Clip clip = AudioSystem.getClip();
-							AudioInputStream inputStream = AudioSystem
-									.getAudioInputStream(getClass()
-											.getResourceAsStream(
-													"/resource/" + url));
-							clip.open(inputStream);
-							clip.start();
-						} catch (Exception e) {
-							System.err.println(e.getMessage());
-						}
-					}
-				}).start();
 	}
 
 	public void exit() {

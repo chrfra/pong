@@ -35,7 +35,7 @@ public class HitDetection implements ContactListener {
 
 	private void ballHitPaddle(GameItem item1, GameItem item2) {
 		// Play sound effect when a ball hits a paddle
-		ge.playSound("blip.wav");
+		SoundPlayer.playWav("blip.wav");
 	}
 
 	private void ballHitWall(GameItem item1, GameItem item2){
@@ -61,7 +61,7 @@ public class HitDetection implements ContactListener {
 		}
 		else if( !(player.getGoals().contains(wall)) && !(ge.getPlayer1().getGoals().contains(wall)) ){
 			// Regular wall has been hit, play wallsound
-			ge.playSound("wallsound2.wav");
+			SoundPlayer.playWav("wallsound2.wav");
 		}
 	}
 	
