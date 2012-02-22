@@ -5,8 +5,12 @@ import static pong.model.Const.IN_GAME;
 import static pong.model.Const.IN_MENU;
 import static pong.model.Const.SCREEN_HEIGHT;
 import static pong.model.Const.SCREEN_WIDTH;
+import static pong.model.Const.RY_SPEED;
+import static pong.model.Const.VSYNC;
 
+import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.InvalidClassException;
@@ -55,6 +59,12 @@ public class GraphicsEngine implements GLEventListener {
 		render = new Renderer(glu);
 		frame.add(canvas);
 		frame.setSize(Const.SCREEN_WIDTH, Const.SCREEN_HEIGHT);
+		
+		//spawn window in the center of the screen
+		Toolkit toolkit =  Toolkit.getDefaultToolkit ();
+		Dimension dim = toolkit.getScreenSize();
+		frame.setLocation(dim.width / 2 - SCREEN_WIDTH / 2, dim.height / 2 - SCREEN_HEIGHT / 2);
+		
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				exit();
@@ -233,7 +243,6 @@ public class GraphicsEngine implements GLEventListener {
 		if (height <= 0) {
 			height = 1;
 		}
-
 		float h = (float) width / (float) height;
 		gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 		gl.glLoadIdentity();
