@@ -178,6 +178,9 @@ public class GameEngine {
 	public void ballOut(Player losingPlayer, Ball ball) {
 
 		// Resets the ball to the center if the ball is the mainball. All other balls are deleted.
+		
+		SoundPlayer.playMP3("ballout.mp3");
+		
 		if (ball == mainBall) {
 			resetGame = true;
 		} else {
