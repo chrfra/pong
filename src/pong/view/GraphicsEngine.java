@@ -29,8 +29,10 @@ import javax.media.opengl.glu.GLU;
 import pong.control.GameEngine;
 import pong.model.Const;
 import pong.model.GameItem;
+import pong.model.MenuCube;
 
 import com.jogamp.opengl.util.Animator;
+import com.jogamp.opengl.util.FPSAnimator;
 import com.jogamp.opengl.util.gl2.GLUT;
 
 public class GraphicsEngine implements GLEventListener {
@@ -43,11 +45,11 @@ public class GraphicsEngine implements GLEventListener {
 	private GLAutoDrawable drawable;
 	private Camera cam = new Camera();
 	//x,y,z rotation (degrees) to rotate the menu cube and the speed at which to do so
-	float rx,ry,rz,rotationSpeed;
+	float rotationSpeed;
 
 	// animator drives display method in a loop
 	private static Animator animator = new Animator(canvas);
-
+	//private static FPSAnimator animator= new FPSAnimator(60);
 	public GraphicsEngine(GameEngine ge) {
 		this.ge = ge;
 	}
@@ -75,7 +77,6 @@ public class GraphicsEngine implements GLEventListener {
 		animator.start();
 		canvas.requestFocus();
 		//initiate menu rotation angles = 0
-		rx = ry = rz = 0;
 		rotationSpeed = RY_SPEED;
 	}
 
@@ -84,6 +85,7 @@ public class GraphicsEngine implements GLEventListener {
 		GL2 gl = gLDrawable.getGL().getGL2();
 		// Items to be drawn
 		List<GameItem> items = ge.getGameItems();
+		MenuCube menu = ge.getMenu();	//will be using the menu object a lot, store reference to it in "menu" variable
 
 		// render.setGl(gl);
 
@@ -102,10 +104,11 @@ public class GraphicsEngine implements GLEventListener {
 
 		// check gameState to determine whether to zoom out and draw menu or to draw the game
 		if (ge.getGameState() == IN_MENU) {
-
+			
 			// render the Menu Cube
-			render.drawMenu(drawable, ge.getMenu(),rx,ry,rz);
-			ry = calculateRotation(ry, rotationSpeed);
+			render.drawMenu(drawable,menu,menu.getRx(),menu.getRy(),menu.getRz());
+			//spin menu (if it is supposed to spin)
+			ge.getMenu().setRy(calculateRotation(menu.getRy(), rotationSpeed));
 
 		}
 		// game has started/resumed, draw all game related components
@@ -222,14 +225,17 @@ public class GraphicsEngine implements GLEventListener {
  */
 	public float calculateRotation(float rotation, float speed){
 		
-		rotation = (rotation + speed) % 360;	//rotate on y axis 0-360 degrees
-		if (speed > 0)		//rotationSpeed can't be negative! (object would rotate backwards)
+		if (speed > 0){		//rotationSpeed can't be negative! (object would rotate backwards)
+			rotation = (rotation + speed) % 360;	//rotate on y axis 0-360 degrees
 			speed -= 0.2;
-		else{ 				//rotation speed < 0, set to 0, 
+		}
+		else{ 				//rotation speed < 0, set it to 0, 
 			speed = 0; 
 			if(Math.round(rotation) != 0){	//rotate the object to original orientation
-				rotation+=0.9;
+				rotation = (rotation + 1.9f) % 360 ;
 			}	
+
+			System.out.println(Math.round(rotation) );
 		}
 		this.rotationSpeed = speed;
 		return rotation;

@@ -8,8 +8,9 @@ public class MenuCube {
 	private float zPos;
 	private float height;
 	private float width;
+	private float rx,ry,rz; //the cube's rotation in x,y,z in degrees
 	//two dimensional list holding the menu options, 
-	//first list holds the list of all strings for each side of the menu
+	//first list holds the lists of strings for each side of the menu
 	private ArrayList<ArrayList<String>> options;
 	public float getxPos() {
 		return xPos;
@@ -69,6 +70,31 @@ public class MenuCube {
 		this.width = width;
 		this.depth = depth;
 		options = new ArrayList<ArrayList<String>>();
+		rx = ry = rz = 0;	//the rotation of the cube is initiated as 0,0,0
+	}
+
+	public float getRx() {
+		return rx;
+	}
+
+	public void setRx(float rx) {
+		this.rx = rx;
+	}
+
+	public float getRy() {
+		return ry;
+	}
+
+	public void setRy(float ry) {
+		this.ry = ry;
+	}
+
+	public float getRz() {
+		return rz;
+	}
+
+	public void setRz(float rz) {
+		this.rz = rz;
 	}
 
 	public ArrayList<ArrayList<String>> getOptions() {
