@@ -9,6 +9,7 @@ import static pong.model.Const.RY_SPEED;
 import static pong.model.Const.VSYNC;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -46,6 +47,8 @@ public class GraphicsEngine implements GLEventListener {
 	private Camera cam = new Camera();
 	//x,y,z rotation (degrees) to rotate the menu cube and the speed at which to do so
 	float rotationSpeed;
+	//Dimension of the frame
+	private int frameWidth, frameHeight;
 
 	// animator drives display method in a loop
 	private static Animator animator = new Animator(canvas);
@@ -101,6 +104,9 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glPushMatrix();
 		render.drawBackground(gl);
 		gl.glPopMatrix();
+		
+		//Write updates per second and sleeptime
+		render.renderTextAtPixels(0, frameHeight-12, frameWidth, frameHeight, "Updates per second: "+ge.getFps()+" Sleeptime: " + ge.getSleepTime()+"ms",new Font("font", Font.PLAIN, 12));
 
 		// check gameState to determine whether to zoom out and draw menu or to draw the game
 		if (ge.getGameState() == IN_MENU) {
@@ -246,6 +252,8 @@ public class GraphicsEngine implements GLEventListener {
 	public void reshape(GLAutoDrawable gLDrawable, int x, int y, int width,
 			int height) {
 		GL2 gl = gLDrawable.getGL().getGL2();
+		frameWidth = width;
+		frameHeight = height;
 		if (height <= 0) {
 			height = 1;
 		}

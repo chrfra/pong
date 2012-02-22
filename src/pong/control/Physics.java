@@ -173,15 +173,15 @@ public class Physics {
 				//Set random starting velocity
 				if (positiveX) {
 					if (positiveY) {
-						ball.setLinearVelocity(new Vec2(rnd.nextFloat()+0.5f, rnd.nextFloat()+0.5f));
+						ball.setLinearVelocity(new Vec2(rnd.nextFloat()+20f, rnd.nextFloat()+20f));
 					} else {
-						ball.setLinearVelocity(new Vec2(rnd.nextFloat()+0.5f, -rnd.nextFloat()-0.5f));
+						ball.setLinearVelocity(new Vec2(rnd.nextFloat()+20f, -rnd.nextFloat()-20f));
 					}
 				} else {
 					if (positiveY) {
-						ball.setLinearVelocity(new Vec2(-rnd.nextFloat()-0.5f, rnd.nextFloat()+0.5f));
+						ball.setLinearVelocity(new Vec2(-rnd.nextFloat()-20f, rnd.nextFloat()+20f));
 					} else {
-						ball.setLinearVelocity(new Vec2(-rnd.nextFloat()-0.5f, -rnd.nextFloat()-0.5f));
+						ball.setLinearVelocity(new Vec2(-rnd.nextFloat()-20f, -rnd.nextFloat()-20f));
 					}
 				}
 				return ball;

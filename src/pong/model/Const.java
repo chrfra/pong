@@ -6,12 +6,12 @@ public class Const {
 
 	public static final int IN_MENU = 0;
 	public static final int IN_GAME = 1;
-	public static final int STARTUP_STATE = 0;	//starts the game in menu-mode/game-mode
+	public static final int STARTUP_STATE = 1;	//starts the game in menu-mode/game-mode
 	public static final int GAME_ENDED = 3;
 	
 	//input constants
 	public static final float MOUSE_OFFSET = 0.0f;
-	public static final float MOUSE_SENSE = 6f;
+	public static final float MOUSE_SENSE = 40f;
 	public static final float MOUSE_DEADZONE = 0.1f;
 	
 	// For the screen area
@@ -49,7 +49,7 @@ public class Const {
 	public static final float DEFAULT_DPADDLE_ZPOS = 0;
 	
 	// Default values for balls
-	public static final float BALL_MAXSPEED = 2;
+	public static final float BALL_MAXSPEED = 15;
 	public static final float BALL_RADIUS = 1.5f;
 	
 	// Default value for the main ball

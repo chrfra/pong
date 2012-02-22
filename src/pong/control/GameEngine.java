@@ -47,6 +47,13 @@ public class GameEngine {
 	private Paddle paddle2;
 	// The main ball in the game. This ball will never die
 	private Ball mainBall;
+	
+	private double targetFramerate = 60;
+	private double skipTicks = 1000 / targetFramerate;
+	private int fps;
+
+	//Time to sleep in each execution in the game loop
+	long sleepTime;
 
 	private Player player1;
 	private Player player2;
@@ -69,6 +76,7 @@ public class GameEngine {
 		System.out.println("Initializing graphics...");
 		ge = new GraphicsEngine(this);
 		ge.setUp();
+
 
 		initNewGame();
 	}
@@ -137,6 +145,7 @@ public class GameEngine {
 		System.out.println("Running the game...");
 		// run game, draw score, zoom etc. if starting/resuming the game
 
+
 		if (gameState == IN_GAME) {
 			// Delay to start the game after the window is drawn.
 			try {
@@ -146,16 +155,16 @@ public class GameEngine {
 			}
 
 			Camera.smoothZoom(100);
-
+			
+			//Used to calculate FPS
+	        int frames = 0;
+	        long lastTimer1 = System.currentTimeMillis();
+	        
 			while (true) {
-				// Thread.sleep(1);
-				// Checks if the balls have ludicrous speed.
 				gameState = IN_GAME;
-				try {
-					Thread.sleep(1);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+
+				sleepTime = 0;
+				long nextGameTick = getTickCount();
 				synchronized (items) {
 					if (resetGame == true) {
 						resetBall();
@@ -178,6 +187,23 @@ public class GameEngine {
 					physics.update();
 					updatePos();
 				}
+				//Calculate how long to sleep. 
+				nextGameTick += skipTicks;
+				sleepTime = nextGameTick -getTickCount();
+				if( sleepTime >= 0 ) {
+		            try {
+						Thread.sleep( sleepTime );
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+		        }
+				//Calculate FPS
+				frames++;
+	            if (System.currentTimeMillis() - lastTimer1 > 1000) {
+	                lastTimer1 += 1000;
+	                fps = frames;
+	                frames = 0;
+	            }
 			}
 		}
 	}
@@ -368,6 +394,14 @@ public class GameEngine {
 		cmdInput = new CommandInput(this);
 		((Component) glDrawable).addKeyListener(cmdInput);
 	}
+	
+	/**
+	 * returns the time in milliseconds
+	 * @return
+	 */
+	public long getTickCount(){
+		return System.currentTimeMillis();
+	}
 
 	public void exit() {
 		System.exit(0);
@@ -393,4 +427,10 @@ public class GameEngine {
 		return menu;
 	}
 
+	public int getFps() {
+		return fps;
+	}
+	public long getSleepTime() {
+		return sleepTime;
+	}
 }

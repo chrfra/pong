@@ -15,7 +15,7 @@ public class Ball extends MoveableItem {
 		float speed = body.getLinearVelocity().length();
 		
 		if(speed > Const.BALL_MAXSPEED){
-			body.setLinearDamping(0.8f);
+			body.setLinearDamping(10.0f);
 		}else{
 			body.setLinearDamping(0.0f);
 		}

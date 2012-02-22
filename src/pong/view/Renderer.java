@@ -300,6 +300,13 @@ public class Renderer {
 	}
 
 
+	public void renderTextAtPixels(int x, int y, int frameWidth, int frameHeight, String text, Font font){
+		TextRenderer tr = new TextRenderer(font);
+		tr.beginRendering(frameWidth, frameHeight);
+		tr.draw(text, x, y);
+		tr.endRendering();
+	}
+	
 	/**
 	 * Draws a string in 2D, is much nicer and can be customized in the init() method to set font and size
 	 * The text is draw depending on the position it gets from the call (x, y)
