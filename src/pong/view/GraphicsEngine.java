@@ -51,6 +51,8 @@ public class GraphicsEngine implements GLEventListener {
 	private Renderer render;
 	private GLAutoDrawable drawable;
 	private Camera cam = new Camera();
+	//x,y,z rotation (degrees) to rotate the menu cube and the speed at which to do so
+	float rx,ry,rz,rotationSpeed;
 
 	// animator drives display method in a loop
 	private static Animator animator = new Animator(canvas);
@@ -75,6 +77,9 @@ public class GraphicsEngine implements GLEventListener {
 		// starts calling display method
 		animator.start();
 		canvas.requestFocus();
+		//initiate menu rotation angles = 0
+		rx = ry = rz = 0;
+		rotationSpeed = RY_SPEED;
 	}
 
 	@Override
@@ -102,7 +107,8 @@ public class GraphicsEngine implements GLEventListener {
 		if (ge.getGameState() == IN_MENU) {
 
 			// render the Menu Cube
-			render.drawMenu(drawable, ge.getMenu());
+			render.drawMenu(drawable, ge.getMenu(),rx,ry,rz);
+			ry = calculateRotation(ry, rotationSpeed);
 
 		}
 		// game has started/resumed, draw all game related components
@@ -115,10 +121,10 @@ public class GraphicsEngine implements GLEventListener {
 
 			gl.glPushMatrix();
 			// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350)
-			 render.render2DText(SCREEN_WIDTH-860, SCREEN_HEIGHT-645, "Player 1: " +
-			 ge.getPlayer1().getScore() + " Lives: " + ge.getPlayer1().getLives(), gl);
-			 render.render2DText(SCREEN_WIDTH-800, SCREEN_HEIGHT-645, "Player 2: " +
-			 ge.getPlayer2().getScore() + " Lives: " + ge.getPlayer2().getLives(), gl);
+			render.render2DText(SCREEN_WIDTH-860, SCREEN_HEIGHT-645, "Player 1: " +
+					ge.getPlayer1().getScore() + " Lives: " + ge.getPlayer1().getLives(), gl);
+			render.render2DText(SCREEN_WIDTH-800, SCREEN_HEIGHT-645, "Player 2: " +
+					ge.getPlayer2().getScore() + " Lives: " + ge.getPlayer2().getLives(), gl);
 
 			// render.render3DText(drawable, 0, 0, "START");
 			gl.glPopMatrix();
@@ -148,17 +154,17 @@ public class GraphicsEngine implements GLEventListener {
 			}
 		}
 		// game has ended, print score
-		 else if(ge.getGameState() == GAME_ENDED){
-		 if(ge.getPlayer1().getLives() > ge.getPlayer2().getLives()){
-		 render.render2DText(-30, 0, "Player 1 WINS!!", gl);
-		 render.render2DText(-30, -5, "Score: " + ge.getPlayer1().getScore(), gl);
-		 }
-		 else{
-		 render.render2DText(-30, 0, "Player 2 WINS!!", gl);
-		 render.render2DText(-30, -5, "Score: " + ge.getPlayer2().getScore(), gl);
-		 }
-		 render.render2DText(-30, -10, "New Game coming up...", gl);
-		 }
+		else if(ge.getGameState() == GAME_ENDED){
+			if(ge.getPlayer1().getLives() > ge.getPlayer2().getLives()){
+				render.render2DText(-30, 0, "Player 1 WINS!!", gl);
+				render.render2DText(-30, -5, "Score: " + ge.getPlayer1().getScore(), gl);
+			}
+			else{
+				render.render2DText(-30, 0, "Player 2 WINS!!", gl);
+				render.render2DText(-30, -5, "Score: " + ge.getPlayer2().getScore(), gl);
+			}
+			render.render2DText(-30, -10, "New Game coming up...", gl);
+		}
 
 	}
 
@@ -173,8 +179,10 @@ public class GraphicsEngine implements GLEventListener {
 
 		drawable = glDrawable;
 
+
 		// Required Init-functions
 		GL2 gl = glDrawable.getGL().getGL2();
+		gl.setSwapInterval(VSYNC);			//disable/enable v-sync
 		gl.glShadeModel(GLLightingFunc.GL_SMOOTH);
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 		gl.glClearDepth(1.0f);
@@ -209,6 +217,25 @@ public class GraphicsEngine implements GLEventListener {
 
 		// add listeners for keyboard and mouse input
 		ge.createCommandListener(glDrawable);
+
+	}
+
+/*
+ * calculates the menu's rotation to gradually bring the cube from spinning to forward facing
+ */
+	public float calculateRotation(float rotation, float speed){
+		
+		rotation = (rotation + speed) % 360;	//rotate on y axis 0-360 degrees
+		if (speed > 0)		//rotationSpeed can't be negative! (object would rotate backwards)
+			speed -= 0.2;
+		else{ 				//rotation speed < 0, set to 0, 
+			speed = 0; 
+			if(Math.round(rotation) != 0){	//rotate the object to original orientation
+				rotation+=0.9;
+			}	
+		}
+		this.rotationSpeed = speed;
+		return rotation;
 
 	}
 

@@ -323,10 +323,10 @@ public class Renderer {
 
 	/**
 	 * Draws a 3D cube with text on the sides, perhaps integrate this with draw3DRectangle() method?
-	 * @param drawable
+	 * @param drawable menuCube angles x,y,z to rotate
 	 */
 	//draws the menu cube
-	public void drawMenu(GLAutoDrawable drawable, MenuCube menu) {
+	public void drawMenu(GLAutoDrawable drawable, MenuCube menu, float rx, float ry, float rz) {
 
 		//setup the text properties, size etc.
 		setUpText(drawable);
@@ -338,10 +338,13 @@ public class Renderer {
 		/*glu.gluLookAt(0, 0, 2,
 				0, 0, 0,
 				0, 1, 0);*/
+		
 		gl.glTranslatef(menu.getxPos(),menu.getyPos(), menu.getzPos());
-		//rotate the cube
-		gl.glRotatef(30, 1, 0, 0);
-		gl.glRotatef(60, 0, 1, 0);
+		
+		//rotate the cube according to received arguments
+		gl.glRotatef(rx, 1, 0, 0);
+		gl.glRotatef(ry, 0, 1, 0);
+		gl.glRotatef(rz, 0, 1, 0);
 
 		// draw the six faces of the cube
 		// Top face
@@ -435,8 +438,6 @@ public class Renderer {
 		float w = (float) bounds.getWidth();
 		float h = (float) bounds.getHeight();
 		textScaleFactor = 1.0f / (w * 1.1f);
-		//disable v-sync
-		gl.setSwapInterval(0);
 	}
 	
 
