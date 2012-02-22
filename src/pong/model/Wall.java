@@ -27,5 +27,15 @@ public class Wall extends GameItem {
 	}
 
 
+	public float getDepth() {
+		return depth;
+	}
+
+
+	public void setDepth(float depth) {
+		this.depth = depth;
+	}
+
+
 
 }

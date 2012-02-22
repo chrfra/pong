@@ -2,8 +2,6 @@ package pong.model;
 
 import org.jbox2d.common.Vec2;
 
-import pong.control.MouseInput;
-
 public class MoveableItem extends GameItem{
 
 	public MoveableItem(float xPos, float yPos, float zPos, Type type) {

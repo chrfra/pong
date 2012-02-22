@@ -1,6 +1,5 @@
 package pong.model;
 
-import java.util.ArrayList;
 
 public class Paddle extends MoveableItem {
 	

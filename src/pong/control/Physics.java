@@ -1,17 +1,8 @@
 package pong.control;
 
 import java.io.InvalidClassException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
-import java.util.Set;
 
-import javax.swing.JFrame;
-
-import org.jbox2d.collision.AABB;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.collision.shapes.ShapeType;
@@ -22,13 +13,6 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 import org.jbox2d.dynamics.World;
-import org.jbox2d.testbed.framework.TestList;
-import org.jbox2d.testbed.framework.TestbedFrame;
-import org.jbox2d.testbed.framework.TestbedModel;
-import org.jbox2d.testbed.framework.TestbedPanel;
-import org.jbox2d.testbed.framework.TestbedSetting;
-import org.jbox2d.testbed.framework.TestbedSetting.SettingType;
-import org.jbox2d.testbed.framework.j2d.TestPanelJ2D;
 
 import pong.model.Ball;
 import pong.model.Const;

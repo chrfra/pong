@@ -1,5 +1,6 @@
 package pong.control;
 import java.net.URL;
+
 import javax.media.Format;
 import javax.media.GainControl;
 import javax.media.Manager;
@@ -33,9 +34,14 @@ public class SoundPlayer {
 			player.realize();
 			GainControl gc = player.getGainControl();
 			player.start();
-			// Set to max volume
-			gc.setLevel(0.8f);
-
+			
+			// Set to max volume only for win
+			if(url.equals("win.mp3") == true){
+				gc.setLevel(0.8f);
+			}
+			else{
+				gc.setLevel(0.1f);
+			}
 		}
 		catch(Exception ex){
 			ex.printStackTrace();

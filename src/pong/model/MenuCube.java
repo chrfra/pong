@@ -2,8 +2,6 @@ package pong.model;
 
 import java.util.ArrayList;
 
-import org.jbox2d.dynamics.Body;
-
 public class MenuCube {
 	private float xPos;
 	private float yPos;

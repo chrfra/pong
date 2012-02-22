@@ -1,7 +1,9 @@
 package pong.model;
 
+import static pong.model.Const.DEFAULT_AMOUNT_PLAYER_LIVES;
+import static pong.model.Const.DEFAULT_STARTING_SCORE;
+
 import java.util.ArrayList;
-import static pong.model.Const.*;
 
 public class Player {
 	private String name;
@@ -45,6 +47,14 @@ public class Player {
 
 	public void setLives(int lives) {
 		this.lives = lives;
+	}
+
+	public Paddle getPaddle() {
+		return paddle;
+	}
+
+	public void setPaddle(Paddle paddle) {
+		this.paddle = paddle;
 	}
 	
 }
