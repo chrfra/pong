@@ -1,26 +1,33 @@
 package pong.control;
 
+import static pong.model.Const.BALL_DEFAULT_XPOS;
+import static pong.model.Const.BALL_DEFAULT_YPOS;
+import static pong.model.Const.GAME_ENDED;
+import static pong.model.Const.IN_GAME;
+import static pong.model.Const.MENU_SIZE;
+import static pong.model.Const.MENU_ZPOS;
+import static pong.model.Const.STARTUP_STATE;
+
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-//static import below enables us to write x == IN_MENU instead of x == Const.IN_MENU
-import static pong.model.Const.*;
+
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.awt.GLCanvas;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
-import pong.model.*;
-import pong.view.*;
+import pong.model.Ball;
+import pong.model.Const;
+import pong.model.GameItem;
+import pong.model.MenuCube;
+import pong.model.Paddle;
+import pong.model.Player;
+import pong.model.Wall;
+import pong.view.Camera;
+import pong.view.GraphicsEngine;
 
 public class GameEngine {
 	private Physics physics;

@@ -1,11 +1,13 @@
 package pong.control;
 
+import static pong.model.Const.BALL_DEFAULT_XPOS;
+import static pong.model.Const.BALL_DEFAULT_YPOS;
+import static pong.model.Const.BALL_RADIUS;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import pong.model.Ball;
-
-import static pong.model.Const.*;
 
 
 /**

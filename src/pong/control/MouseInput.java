@@ -3,9 +3,8 @@ package pong.control;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+
 import javax.swing.event.MouseInputListener;
-import pong.model.Const;
-import pong.model.MoveableItem;
 
 
 public class MouseInput implements KeyListener, MouseInputListener{

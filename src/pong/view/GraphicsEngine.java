@@ -1,45 +1,33 @@
 package pong.view;
 
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.Frame;
-import java.awt.Point;
-import java.awt.image.BufferedImage;
+import static pong.model.Const.GAME_ENDED;
+import static pong.model.Const.IN_GAME;
+import static pong.model.Const.IN_MENU;
+import static pong.model.Const.SCREEN_HEIGHT;
+import static pong.model.Const.SCREEN_WIDTH;
 
-import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InvalidClassException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL2ES1;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
-import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.fixedfunc.GLLightingFunc;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
-import javax.media.opengl.glu.GLUquadric;
 
-import jogamp.opengl.glu.GLUquadricImpl;
-
-import pong.control.*;
-import pong.model.*;
-import static pong.model.Const.*;
+import pong.control.GameEngine;
+import pong.model.Const;
+import pong.model.GameItem;
 
 import com.jogamp.opengl.util.Animator;
 import com.jogamp.opengl.util.gl2.GLUT;
-import com.jogamp.opengl.util.texture.Texture;
-import com.jogamp.opengl.util.texture.TextureData;
-import com.jogamp.opengl.util.texture.TextureIO;
 
 public class GraphicsEngine implements GLEventListener {
 
@@ -47,7 +35,6 @@ public class GraphicsEngine implements GLEventListener {
 	private static GLCanvas canvas = new GLCanvas();
 	private static Frame frame = new Frame("Pong");
 	private GameEngine ge;
-	private GLUT glut = new GLUT();
 	private Renderer render;
 	private GLAutoDrawable drawable;
 	private Camera cam = new Camera();

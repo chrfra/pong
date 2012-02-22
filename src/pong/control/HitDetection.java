@@ -3,10 +3,13 @@ package pong.control;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
-import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.contacts.Contact;
 
-import pong.model.*;
+import pong.model.Ball;
+import pong.model.GameItem;
+import pong.model.Paddle;
+import pong.model.Player;
+import pong.model.Wall;
 
 public class HitDetection implements ContactListener {
 

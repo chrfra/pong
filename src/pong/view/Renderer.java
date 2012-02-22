@@ -1,13 +1,22 @@
 package pong.view;
 
+import static pong.model.Const.GAME_DEPTH;
+import static pong.model.Const.GAME_HEIGHT;
+import static pong.model.Const.GAME_WIDTH;
+import static pong.model.Const.MENU_BACK;
+import static pong.model.Const.MENU_BOTTOM;
+import static pong.model.Const.MENU_FRONT;
+import static pong.model.Const.MENU_LEFT;
+import static pong.model.Const.MENU_RIGHT;
+import static pong.model.Const.MENU_TOP;
+import static pong.model.Const.SCREEN_HEIGHT;
+import static pong.model.Const.SCREEN_WIDTH;
+
 import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InvalidClassException;
-
-import static pong.model.Const.*; //import constants
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -16,17 +25,16 @@ import javax.media.opengl.GLProfile;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
 
+import pong.model.Ball;
+import pong.model.GameItem;
+import pong.model.MenuCube;
+import pong.model.Paddle;
+
 import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.opengl.util.gl2.GLUT;
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureData;
 import com.jogamp.opengl.util.texture.TextureIO;
-
-import pong.model.Ball;
-import pong.model.Const;
-import pong.model.GameItem;
-import pong.model.MenuCube;
-import pong.model.Paddle;
 
 public class Renderer {
 	private GLU glu;
