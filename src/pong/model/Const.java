@@ -3,11 +3,12 @@ package pong.model;
 /* Used for constant variables */
 
 public class Const {
-
+	//gamestates, used in gameengine and graphicsengine game loops to determine what to draw/process
 	public static final int IN_MENU = 0;
 	public static final int IN_GAME = 1;
-	public static final int STARTUP_STATE = 0;	//starts the game in menu-mode/game-mode
 	public static final int GAME_ENDED = 3;
+	public static final int PAUSED = 4;
+	public static final int STARTUP_STATE = 0;	//starts the game in menu-mode/game-mode
 	
 	//input constants
 	public static final float MOUSE_OFFSET = 0.0f;

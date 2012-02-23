@@ -1,12 +1,6 @@
 package pong.view;
 
-import static pong.model.Const.GAME_ENDED;
-import static pong.model.Const.IN_GAME;
-import static pong.model.Const.IN_MENU;
-import static pong.model.Const.SCREEN_HEIGHT;
-import static pong.model.Const.SCREEN_WIDTH;
-import static pong.model.Const.RY_SPEED;
-import static pong.model.Const.VSYNC;
+import static pong.model.Const.*;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -116,6 +110,13 @@ public class GraphicsEngine implements GLEventListener {
 			//spin menu (if it is supposed to spin)
 			ge.getMenu().setRy(calculateRotation(menu.getRy(), rotationSpeed));
 
+		}else if (ge.getGameState() == PAUSED) {
+			//add resume -option to menu, since the game is now paused
+			menu.updateOption(MENU_FRONT, 0, "Resume");
+			// render the Menu Cube
+			render.drawMenu(drawable,menu,menu.getRx(),menu.getRy(),menu.getRz());
+			//spin menu (if it is supposed to spin)
+			ge.getMenu().setRy(calculateRotation(menu.getRy(), rotationSpeed));
 		}
 		// game has started/resumed, draw all game related components
 		else if (ge.getGameState() == IN_GAME) {
@@ -159,6 +160,7 @@ public class GraphicsEngine implements GLEventListener {
 				e.printStackTrace();
 			}
 		}
+		
 		// game has ended, print score
 		else if(ge.getGameState() == GAME_ENDED){
 			if(ge.getPlayer1().getLives() > ge.getPlayer2().getLives()){

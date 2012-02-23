@@ -426,4 +426,7 @@ public class GameEngine {
 	public long getSleepTime() {
 		return sleepTime;
 	}
+	public void setGameState(int gameState) {
+		this.gameState = gameState;
+	}
 }
