@@ -12,6 +12,7 @@ import static pong.model.Const.MENU_TOP;
 import static pong.model.Const.SCREEN_HEIGHT;
 import static pong.model.Const.SCREEN_WIDTH;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
@@ -346,7 +347,7 @@ public class Renderer {
 	 */
 	//draws the menu cube
 	public void drawMenu(GLAutoDrawable drawable, MenuCube menu, float rx, float ry, float rz) {
-
+		Color textColor = Color.orange;
 		//setup the text properties, size etc.
 		setUpText(drawable);
 
@@ -369,25 +370,25 @@ public class Renderer {
 		// Top face
 		gl.glPushMatrix();
 		gl.glRotatef(-90, 1, 0, 0);
-		drawFace(gl, 1.0f, 0.2f, 0.2f, 0.8f, menu.getOptionsBySide(MENU_TOP).get(0));
+		drawFace(gl, 1.0f, 0.2f, 0.2f, 0.8f, menu.getOptionsBySide(MENU_TOP).get(0),0);
 		gl.glPopMatrix();
 		// Front face
-		drawFace(gl, 1.0f, 0.8f, 0.2f, 0.2f, menu.getOptionsBySide(MENU_FRONT).get(0));
+		drawFace(gl, 1.0f, 0.8f, 0.2f, 0.2f, menu.getOptionsBySide(MENU_FRONT).get(0),0);
 		// Right face
 		gl.glPushMatrix();
 		gl.glRotatef(90, 0, 1, 0);
-		drawFace(gl, 1.0f, 0.2f, 0.8f, 0.2f, menu.getOptionsBySide(MENU_RIGHT).get(0));
+		drawFace(gl, 1.0f, 0.2f, 0.8f, 0.2f, menu.getOptionsBySide(MENU_RIGHT).get(0),0);
 		// Back face    
 		gl.glRotatef(90, 0, 1, 0);
-		drawFace(gl, 1.0f, 0.8f, 0.8f, 0.2f, menu.getOptionsBySide(MENU_BACK).get(0));
+		drawFace(gl, 1.0f, 0.8f, 0.8f, 0.2f, menu.getOptionsBySide(MENU_BACK).get(0),0);
 		// Left face    
 		gl.glRotatef(90, 0, 1, 0);
-		drawFace(gl, 1.0f, 0.2f, 0.8f, 0.8f, menu.getOptionsBySide(MENU_LEFT).get(0));
+		drawFace(gl, 1.0f, 0.2f, 0.8f, 0.8f, menu.getOptionsBySide(MENU_LEFT).get(0),0);
 		gl.glPopMatrix();
 		// Bottom face
 		gl.glPushMatrix();
 		gl.glRotatef(90, 1, 0, 0);
-		drawFace(gl, 1.0f, 0.8f, 0.2f, 0.8f, menu.getOptionsBySide(MENU_BOTTOM).get(0));
+		drawFace(gl, 1.0f, 0.8f, 0.2f, 0.8f, menu.getOptionsBySide(MENU_BOTTOM).get(0),0);
 		gl.glPopMatrix();
 	}
 
@@ -398,9 +399,16 @@ public class Renderer {
 		glu.gluPerspective(15, (float) width / (float) height, 5, 15);
 	}
 
-	//draws one face of a cube
-	private void drawFace(GL2 gl, float faceSize, float r, float g, float b, String text) {
-		//undersök 3d text http://www.geofx.com/html/OpenGL_Eclipse/TextRenderer3D.html			
+	/*
+	 * draws one face of a cube
+	 * @param gl
+	 * @param faceSize	size of the face (side) to be rendered
+	 * @param r,g,b		color of the face
+	 * @param text		text to be printed on face
+	 * @param selection	which option is selected on the side to be rendered, 0 = first(top option)
+	 */
+	private void drawFace(GL2 gl, float faceSize, float r, float g, float b, String text, int selection) {
+		//undersï¿½k 3d text http://www.geofx.com/html/OpenGL_Eclipse/TextRenderer3D.html			
 		//https://github.com/sgothel/jogl-utils/commit/bac504811d3fde4675b9a8f464a74f1c41be77d5#diff-2
 		//C:\Users\cf\Downloads\java3declipse-20090302	
 		
@@ -425,16 +433,19 @@ public class Renderer {
 		gl.glDisable(GL.GL_TEXTURE_2D);
 		
 		textrenderer.begin3DRendering();
-		
 		//avoid z-fighting, that is between the text and the quad it sits on top of
 		gl.glDisable(GL2.GL_DEPTH_TEST);
-		//culling hides the backward facing sides of the cube ( the ones you are not supposed to see )
+		//culling disables rendering of polygons facing away from the viewer ( the ones you are not supposed to see )
 		gl.glEnable(GL2.GL_CULL_FACE);
-		//scale text to quad
+		
+		// Compute the scale factor of the largest string which will make
+		// them all fit on the faces of the cube
 		Rectangle2D bounds = textrenderer.getBounds(text);
 		float w = (float) bounds.getWidth();
 		float h = (float) bounds.getHeight();
-
+		//textScaleFactor  makes a longer string of text smaller to fit onto the quad
+		textrenderer.setColor(Color.orange);
+		textScaleFactor = 1.0f / (w * 1.1f);
 		textrenderer.draw3D(text,
 				w / -2.0f * textScaleFactor,
 				h / -2.0f * textScaleFactor,
@@ -449,16 +460,8 @@ public class Renderer {
 	public void setUpText(GLAutoDrawable drawable) {
 		textrenderer = new TextRenderer(new Font("SansSerif", Font.PLAIN, 72));
 		GL2 gl = drawable.getGL().getGL2();
+		//enable depth testing
 		gl.glEnable(GL2.GL_DEPTH_TEST);
-
-		// Compute the scale factor of the largest string which will make
-		// them all fit on the faces of the cube
-		Rectangle2D bounds = textrenderer.getBounds("Bottom");
-		float w = (float) bounds.getWidth();
-		float h = (float) bounds.getHeight();
-		textScaleFactor = 1.0f / (w * 1.1f);
-		textrenderer.flush();
-		textrenderer.dispose();
 	}
 	
 

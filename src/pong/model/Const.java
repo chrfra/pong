@@ -3,11 +3,12 @@ package pong.model;
 /* Used for constant variables */
 
 public class Const {
-
+	//gamestates, used in gameengine and graphicsengine game loops to determine what to draw/process
 	public static final int IN_MENU = 0;
 	public static final int IN_GAME = 1;
-	public static final int STARTUP_STATE = 1;	//starts the game in menu-mode/game-mode
 	public static final int GAME_ENDED = 3;
+	public static final int PAUSED = 4;
+	public static final int STARTUP_STATE = 0;	//starts the game in menu-mode/game-mode
 	
 	//input constants
 	public static final float MOUSE_OFFSET = 0.0f;
@@ -17,10 +18,12 @@ public class Const {
 	// For the screen area
 	public static final int SCREEN_WIDTH = 800;
 	public static final int SCREEN_HEIGHT = 600;
-	
+	/*
+	 * Menu options
+	 */
 	//size of the (cubic) menu
 	public static final float MENU_SIZE = 9f;
-	public static final float MENU_ZPOS = 95;
+	public static final float MENU_ZPOS = 98;
 	
 	//identifiers for the different sides of the cube, used to draw different text to each side
 	public static final int MENU_TOP = 0;
@@ -29,6 +32,8 @@ public class Const {
 	public static final int MENU_BACK = 3;
 	public static final int MENU_LEFT = 4;
 	public static final int MENU_BOTTOM= 5;
+
+	public static final float RY_SPEED = 20; //initial rotationspeed around the y-axis
 			
 	// Game area values
 	public static final float GAME_WIDTH = 80;
@@ -69,7 +74,8 @@ public class Const {
 	public static final int DEFAULT_STARTING_SCORE = 0;
 	public static final int DEFAULT_AMOUNT_PLAYER_LIVES = 3;
 	
+	//sets how fast the game logic is to be updated, when this framerate is exceeded, the game(logic) thread sleeps
+	public static double TARGET_FRAMERATE = 60;
 	//rendering constants
 	public static final int VSYNC = 1; //0 = off 1 = on
-	public static final float RY_SPEED = 20;
 }

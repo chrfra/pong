@@ -1,9 +1,6 @@
 package pong.control;
 
-import static pong.model.Const.BALL_DEFAULT_XPOS;
-import static pong.model.Const.BALL_DEFAULT_YPOS;
-import static pong.model.Const.BALL_RADIUS;
-
+import static pong.model.Const.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -32,8 +29,11 @@ public class CommandInput implements KeyListener {
 		if(arg0.getKeyCode() == KeyEvent.VK_B){
 			ge.addItemToGame(new Ball(BALL_DEFAULT_XPOS, BALL_DEFAULT_YPOS, 0, BALL_RADIUS));
 			System.out.println("Adding ball...");
-		}else if(arg0.getKeyCode() == KeyEvent.VK_V){
-			
+		}
+		//escape key pauses the game, prints resume option etc on menu
+		else if(arg0.getKeyCode() == KeyEvent.VK_ESCAPE){
+			if(ge.getGameState()==IN_GAME)	//only set gamestate to paused if game is running and escape is pressed
+				ge.setGameState(PAUSED);
 		}
 		
 	}

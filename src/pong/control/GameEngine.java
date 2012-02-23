@@ -1,12 +1,7 @@
 package pong.control;
 
-import static pong.model.Const.BALL_DEFAULT_XPOS;
-import static pong.model.Const.BALL_DEFAULT_YPOS;
-import static pong.model.Const.GAME_ENDED;
-import static pong.model.Const.IN_GAME;
-import static pong.model.Const.MENU_SIZE;
-import static pong.model.Const.MENU_ZPOS;
-import static pong.model.Const.STARTUP_STATE;
+import static pong.model.Const.*;
+
 
 import java.awt.Component;
 import java.util.ArrayList;
@@ -47,10 +42,9 @@ public class GameEngine {
 	private Paddle paddle2;
 	// The main ball in the game. This ball will never die
 	private Ball mainBall;
-	
-	private double targetFramerate = 60;
-	private double skipTicks = 1000 / targetFramerate;
-	private int fps;
+	//this variable determines how long the game(logic) thread will sleep, depending on how fast the game logic is to be updated
+	private double skipTicks = 1000 / TARGET_FRAMERATE;
+	private int fps;	//keeps track of game(logic) updates per second (not rendering fps)
 
 	//Time to sleep in each execution in the game loop
 	long sleepTime;
@@ -348,7 +342,7 @@ public class GameEngine {
 		options.add(topOptions);
 
 		ArrayList<String> frontOptions = new ArrayList<String>();
-		frontOptions.add("Front");
+		frontOptions.add("New Game");
 		options.add(frontOptions);
 
 		ArrayList<String> rightOptions = new ArrayList<String>();
@@ -431,5 +425,8 @@ public class GameEngine {
 	}
 	public long getSleepTime() {
 		return sleepTime;
+	}
+	public void setGameState(int gameState) {
+		this.gameState = gameState;
 	}
 }
