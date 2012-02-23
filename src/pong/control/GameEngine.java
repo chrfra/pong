@@ -250,26 +250,31 @@ public class GameEngine {
 	public void resetBall() {
 		Body ball;
 		ball = mainBall.getBody();
-
-		Random generator = new Random();
-		float r = generator.nextFloat();
-
-		Vec2 vec = new Vec2(ball.getLinearVelocity());
-
-		// Now set mainBall to default values.. ready for next round!
+		Vec2 vec;
+		Random gen = new Random();
+		float r = gen.nextFloat()+2;
+		float y = ball.getPosition().y;
+		vec = new Vec2(ball.getLinearVelocity());
+		float yVec = 0;
+		float xVec = vec.x;
+		//Set Y to opposite direction..
+		if(y > 0){
+			yVec = -15;
+		}
+		else if( y < 0){
+			yVec = 15;
+		}
+		//Randomize X
+		if( gen.nextBoolean() == true){
+			xVec = r*-1;
+		}
+		else{
+			xVec = r;
+		}
+		vec.set(xVec, yVec);
 		ball.setTransform(new Vec2(0, 0), 0);
-		mainBall.setxPos(Const.BALL_DEFAULT_XPOS);
-		mainBall.setyPos(Const.BALL_DEFAULT_YPOS);
-		float x = vec.x;
-		float y = vec.y;
-		x = x * -1 + r;
-		y = y * -1;
-		vec.set(x, y);
-
 		ball.setLinearVelocity(vec);
-
 		resetGame = false;
-
 	}
 
 	/*
