@@ -77,6 +77,12 @@ public class GameEngine {
 		ge = new GraphicsEngine(this);
 		ge.setUp();
 
+		// Delay to start the game after the window is drawn.
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
 		initNewGame();
 	}
@@ -144,28 +150,17 @@ public class GameEngine {
 	private void startGame() {
 		System.out.println("Running the game...");
 		// run game, draw score, zoom etc. if starting/resuming the game
-
-
-		if (gameState == IN_GAME) {
-			// Delay to start the game after the window is drawn.
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		gameState = IN_GAME;
 
 			Camera.smoothZoom(100);
 			
 			//Used to calculate FPS
 	        int frames = 0;
 	        long lastTimer1 = System.currentTimeMillis();
-	        
-			while (true) {
-				gameState = IN_GAME;
 
+			while (true) {
 				sleepTime = 0;
 				long nextGameTick = getTickCount();
-				synchronized (items) {
 					if (resetGame == true) {
 						resetBall();
 					}
@@ -186,7 +181,6 @@ public class GameEngine {
 					checkBallSpeed();
 					physics.update();
 					updatePos();
-				}
 				//Calculate how long to sleep. 
 				nextGameTick += skipTicks;
 				sleepTime = nextGameTick -getTickCount();
@@ -205,7 +199,6 @@ public class GameEngine {
 	                frames = 0;
 	            }
 			}
-		}
 	}
 
 	public void ballOut(Player losingPlayer, Ball ball) {
@@ -241,8 +234,9 @@ public class GameEngine {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			initNewGame();
 			SoundPlayer.stopMp3();
+			initNewGame();
+
 		}
 
 	}
