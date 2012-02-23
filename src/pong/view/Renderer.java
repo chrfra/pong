@@ -305,6 +305,8 @@ public class Renderer {
 		tr.beginRendering(frameWidth, frameHeight);
 		tr.draw(text, x, y);
 		tr.endRendering();
+		tr.flush();
+		tr.dispose();
 	}
 	
 	/**
@@ -334,6 +336,8 @@ public class Renderer {
 		textrenderer.draw3D(text, SCREEN_HEIGHT/2+x, SCREEN_WIDTH/2+y, 0, 1f);
 		// ... more draw commands, color changes, etc.
 		textrenderer.end3DRendering();
+		textrenderer.flush();
+		textrenderer.dispose();
 	}
 
 	/**
@@ -453,6 +457,8 @@ public class Renderer {
 		float w = (float) bounds.getWidth();
 		float h = (float) bounds.getHeight();
 		textScaleFactor = 1.0f / (w * 1.1f);
+		textrenderer.flush();
+		textrenderer.dispose();
 	}
 	
 
