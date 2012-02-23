@@ -306,6 +306,8 @@ public class Renderer {
 		tr.beginRendering(frameWidth, frameHeight);
 		tr.draw(text, x, y);
 		tr.endRendering();
+		tr.flush();
+		tr.dispose();
 	}
 	
 	/**
@@ -335,6 +337,8 @@ public class Renderer {
 		textrenderer.draw3D(text, SCREEN_HEIGHT/2+x, SCREEN_WIDTH/2+y, 0, 1f);
 		// ... more draw commands, color changes, etc.
 		textrenderer.end3DRendering();
+		textrenderer.flush();
+		textrenderer.dispose();
 	}
 
 	/**
@@ -361,6 +365,7 @@ public class Renderer {
 		gl.glRotatef(rx, 1, 0, 0);
 		gl.glRotatef(ry, 0, 1, 0);
 		gl.glRotatef(rz, 0, 1, 0);
+
 		// draw the six faces of the cube
 		// Top face
 		gl.glPushMatrix();
