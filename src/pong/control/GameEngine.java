@@ -2,6 +2,7 @@ package pong.control;
 
 import static pong.model.Const.*;
 
+
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,6 +70,14 @@ public class GameEngine {
 		System.out.println("Initializing graphics...");
 		ge = new GraphicsEngine(this);
 		ge.setUp();
+
+		// Delay to start the game after the window is drawn.
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
 		initNewGame();
 	}
 
@@ -131,34 +140,21 @@ public class GameEngine {
 		// Run the game.
 		startGame();
 	}
-/*
- * contains the main game loop, runs at
- */
+
 	private void startGame() {
 		System.out.println("Running the game...");
 		// run game, draw score, zoom etc. if starting/resuming the game
-
-
-		if (gameState == IN_GAME) {
-			// Delay to start the game after the window is drawn.
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		gameState = IN_GAME;
 
 			Camera.smoothZoom(100);
 			
 			//Used to calculate FPS
 	        int frames = 0;
 	        long lastTimer1 = System.currentTimeMillis();
-	        
-			while (true) {
-				gameState = IN_GAME;
 
+			while (true) {
 				sleepTime = 0;
 				long nextGameTick = getTickCount();
-				synchronized (items) {
 					if (resetGame == true) {
 						resetBall();
 					}
@@ -179,7 +175,6 @@ public class GameEngine {
 					checkBallSpeed();
 					physics.update();
 					updatePos();
-				}
 				//Calculate how long to sleep. 
 				nextGameTick += skipTicks;
 				sleepTime = nextGameTick -getTickCount();
@@ -198,7 +193,6 @@ public class GameEngine {
 	                frames = 0;
 	            }
 			}
-		}
 	}
 
 	public void ballOut(Player losingPlayer, Ball ball) {
@@ -234,8 +228,9 @@ public class GameEngine {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			initNewGame();
 			SoundPlayer.stopMp3();
+			initNewGame();
+
 		}
 
 	}
@@ -243,26 +238,31 @@ public class GameEngine {
 	public void resetBall() {
 		Body ball;
 		ball = mainBall.getBody();
-
-		Random generator = new Random();
-		float r = generator.nextFloat();
-
-		Vec2 vec = new Vec2(ball.getLinearVelocity());
-
-		// Now set mainBall to default values.. ready for next round!
+		Vec2 vec;
+		Random gen = new Random();
+		float r = gen.nextFloat()+2;
+		float y = ball.getPosition().y;
+		vec = new Vec2(ball.getLinearVelocity());
+		float yVec = 0;
+		float xVec = vec.x;
+		//Set Y to opposite direction..
+		if(y > 0){
+			yVec = -15;
+		}
+		else if( y < 0){
+			yVec = 15;
+		}
+		//Randomize X
+		if( gen.nextBoolean() == true){
+			xVec = r*-1;
+		}
+		else{
+			xVec = r;
+		}
+		vec.set(xVec, yVec);
 		ball.setTransform(new Vec2(0, 0), 0);
-		mainBall.setxPos(Const.BALL_DEFAULT_XPOS);
-		mainBall.setyPos(Const.BALL_DEFAULT_YPOS);
-		float x = vec.x;
-		float y = vec.y;
-		x = x * -1 + r;
-		y = y * -1;
-		vec.set(x, y);
-
 		ball.setLinearVelocity(vec);
-
 		resetGame = false;
-
 	}
 
 	/*

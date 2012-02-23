@@ -81,15 +81,12 @@ public class GraphicsEngine implements GLEventListener {
 	public void display(GLAutoDrawable gLDrawable) {
 		GL2 gl = gLDrawable.getGL().getGL2();
 		// Items to be drawn
-		List<GameItem> items = ge.getGameItems();
 		MenuCube menu = ge.getMenu();	//will be using the menu object a lot, store reference to it in "menu" variable
-
 		// render.setGl(gl);
 
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
-
 		// Uses the cameras position and direction
 		glu.gluLookAt(cam.getPosition()[0], cam.getPosition()[1],
 				cam.getPosition()[2], cam.getLookPoint()[0],
@@ -135,6 +132,7 @@ public class GraphicsEngine implements GLEventListener {
 		}
 		// game has started/resumed, draw all game related components
 		else if (ge.getGameState() == IN_GAME) {
+			List<GameItem> items = ge.getGameItems();
 			// IMPORTANT! PopMatrix() resets glTranslatef and glRotatef to what it was before the previous PushMatrix()
 
 			gl.glPushMatrix();
