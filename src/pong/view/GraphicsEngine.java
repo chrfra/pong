@@ -108,8 +108,23 @@ public class GraphicsEngine implements GLEventListener {
 			// render the Menu Cube
 			render.drawMenu(drawable,menu,menu.getRx(),menu.getRy(),menu.getRz());
 			//spin menu (if it is supposed to spin)
-			ge.getMenu().setRy(calculateRotation(menu.getRy(), rotationSpeed));
-
+			// OLD ge.getMenu().setRy(calculateRotation(menu.getRy(), menu.getRotationSpeed()));
+			//decrease rotation speed
+			
+			//Check rotation around y axis
+			//if menu rotation < target rotation then rotate cube further
+			if(menu.getRy() < menu.getTy()){
+				ge.getMenu().setRy(menu.getRy() + RY_SPEED);
+			}else if(menu.getRy() > menu.getTy()){
+				ge.getMenu().setRy(menu.getRy() - RY_SPEED);
+			}
+			//Check rotation around x axis
+			if(menu.getRx() < menu.getTx()){
+				ge.getMenu().setRx(menu.getRx() + RY_SPEED);
+			}else if(menu.getRx() > menu.getTx()){
+				ge.getMenu().setRx(menu.getRx() - RY_SPEED);
+			}
+				
 		}else if (ge.getGameState() == PAUSED) {
 			//add resume -option to menu, since the game is now paused
 			menu.updateOption(MENU_FRONT, 0, "Resume");
@@ -230,9 +245,14 @@ public class GraphicsEngine implements GLEventListener {
 
 /*
  * calculates the menu's rotation to gradually bring the cube from spinning to forward facing
+ * @param rotation	current menu rotation
+ * @param speed		current cube rotation speed
  */
 	public float calculateRotation(float rotation, float speed){
-		
+		if(rotation != 360)
+			return (rotation + speed);
+		else return 0;
+		/*
 		if (speed > 0){		//rotationSpeed can't be negative! (object would rotate backwards)
 			rotation = (rotation + speed) % 360;	//rotate on y axis 0-360 degrees
 			speed -= 0.2;
@@ -247,7 +267,7 @@ public class GraphicsEngine implements GLEventListener {
 		}
 		this.rotationSpeed = speed;
 		return rotation;
-
+		 */
 	}
 
 	@Override

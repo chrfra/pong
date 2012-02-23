@@ -8,7 +8,9 @@ public class MenuCube {
 	private float zPos;
 	private float height;
 	private float width;
-	private float rx,ry,rz; //the cube's rotation in x,y,z in degrees
+	private float rx,ry,rz,tx,ty,tz; //the cube's rotation in x,y,z in degrees, target x,y,z
+	private int selection = 0;
+	private float rotationSpeed = 10;
 	//two dimensional list holding the menu options, 
 	//first list holds the lists of strings for each side of the menu
 	private ArrayList<ArrayList<String>> options;
@@ -70,7 +72,7 @@ public class MenuCube {
 		this.width = width;
 		this.depth = depth;
 		options = new ArrayList<ArrayList<String>>();
-		rx = ry = rz = 0;	//the rotation of the cube is initiated as 0,0,0
+		rx = ry = rz = tx = ty = tz = 0;	//the rotation of the cube is initiated as 0,0,0
 	}
 
 	public float getRx() {
@@ -119,5 +121,45 @@ public class MenuCube {
 	//add entire menu system
 	public void setOptions(ArrayList<ArrayList<String>> options) {
 		this.options = options;
+	}
+
+	public void setSelection(int selection) {
+		this.selection = selection;
+	}
+
+	public int getSelection() {
+		return selection;
+	}
+
+	public void setRotationSpeed(float rotationSpeed) {
+		this.rotationSpeed = rotationSpeed;
+	}
+
+	public float getRotationSpeed() {
+		return rotationSpeed;
+	}
+
+	public void setTx(float tx) {
+		this.tx = tx;
+	}
+
+	public float getTx() {
+		return tx;
+	}
+
+	public void setTy(float ty) {
+		this.ty = ty;
+	}
+
+	public float getTy() {
+		return ty;
+	}
+
+	public void setTz(float tz) {
+		this.tz = tz;
+	}
+
+	public float getTz() {
+		return tz;
 	}
 }

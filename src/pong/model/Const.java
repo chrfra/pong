@@ -25,7 +25,7 @@ public class Const {
 	public static final float MENU_SIZE = 9f;
 	public static final float MENU_ZPOS = 98;
 	
-	//identifiers for the different sides of the cube, used to draw different text to each side
+	//identifiers for the different sides of the cube, used logically to identify the sides from eachother when calling updateOption()
 	public static final int MENU_TOP = 0;
 	public static final int MENU_FRONT = 1;
 	public static final int MENU_RIGHT = 2;
@@ -33,7 +33,7 @@ public class Const {
 	public static final int MENU_LEFT = 4;
 	public static final int MENU_BOTTOM= 5;
 
-	public static final float RY_SPEED = 20; //initial rotationspeed around the y-axis
+	public static final float RY_SPEED = 1f; //initial rotationspeed around the y-axis MUST BE DIVISIBLE BY 360!
 			
 	// Game area values
 	public static final float GAME_WIDTH = 80;
@@ -76,6 +76,7 @@ public class Const {
 	
 	//sets how fast the game logic is to be updated, when this framerate is exceeded, the game(logic) thread sleeps
 	public static double TARGET_FRAMERATE = 60;
+	
 	//rendering constants
 	public static final int VSYNC = 1; //0 = off 1 = on
 }
