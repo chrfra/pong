@@ -360,7 +360,6 @@ public class Renderer {
 		gl.glRotatef(rx, 1, 0, 0);
 		gl.glRotatef(ry, 0, 1, 0);
 		gl.glRotatef(rz, 0, 1, 0);
-
 		// draw the six faces of the cube
 		// Top face
 		gl.glPushMatrix();
@@ -396,7 +395,7 @@ public class Renderer {
 
 	//draws one face of a cube
 	private void drawFace(GL2 gl, float faceSize, float r, float g, float b, String text) {
-		//undersök 3d text http://www.geofx.com/html/OpenGL_Eclipse/TextRenderer3D.html			
+		//undersï¿½k 3d text http://www.geofx.com/html/OpenGL_Eclipse/TextRenderer3D.html			
 		//https://github.com/sgothel/jogl-utils/commit/bac504811d3fde4675b9a8f464a74f1c41be77d5#diff-2
 		//C:\Users\cf\Downloads\java3declipse-20090302	
 		
@@ -424,13 +423,15 @@ public class Renderer {
 		
 		//avoid z-fighting, that is between the text and the quad it sits on top of
 		gl.glDisable(GL2.GL_DEPTH_TEST);
-		//culling hides the backward facing sides of the cube ( the ones you are not supposed to see )
+		//culling disables rendering of polygons facing away from the viewer ( the ones you are not supposed to see )
 		gl.glEnable(GL2.GL_CULL_FACE);
-		//scale text to quad
+		// Compute the scale factor of the largest string which will make
+		// them all fit on the faces of the cube
 		Rectangle2D bounds = textrenderer.getBounds(text);
 		float w = (float) bounds.getWidth();
 		float h = (float) bounds.getHeight();
-
+		//textScaleFactor  makes a longer string of text smaller to fit onto the quad
+		textScaleFactor = 1.0f / (w * 1.1f);
 		textrenderer.draw3D(text,
 				w / -2.0f * textScaleFactor,
 				h / -2.0f * textScaleFactor,
@@ -445,14 +446,8 @@ public class Renderer {
 	public void setUpText(GLAutoDrawable drawable) {
 		textrenderer = new TextRenderer(new Font("SansSerif", Font.PLAIN, 72));
 		GL2 gl = drawable.getGL().getGL2();
+		//enable depth testing
 		gl.glEnable(GL2.GL_DEPTH_TEST);
-
-		// Compute the scale factor of the largest string which will make
-		// them all fit on the faces of the cube
-		Rectangle2D bounds = textrenderer.getBounds("Bottom");
-		float w = (float) bounds.getWidth();
-		float h = (float) bounds.getHeight();
-		textScaleFactor = 1.0f / (w * 1.1f);
 	}
 	
 

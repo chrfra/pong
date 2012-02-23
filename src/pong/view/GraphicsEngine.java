@@ -241,7 +241,7 @@ public class GraphicsEngine implements GLEventListener {
 				rotation = (rotation + 1.9f) % 360 ;
 			}	
 
-			System.out.println(Math.round(rotation) );
+			//System.out.println(Math.round(rotation) );
 		}
 		this.rotationSpeed = speed;
 		return rotation;

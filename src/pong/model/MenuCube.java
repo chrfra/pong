@@ -107,6 +107,15 @@ public class MenuCube {
 	public ArrayList<String> getOptionsBySide(int x) {
 		return options.get(x);
 	}
+	/*
+	 * updates the string to be printed on the menu, given the side of the menu and the string's position in the list
+	 * @param sideId	side identifier (see Const.java)
+	 * @param eltNr		the element's number in the list
+	 * @param text		the text to be displayed
+	 */
+	public void updateOption(int sideId,int eltNr, String text) {
+		this.options.get(sideId).set(eltNr, text);
+	}
 	//add entire menu system
 	public void setOptions(ArrayList<ArrayList<String>> options) {
 		this.options = options;
