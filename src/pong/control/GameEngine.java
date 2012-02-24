@@ -104,10 +104,6 @@ public class GameEngine {
 			}else if(gameState == IN_MENU){
 				menu.tick();
 			}
-			
-			
-			
-			
 			// Calculate how long to sleep.
 			nextGameTick += skipTicks;
 			sleepTime = nextGameTick - getTickCount();
@@ -212,7 +208,6 @@ public class GameEngine {
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 

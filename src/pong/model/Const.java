@@ -32,8 +32,7 @@ public class Const {
 	public static final int MENU_BACK = 3;
 	public static final int MENU_LEFT = 4;
 	public static final int MENU_BOTTOM= 5;
-
-	public static final float RY_SPEED = 1f; //initial rotationspeed around the y-axis MUST BE DIVISIBLE BY 360!
+	public static final float RY_SPEED = 5f; //initial rotationspeed around the y-axis MUST BE DIVISIBLE BY 360!
 			
 	// Game area values
 	public static final float GAME_WIDTH = 80;
