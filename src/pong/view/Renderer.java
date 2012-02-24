@@ -1,16 +1,6 @@
 package pong.view;
 
-import static pong.model.Const.GAME_DEPTH;
-import static pong.model.Const.GAME_HEIGHT;
-import static pong.model.Const.GAME_WIDTH;
-import static pong.model.Const.MENU_BACK;
-import static pong.model.Const.MENU_BOTTOM;
-import static pong.model.Const.MENU_FRONT;
-import static pong.model.Const.MENU_LEFT;
-import static pong.model.Const.MENU_RIGHT;
-import static pong.model.Const.MENU_TOP;
-import static pong.model.Const.SCREEN_HEIGHT;
-import static pong.model.Const.SCREEN_WIDTH;
+import static pong.model.Const.*;
 
 import java.awt.Color;
 import java.awt.Font;

@@ -1,7 +1,6 @@
 package pong.model;
 
-import static pong.model.Const.DEFAULT_AMOUNT_PLAYER_LIVES;
-import static pong.model.Const.DEFAULT_STARTING_SCORE;
+import static pong.model.Const.*;
 
 import java.util.ArrayList;
 

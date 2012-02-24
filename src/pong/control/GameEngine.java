@@ -2,7 +2,6 @@ package pong.control;
 
 import static pong.model.Const.*;
 
-
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,11 +41,12 @@ public class GameEngine {
 	private Paddle paddle2;
 	// The main ball in the game. This ball will never die
 	private Ball mainBall;
-	//this variable determines how long the game(logic) thread will sleep, depending on how fast the game logic is to be updated
+	// this variable determines how long the game(logic) thread will sleep, depending on how fast the game logic is to
+	// be updated
 	private double skipTicks = 1000 / TARGET_FRAMERATE;
-	private int fps;	//keeps track of game(logic) updates per second (not rendering fps)
+	private int fps; // keeps track of game(logic) updates per second (not rendering fps)
 
-	//Time to sleep in each execution in the game loop
+	// Time to sleep in each execution in the game loop
 	long sleepTime;
 
 	private Player player1;
@@ -72,19 +72,65 @@ public class GameEngine {
 		ge = new GraphicsEngine(this);
 		ge.setUp();
 
+
+
+
+		runApplication();
+	}
+
+	public void runApplication() {
+		//Initialize game if startstate is IN_GAME
+		if(gameState == IN_GAME){
+			initNewGame();
+		}
 		// Delay to start the game after the window is drawn.
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		
+		while (true) {
 
-		initNewGame();
+			// Used to calculate FPS
+			int frames = 0;
+			long lastTimer1 = System.currentTimeMillis();
+			//Used to calculate sleeptime
+			sleepTime = 0;
+			long nextGameTick = getTickCount();
+
+			if(gameState == IN_GAME){
+				gameTick();
+			}else if(gameState == IN_MENU){
+				menu.tick();
+			}
+			
+			
+			
+			
+			// Calculate how long to sleep.
+			nextGameTick += skipTicks;
+			sleepTime = nextGameTick - getTickCount();
+			if (sleepTime >= 0) {
+				try {
+					Thread.sleep(sleepTime);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// Calculate FPS
+			frames++;
+			if (System.currentTimeMillis() - lastTimer1 > 1000) {
+				lastTimer1 += 1000;
+				fps = frames;
+				frames = 0;
+			}
+
+		}
 	}
 
-	/**
-	 * Called when a new game is started. Resets all the players, items and physics.
-	 */
+	/** Called when a new game is started. Resets all the players, items and physics. */
 	public void initNewGame() {
 
 		System.out.println("Initializing new game...");
@@ -96,22 +142,18 @@ public class GameEngine {
 		physics.create(this);
 
 		// Creates the walls that acts as goals for the player.
-		Wall goal1 = new Wall(0.0f, -Const.GAME_HEIGHT / 2, 0.0f,
-				Const.GAME_WIDTH, false); // Lower player
-		Wall goal2 = new Wall(0.0f, Const.GAME_HEIGHT / 2, 0.0f,
-				Const.GAME_WIDTH, false); // Upper player
+		Wall goal1 = new Wall(0.0f, -Const.GAME_HEIGHT / 2, 0.0f, Const.GAME_WIDTH, false); // Lower player
+		Wall goal2 = new Wall(0.0f, Const.GAME_HEIGHT / 2, 0.0f, Const.GAME_WIDTH, false); // Upper player
 
 		// add player 1 to game
-		paddle1 = new Paddle(0, Const.DEFAULT_DPADDLE_YPOS, 0,
-				Const.DEFAULT_PADDLE_HEIGHT, Const.DEFAULT_PADDLE_WIDTH,
+		paddle1 = new Paddle(0, Const.DEFAULT_DPADDLE_YPOS, 0, Const.DEFAULT_PADDLE_HEIGHT, Const.DEFAULT_PADDLE_WIDTH,
 				Const.DEFAULT_PADDLE_DEPTH);
 		player1 = new Player("Playername1", paddle1);
 		player1.addGoal(goal1);
 		addItemToGame(paddle1);
 
 		// add player 2 to game
-		paddle2 = new Paddle(0, Const.DEFAULT_UPADDLE_YPOS, 0,
-				Const.DEFAULT_PADDLE_HEIGHT, Const.DEFAULT_PADDLE_WIDTH,
+		paddle2 = new Paddle(0, Const.DEFAULT_UPADDLE_YPOS, 0, Const.DEFAULT_PADDLE_HEIGHT, Const.DEFAULT_PADDLE_WIDTH,
 				Const.DEFAULT_PADDLE_DEPTH);
 		player2 = new Player("Playername2", paddle2);
 		player2.addGoal(goal2);
@@ -121,97 +163,62 @@ public class GameEngine {
 		initCube();
 
 		// add ball to game
-		addItemToGame(mainBall = new Ball(BALL_DEFAULT_XPOS, BALL_DEFAULT_YPOS,
-				0, Const.BALL_RADIUS));
-		resetGame=false;
+		addItemToGame(mainBall = new Ball(BALL_DEFAULT_XPOS, BALL_DEFAULT_YPOS, 0, Const.BALL_RADIUS));
+		resetGame = false;
 
 		// Adds the goals to physics simulation
 		physics.addWall(goal1);
 		physics.addWall(goal2);
 
 		// Creates the sidewalls
-		physics.addWall(new Wall(-Const.GAME_WIDTH / 2, 0.0f, 0.0f,
-				Const.GAME_HEIGHT, true)); // Left
-		physics.addWall(new Wall(Const.GAME_WIDTH / 2, 0.0f, 0.0f,
-				Const.GAME_HEIGHT, true)); // Right
+		physics.addWall(new Wall(-Const.GAME_WIDTH / 2, 0.0f, 0.0f, Const.GAME_HEIGHT, true)); // Left
+		physics.addWall(new Wall(Const.GAME_WIDTH / 2, 0.0f, 0.0f, Const.GAME_HEIGHT, true)); // Right
 
 		// Add listeners for the new paddleobjects.
 		createControlListeners(ge.getDrawable());
-
-		// Run the game.
-		startGame();
+		gameState = IN_GAME;
 	}
 
-	private void startGame() {
-		System.out.println("Running the game...");
-		// run game, draw score, zoom etc. if starting/resuming the game
-		gameState = IN_GAME;
+	private void gameTick() {
+		if (resetGame == true) {
+			resetBall();
+		}
+		// Remove items that are set to be removed
+		for (GameItem item : itemsToRemove) {
+			removeItemFromGame(item);
+		}
+		itemsToRemove.clear();
+		// Add items that are queued up to be added
+		for (GameItem item : itemsToAdd) {
+			createObject(item);
+		}
+		itemsToAdd.clear();
 
-			Camera.smoothZoom(100);
-			
-			//Used to calculate FPS
-	        int frames = 0;
-	        long lastTimer1 = System.currentTimeMillis();
+		// get mousepointer position on canvas, move the player controlled paddle
+		paddle1.moveItem(mouse.getxPos(), mouse.getyPos());
+		// restrict maximum ball speed by lineardampening it over a certain speed
+		checkBallSpeed();
+		physics.update();
+		updatePos();
 
-			while (true) {
-				sleepTime = 0;
-				long nextGameTick = getTickCount();
-					if (resetGame == true) {
-						resetBall();
-					}
-					// Remove items that are set to be removed
-					for (GameItem item : itemsToRemove) {
-						removeItemFromGame(item);
-					}
-					itemsToRemove.clear();
-					// Add items that are queued up to be added
-					for(GameItem item : itemsToAdd){
-						createObject(item);
-					}
-					itemsToAdd.clear();
-					
-					//get mousepointer position on canvas, move the player controlled paddle
-					paddle1.moveItem(mouse.getxPos(),mouse.getyPos());
-					//restrict maximum ball speed by lineardampening it over a certain speed
-					checkBallSpeed();
-					physics.update();
-					updatePos();
-				//Calculate how long to sleep. 
-				nextGameTick += skipTicks;
-				sleepTime = nextGameTick -getTickCount();
-				if( sleepTime >= 0 ) {
-		            try {
-						Thread.sleep( sleepTime );
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-		        }
-				//Calculate FPS
-				frames++;
-	            if (System.currentTimeMillis() - lastTimer1 > 1000) {
-	                lastTimer1 += 1000;
-	                fps = frames;
-	                frames = 0;
-	            }
-			}
 	}
 
 	public void ballOut(Player losingPlayer, Ball ball) {
 
 		// Resets the ball to the center if the ball is the mainball. All other balls are deleted.
-		
+
 		SoundPlayer.playMP3("ballout.mp3");
-		
+
 		// Render explosion
 		ballExplode = true;
-		
+
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		if (ball == mainBall) {
 			resetGame = true;
 		} else {
@@ -231,7 +238,7 @@ public class GameEngine {
 		updateScore(winner);
 
 		if (losingPlayer.getLives() < 1) {
-			
+
 			gameState = GAME_ENDED;
 			SoundPlayer.playMP3("win.mp3");
 			try {
@@ -253,23 +260,21 @@ public class GameEngine {
 		ball = mainBall.getBody();
 		Vec2 vec;
 		Random gen = new Random();
-		float r = gen.nextFloat()+2;
+		float r = gen.nextFloat() + 2;
 		float y = ball.getPosition().y;
 		vec = new Vec2(ball.getLinearVelocity());
 		float yVec = 0;
 		float xVec = vec.x;
-		//Set Y to opposite direction..
-		if(y > 0){
+		// Set Y to opposite direction..
+		if (y > 0) {
 			yVec = -15;
-		}
-		else if( y < 0){
+		} else if (y < 0) {
 			yVec = 15;
 		}
-		//Randomize X
-		if( gen.nextBoolean() == true){
-			xVec = r*-1;
-		}
-		else{
+		// Randomize X
+		if (gen.nextBoolean() == true) {
+			xVec = r * -1;
+		} else {
 			xVec = r;
 		}
 		vec.set(xVec, yVec);
@@ -289,25 +294,21 @@ public class GameEngine {
 		// Increase points with 100
 		winner.setScore(score + 100);
 	}
-	
-	private void createObject(GameItem item){
+
+	private void createObject(GameItem item) {
 		item.setBody(physics.addObject(item));
 		item.getBody().setBullet(true);
 		items.add(item);
 	}
 
-	/**
-	 * USE THIS METHOD IF YOU WANT TO ADD OBJECTS TO THE GAME Paddles, balls, obstacles....
-	 */
+	/** USE THIS METHOD IF YOU WANT TO ADD OBJECTS TO THE GAME Paddles, balls, obstacles.... */
 	public void addItemToGame(GameItem item) {
 		itemsToAdd.add(item);
 	}
 
-	/**
-	 * Use this method when you want to remove a object from the game.
+	/** Use this method when you want to remove a object from the game.
 	 * 
-	 * @param item
-	 */
+	 * @param item */
 	public void removeItemFromGame(GameItem item) {
 		physics.destroyBody(item.getBody());
 		items.remove(item);
@@ -327,10 +328,7 @@ public class GameEngine {
 		}
 	}
 
-	/**
-	 * Checks a ball's speed. If it's over maximum: set lineardamping to something. If not: set lineardamping to zero.
-	 * 
-	 */
+	/** Checks a ball's speed. If it's over maximum: set lineardamping to something. If not: set lineardamping to zero. */
 	public void checkBallSpeed() {
 
 		for (GameItem item : items) {
@@ -378,11 +376,9 @@ public class GameEngine {
 
 	}
 
-	/**
-	 * Creates mouse object, adds listeners that control paddles
+	/** Creates mouse object, adds listeners that control paddles
 	 * 
-	 * @param glDrawable
-	 */
+	 * @param glDrawable */
 	public void createControlListeners(GLAutoDrawable glDrawable) {
 		// create mouse listener and connect it to the moveableItem to be controlled
 		mouse = new MouseInput(this);
@@ -391,28 +387,25 @@ public class GameEngine {
 
 	}
 
-	/**
-	 * Creates commandlistener. This listener is persistent during the whole runtime.
+	/** Creates commandlistener. This listener is persistent during the whole runtime.
 	 * 
-	 * @param glDrawable
-	 */
+	 * @param glDrawable */
 	public void createCommandListener(GLAutoDrawable glDrawable) {
 		cmdInput = new CommandInput(this);
 		((Component) glDrawable).addKeyListener(cmdInput);
 	}
-	
-	/**
-	 * returns the time in milliseconds
-	 * @return
-	 */
-	public long getTickCount(){
+
+	/** returns the time in milliseconds
+	 * 
+	 * @return */
+	public long getTickCount() {
 		return System.currentTimeMillis();
 	}
 
 	public void exit() {
 		System.exit(0);
 	}
-	
+
 	public List<GameItem> getGameItems() {
 		return items;
 	}
@@ -436,14 +429,15 @@ public class GameEngine {
 	public int getFps() {
 		return fps;
 	}
+
 	public long getSleepTime() {
 		return sleepTime;
 	}
+
 	public void setGameState(int gameState) {
 		this.gameState = gameState;
 	}
-	
-	
+
 	public Ball getMainBall() {
 		return mainBall;
 	}
@@ -453,7 +447,7 @@ public class GameEngine {
 	}
 
 	public boolean isBallExplode() {
-		return ballExplode ;
+		return ballExplode;
 	}
 
 	public void setBallExplode(boolean ballExplode) {

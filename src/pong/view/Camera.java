@@ -1,6 +1,6 @@
 package pong.view;
 
-import pong.model.Const;
+import static pong.model.Const.*;
 
 public class Camera {
 	// Contains the position of the camera. (x,y,z)
@@ -15,14 +15,14 @@ public class Camera {
 	public Camera() {
 
 		// Set standard startinglocation for the Camera
-		position[0] = Const.CAMERA_POSITION_X;
-		position[1] = Const.CAMERA_POSITION_Y;
-		position[2] = Const.CAMERA_POSITION_Z;
+		position[0] = CAMERA_POSITION_X;
+		position[1] = CAMERA_POSITION_Y;
+		position[2] = CAMERA_POSITION_Z;
 
 		// Set standard point to look at
-		lookPoint[0] = Const.CAMERA_LOOK_AT_X;
-		lookPoint[1] = Const.CAMERA_LOOK_AT_Y;
-		lookPoint[2] = Const.CAMERA_LOOK_AT_Z;
+		lookPoint[0] = CAMERA_LOOK_AT_X;
+		lookPoint[1] = CAMERA_LOOK_AT_Y;
+		lookPoint[2] = CAMERA_LOOK_AT_Z;
 
 		// Set standard Up vector.
 		upVector[0] = 0.0f;

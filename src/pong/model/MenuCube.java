@@ -14,6 +14,12 @@ public class MenuCube {
 	//two dimensional list holding the menu options, 
 	//first list holds the lists of strings for each side of the menu
 	private ArrayList<ArrayList<String>> options;
+	
+	
+	public void tick(){
+		//Do what has to be done (rotate cube and stuff)
+	}
+	
 	public float getxPos() {
 		return xPos;
 	}
