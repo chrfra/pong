@@ -15,24 +15,50 @@ public class MenuCube {
 	//two dimensional list holding the menu options, 
 	//first list holds the lists of strings for each side of the menu
 	private ArrayList<ArrayList<String>> options;
-	
-	
+
+	/*
+	 * updates the menucube's rotation angles, called every tick of the game engine
+	 */
 	public void tick(){
-		//Check rotation around y axis
-		//if menu rotation < target rotation then rotate cube further
-		if(ry < ty){
-			ry = (ry + RY_SPEED);
-		}else if(ry > ty){
-			ry = (ry - RY_SPEED);
+		/*
+		 * Check rotation around y axis
+		 */
+		//Two first if:s are special cases; if cube is rotated almost -270 degrees(three steps to the right)
+		//then instead of going back three steps to reach rotation = 0, simply rotate once to the right
+		
+		//cube is rotated three steps to the right of original rotation
+		//=>rotate another 90 degrees to the right to reach original rotation
+		if(ry < ty && ry <= -270){ 
+			//"<= -270" abouve is vital, since we decrease ry below, so next time tick is run ry will be
+			//-280,-290 ... until reaching 360 and is assigned the value of 0  by the setRy method ( % 360 )
+			setRy(ry - RY_SPEED);
 		}
-		//Check rotation around x axis
-		if(rx < tx){
-			rx = (rx + RY_SPEED);
+		//cube is rotated three steps to the left of original rotation
+		else if(ry > ty && ry >= 270){
+			setRy(ry + RY_SPEED);
+		}
+		//if menu rotation < target rotation then rotate cube RY_SPEED degrees further
+		else if(ry < ty){
+			setRy(ry + RY_SPEED);
+		}else if(ry > ty){
+			setRy(ry - RY_SPEED);
+		}
+		
+		/*
+		 * Check rotation around x axis
+//		 */
+//		if(rx < tx && rx >= 90){
+//			setRx(rx + RY_SPEED);
+//			//setRy(ry + 180);
+//		}
+
+		else if(rx < tx){
+			setRx(rx + RY_SPEED);
 		}else if(rx > tx){
-			rx = (rx - RY_SPEED);
+			setRx(rx - RY_SPEED);
 		}
 	}
-	
+
 	public float getxPos() {
 		return xPos;
 	}
@@ -82,7 +108,7 @@ public class MenuCube {
 	}
 
 	private float depth;
-	
+
 	public MenuCube(float xPos, float yPos, float zPos, float height, float width, float depth) {
 		this.xPos = xPos;
 		this.yPos = yPos;
@@ -94,18 +120,15 @@ public class MenuCube {
 		rx = ry = rz = tx = ty = tz = 0;	//the rotation of the cube is initiated as 0,0,0
 	}
 	/*
-	 * rotates menu around Y axis
+	 * rotates menu around Y axis (sets targetY, ty), rotation is performed in this.tick()
 	 * @param degrees	number of degrees to rotate
 	 */
 	public void rotateY(int degrees){
 		//rx == ty:don't change target y-rotation to current target rotation + 90 degrees 
 		//if the cube has not fully rotated to it's target position yet!
 		//-results in over/under -shoot!
-		
-		//(Math.abs(rx) % 360 == 0): only allow x rotation if on new game face
-		//otherwise one will be able to view faces with text upside-down
-		if(ry == ty && (Math.abs(rx) % 360 == 0))	
-			ty = ty + degrees;
+		if(ry == ty)	
+			setTy(ty + degrees);
 	}
 	/*
 	 * rotates menu around X axis (UP/DOWN)
@@ -113,10 +136,18 @@ public class MenuCube {
 	 */
 	public void rotateX(int degrees){
 		//see rotateY comments
-		
-		if(rx == tx && (Math.abs(ry) % 360 == 0))	
-			tx = tx + degrees;
-		System.out.println(tx);
+		if(rx == tx){
+			//(Math.abs(ry) % 360 == 0): only allow x rotation if on new game face
+			//otherwise one will be able to view faces with text upside-down
+			if((Math.abs(ry) % 360 == 0)){
+				tx = tx + degrees;
+			}
+			//viewing right face
+			else if((Math.abs(ry) % 360 == 90)){
+				System.out.println("right flip");
+			}
+			//System.out.println("(Math.abs(ry) % 360) är :" + (Math.abs(ry) % 360));
+		}
 	}
 
 	/*
@@ -155,14 +186,14 @@ public class MenuCube {
 		return selection;
 	}
 	public void setTx(float tx) {
-		this.tx = tx;
+		this.tx = tx  % 360;
 	}
 	public float getTx() {
 		return tx;
 	}
 
 	public void setTy(float ty) {
-		this.ty = ty;
+		this.ty = ty  % 360;
 	}
 
 	public float getTy() {
@@ -170,7 +201,7 @@ public class MenuCube {
 	}
 
 	public void setTz(float tz) {
-		this.tz = tz;
+		this.tz = tz  % 360;
 	}
 
 	public float getTz() {
@@ -182,7 +213,7 @@ public class MenuCube {
 	}
 
 	public void setRx(float rx) {
-		this.rx = rx;
+		this.rx = rx % 360;
 	}
 
 	public float getRy() {
@@ -190,7 +221,7 @@ public class MenuCube {
 	}
 
 	public void setRy(float ry) {
-		this.ry = ry;
+		this.ry = ry % 360;
 	}
 
 	public float getRz() {
@@ -198,6 +229,6 @@ public class MenuCube {
 	}
 
 	public void setRz(float rz) {
-		this.rz = rz;
+		this.rz = rz % 360;
 	}
 }
