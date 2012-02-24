@@ -47,6 +47,7 @@ public class Renderer {
 	private Texture washedtexture;
 	private TextRenderer textrenderer;
 	private float textScaleFactor;
+	private int spheresize = 0;
 
 	public Renderer(GLU glu) {
 		this.glu = glu;
@@ -462,6 +463,40 @@ public class Renderer {
 		GL2 gl = drawable.getGL().getGL2();
 		//enable depth testing
 		gl.glEnable(GL2.GL_DEPTH_TEST);
+	}
+	
+	public void drawExplosion(GL2 gl, Ball ball) {
+		GLUT glut = new GLUT();
+		//glut.glutSolidTeapot(10);
+		if(ball != null){
+			gl.glColor3f(1f, 0f, 0f);
+			gl.glRotatef(spheresize, 1f, 1f, 1f);
+
+			// THIS FOLLOWING LINE CHANGE THE COLORS OF THE WHOLE GAME... WUT.
+			//gl.glEnable(GL2.GL_COLOR_MATERIAL);
+		
+		}
+		float ballposX = ball.getxPos();
+		float ballposY = ball.getyPos();
+		
+//		gl.glColor3f(1f, 0f, 0f);
+//		gl.glTranslatef(ballposX+5, ballposY+5, 0);
+//		glut.glutSolidSphere(spheresize++, 10, 30);
+		
+//		gl.glColor3f(0f, 1f, 0f);
+//		gl.glTranslatef(ballposX-50, ballposY+5, 0);
+//		glut.glutSolidSphere(spheresize++, 10, 30);
+//		
+		gl.glColor3f(1f, 1f, 1f);
+//		gl.glTranslatef(ballposX-100, ballposY+50, 0);
+//		glut.glutSolidSphere(spheresize++, 50, 50);
+//		
+		// Explosions placeholder...
+		gl.glTranslatef(ballposX, ballposY, 0);
+		glut.glutWireCube(spheresize ++);
+		if(spheresize > 50){
+			spheresize = 0;
+		}
 	}
 	
 

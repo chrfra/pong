@@ -148,6 +148,13 @@ public class GraphicsEngine implements GLEventListener {
 
 			// render.render3DText(drawable, 0, 0, "START");
 			gl.glPopMatrix();
+			
+			
+			if(ge.isBallExplode()){
+				gl.glPushMatrix();
+				render.drawExplosion(gl, ge.getMainBall() );
+				gl.glPopMatrix();
+			}
 
 			// Draw paddles, ball etc
 			try {

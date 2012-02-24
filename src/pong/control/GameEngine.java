@@ -57,6 +57,7 @@ public class GameEngine {
 	// the menu cube
 	private MenuCube menu;
 	private boolean resetGame = false;
+	private boolean ballExplode = false;
 
 	public GameEngine() {
 	}
@@ -201,6 +202,16 @@ public class GameEngine {
 		
 		SoundPlayer.playMP3("ballout.mp3");
 		
+		// Render explosion
+		ballExplode = true;
+		
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		if (ball == mainBall) {
 			resetGame = true;
 		} else {
@@ -229,9 +240,11 @@ public class GameEngine {
 				e.printStackTrace();
 			}
 			SoundPlayer.stopMp3();
+			ballExplode = false;
 			initNewGame();
 
 		}
+		ballExplode = false;
 
 	}
 
@@ -428,5 +441,22 @@ public class GameEngine {
 	}
 	public void setGameState(int gameState) {
 		this.gameState = gameState;
+	}
+	
+	
+	public Ball getMainBall() {
+		return mainBall;
+	}
+
+	public void setMainBall(Ball mainBall) {
+		this.mainBall = mainBall;
+	}
+
+	public boolean isBallExplode() {
+		return ballExplode ;
+	}
+
+	public void setBallExplode(boolean ballExplode) {
+		this.ballExplode = ballExplode;
 	}
 }
