@@ -105,7 +105,8 @@ public class GameEngine {
 			}else if(gameState == IN_MENU){
 				menu.tick();
 			}
-			
+			//Do camera tick
+			Camera.tick();
 			
 			
 			

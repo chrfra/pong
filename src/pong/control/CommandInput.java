@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import pong.model.Ball;
+import pong.view.Camera;
 
 
 /**
@@ -29,6 +30,21 @@ public class CommandInput implements KeyListener {
 		if(arg0.getKeyCode() == KeyEvent.VK_B){
 			ge.addItemToGame(new Ball(BALL_DEFAULT_XPOS, BALL_DEFAULT_YPOS, 0, BALL_RADIUS));
 			System.out.println("Adding ball...");
+		}
+		if(arg0.getKeyCode() == KeyEvent.VK_1){
+			Camera.setMode(CAM_STATIC);
+		}
+		if(arg0.getKeyCode() == KeyEvent.VK_2){
+			Camera.setMode(CAM_FOLLOW_BALLS);
+		}
+		if(arg0.getKeyCode() == KeyEvent.VK_3){
+			Camera.setMode(CAM_LOOKAT_BALLS);
+		}
+		if(arg0.getKeyCode() == KeyEvent.VK_4){
+			Camera.setMode(CAM_PADDLE1);
+		}
+		if(arg0.getKeyCode() == KeyEvent.VK_5){
+			Camera.setMode(CAM_PADDLE2);
 		}
 	}
 

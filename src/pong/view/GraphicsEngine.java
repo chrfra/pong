@@ -38,7 +38,7 @@ public class GraphicsEngine implements GLEventListener {
 	private GameEngine ge;
 	private Renderer render;
 	private GLAutoDrawable drawable;
-	private Camera cam = new Camera();
+	private Camera cam;
 	//x,y,z rotation (degrees) to rotate the menu cube and the speed at which to do so
 	float rotationSpeed;
 	//Dimension of the frame
@@ -49,6 +49,7 @@ public class GraphicsEngine implements GLEventListener {
 	//private static FPSAnimator animator= new FPSAnimator(60);
 	public GraphicsEngine(GameEngine ge) {
 		this.ge = ge;
+		this.cam = new Camera(ge);
 	}
 
 	public void setUp() {
