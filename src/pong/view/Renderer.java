@@ -457,34 +457,46 @@ public class Renderer {
 	
 	public void drawExplosion(GL2 gl, Ball ball) {
 		GLUT glut = new GLUT();
-		//glut.glutSolidTeapot(10);
-		if(ball != null){
-			gl.glColor3f(1f, 0f, 0f);
-			gl.glRotatef(spheresize, 1f, 1f, 1f);
-
-			// THIS FOLLOWING LINE CHANGE THE COLORS OF THE WHOLE GAME... WUT.
-			//gl.glEnable(GL2.GL_COLOR_MATERIAL);
-		
-		}
 		float ballposX = ball.getxPos();
 		float ballposY = ball.getyPos();
+		int length = 5;
 		
-//		gl.glColor3f(1f, 0f, 0f);
-//		gl.glTranslatef(ballposX+5, ballposY+5, 0);
-//		glut.glutSolidSphere(spheresize++, 10, 30);
+		// THIS FOLLOWING LINE CHANGE THE COLORS OF THE WHOLE GAME... WUT.
+		gl.glEnable(GL2.GL_COLOR_MATERIAL);
 		
-//		gl.glColor3f(0f, 1f, 0f);
-//		gl.glTranslatef(ballposX-50, ballposY+5, 0);
-//		glut.glutSolidSphere(spheresize++, 10, 30);
-//		
+		gl.glPushMatrix();
+		gl.glColor3f(1f, 0f, 0f);
+		gl.glRotatef(spheresize, 1f, 1f, 1f);
+		gl.glTranslatef(ballposX+length, ballposY-length, 0);
+		glut.glutSolidSphere(1+spheresize++, 10, 30);
+		gl.glPopMatrix();
+		
+		gl.glPushMatrix();
+		gl.glColor3f(0f, 1f, 0f);
+		gl.glRotatef(1f, spheresize, 1f, 1f);
+		gl.glTranslatef(ballposX-length, ballposY+length, 0);
+		glut.glutSolidSphere(3+spheresize++, 10, 30);
+		gl.glPopMatrix();
+		
+		gl.glPushMatrix();
 		gl.glColor3f(1f, 1f, 1f);
-//		gl.glTranslatef(ballposX-100, ballposY+50, 0);
-//		glut.glutSolidSphere(spheresize++, 50, 50);
-//		
-		// Explosions placeholder...
-		gl.glTranslatef(ballposX, ballposY, 0);
-		glut.glutWireCube(spheresize ++);
-		if(spheresize > 50){
+		gl.glRotatef(1f, 1f, spheresize, 1f);
+		gl.glTranslatef(ballposX+length, ballposY+length, 0);
+		glut.glutSolidSphere(2+spheresize++, 50, 50);
+		gl.glPopMatrix();
+		
+		gl.glDisable(GL2.GL_COLOR_MATERIAL);
+		
+		// New thread cause since we render too fast otherwise
+		Thread t = new Thread();
+		t.start();
+		
+		try {
+			t.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		if(spheresize > 10){
 			spheresize = 0;
 		}
 	}

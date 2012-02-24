@@ -1,6 +1,8 @@
 package pong.view;
 
 import static pong.model.Const.*;
+import pong.control.GameEngine;
+import pong.model.Ball;
 
 public class Camera {
 	// Contains the position of the camera. (x,y,z)
@@ -12,7 +14,13 @@ public class Camera {
 	// Contains the Up vector for the camera. (This will probably never be changed)
 	private static float[] upVector = new float[3];
 
-	public Camera() {
+	
+	// The mode of the camera.
+	private static int mode;
+	
+	private static GameEngine ge;
+
+	public Camera(GameEngine engine) {
 
 		// Set standard startinglocation for the Camera
 		position[0] = CAMERA_POSITION_X;
@@ -28,8 +36,46 @@ public class Camera {
 		upVector[0] = 0.0f;
 		upVector[1] = 1.0f;
 		upVector[2] = 0.0f;
+		
+		ge = engine;
 	}
 
+	public static void tick(){
+		if(ge.getGameState() == IN_GAME){
+			if(mode == CAM_STATIC){
+				staticCam();
+			}
+			else if(mode == CAM_LOOKAT_BALLS){
+				lookAtBalls();
+			}else if(mode == CAM_FOLLOW_BALLS){
+				followBalls();
+			}
+		}
+	}
+	
+	private static void staticCam(){
+		resetPosition();
+		resetLookat();
+	}
+	
+	private static void lookAtBalls(){
+		Ball mainball = ge.getMainBall();
+		resetPosition();
+		lookPoint[0] = mainball.getxPos();
+		lookPoint[1] = mainball.getyPos();
+		lookPoint[2] = mainball.getzPos();
+	}
+	
+	private static void followBalls(){
+		Ball mainball = ge.getMainBall();
+		lookPoint[0] = mainball.getxPos();
+		lookPoint[1] = mainball.getyPos();
+		lookPoint[2] = mainball.getzPos();
+		
+		position[0] = mainball.getxPos();
+		position[1] = mainball.getyPos();
+	}
+	
 	/** Makes a smooth increment or decrement of zPos of the camera. */
 	public static void smoothZoom(float zTarget) {
 		float startPos = position[2];
@@ -84,12 +130,30 @@ public class Camera {
 		// Sets the position to be exactly the target Z.
 		position[2] = zTarget;
 	}
+	
+	// Set standard location for the Camera
+	public static void resetPosition(){
+		position[0] = CAMERA_POSITION_X;
+		position[1] = CAMERA_POSITION_Y;
+		position[2] = CAMERA_POSITION_Z;
+	}
+	
+	// Set standard point to look at
+	public static void resetLookat(){
+		lookPoint[0] = CAMERA_LOOK_AT_X;
+		lookPoint[1] = CAMERA_LOOK_AT_Y;
+		lookPoint[2] = CAMERA_LOOK_AT_Z;
+	}
+	
+	public static void setMode(int camMode){
+		mode = camMode;
+	}
 
 	public static float[] getPosition() {
 		return position;
 	}
 
-	public float[] getLookPoint() {
+	public static float[] getLookPoint() {
 		return lookPoint;
 	}
 
