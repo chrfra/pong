@@ -90,15 +90,16 @@ public class GameEngine {
 			e.printStackTrace();
 		}
 		
+		// Used to calculate FPS
+		int frames = 0;
+		long lastTimer1 = System.currentTimeMillis();
+		
 		while (true) {
-
-			// Used to calculate FPS
-			int frames = 0;
-			long lastTimer1 = System.currentTimeMillis();
-			//Used to calculate sleeptime
+			//Used to calculate sleeptime after next tick
 			sleepTime = 0;
 			long nextGameTick = getTickCount();
 
+			//Do tick
 			if(gameState == IN_GAME){
 				gameTick();
 			}else if(gameState == IN_MENU){
