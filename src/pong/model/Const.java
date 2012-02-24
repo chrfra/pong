@@ -61,7 +61,7 @@ public class Const {
 	public static final float DEFAULT_DPADDLE_ZPOS = 0;
 	
 	// Default values for balls
-	public static final float BALL_MAXSPEED = 15;
+	public static final float BALL_MAXSPEED = 30;
 	public static final float BALL_RADIUS = 1.5f;
 	
 	// Default value for the main ball
