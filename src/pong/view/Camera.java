@@ -42,24 +42,39 @@ public class Camera {
 
 	public static void tick(){
 		if(ge.getGameState() == IN_GAME){
-			if(mode == CAM_LOOKAT_BALLS){
-				Ball mainball = ge.getMainBall();
-				resetPosition();
-				lookPoint[0] = mainball.getxPos();
-				lookPoint[1] = mainball.getyPos();
-				lookPoint[2] = mainball.getzPos();
+			if(mode == CAM_STATIC){
+				staticCam();
+			}
+			else if(mode == CAM_LOOKAT_BALLS){
+				lookAtBalls();
 			}else if(mode == CAM_FOLLOW_BALLS){
-				Ball mainball = ge.getMainBall();
-				lookPoint[0] = mainball.getxPos();
-				lookPoint[1] = mainball.getyPos();
-				lookPoint[2] = mainball.getzPos();
-				
-				position[0] = mainball.getxPos();
-				position[1] = mainball.getyPos();
+				followBalls();
 			}
 		}
 	}
 	
+	private static void staticCam(){
+		resetPosition();
+		resetLookat();
+	}
+	
+	private static void lookAtBalls(){
+		Ball mainball = ge.getMainBall();
+		resetPosition();
+		lookPoint[0] = mainball.getxPos();
+		lookPoint[1] = mainball.getyPos();
+		lookPoint[2] = mainball.getzPos();
+	}
+	
+	private static void followBalls(){
+		Ball mainball = ge.getMainBall();
+		lookPoint[0] = mainball.getxPos();
+		lookPoint[1] = mainball.getyPos();
+		lookPoint[2] = mainball.getzPos();
+		
+		position[0] = mainball.getxPos();
+		position[1] = mainball.getyPos();
+	}
 	
 	/** Makes a smooth increment or decrement of zPos of the camera. */
 	public static void smoothZoom(float zTarget) {
