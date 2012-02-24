@@ -72,8 +72,6 @@ public class GraphicsEngine implements GLEventListener {
 		// starts calling display method
 		animator.start();
 		canvas.requestFocus();
-		//initiate menu rotation angles = 0
-		rotationSpeed = RY_SPEED;
 	}
 
 	@Override
@@ -103,6 +101,8 @@ public class GraphicsEngine implements GLEventListener {
 			
 			// render the Menu Cube
 			render.drawMenu(drawable,menu,menu.getRx(),menu.getRy(),menu.getRz());
+			System.out.println("ty"+menu.getTx());
+			System.out.println("ry"+menu.getRx());
 			//spin menu (if it is supposed to spin)
 			// OLD ge.getMenu().setRy(calculateRotation(menu.getRy(), menu.getRotationSpeed()));
 			//decrease rotation speed
