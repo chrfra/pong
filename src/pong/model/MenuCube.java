@@ -15,8 +15,8 @@ public class MenuCube {
 	//two dimensional list holding the menu options, 
 	//first list holds the lists of strings for each side of the menu
 	private ArrayList<ArrayList<String>> options;
-	
-	
+
+
 	public void tick(){
 		//Check rotation around y axis
 		//if menu rotation < target rotation then rotate cube further
@@ -32,7 +32,7 @@ public class MenuCube {
 			rx = (rx - RY_SPEED);
 		}
 	}
-	
+
 	public float getxPos() {
 		return xPos;
 	}
@@ -82,7 +82,7 @@ public class MenuCube {
 	}
 
 	private float depth;
-	
+
 	public MenuCube(float xPos, float yPos, float zPos, float height, float width, float depth) {
 		this.xPos = xPos;
 		this.yPos = yPos;
@@ -101,10 +101,7 @@ public class MenuCube {
 		//rx == ty:don't change target y-rotation to current target rotation + 90 degrees 
 		//if the cube has not fully rotated to it's target position yet!
 		//-results in over/under -shoot!
-		
-		//(Math.abs(rx) % 360 == 0): only allow x rotation if on new game face
-		//otherwise one will be able to view faces with text upside-down
-		if(ry == ty && (Math.abs(rx) % 360 == 0))	
+		if(ry == ty)	
 			ty = ty + degrees;
 	}
 	/*
@@ -113,10 +110,18 @@ public class MenuCube {
 	 */
 	public void rotateX(int degrees){
 		//see rotateY comments
-		
-		if(rx == tx && (Math.abs(ry) % 360 == 0))	
-			tx = tx + degrees;
-		System.out.println(tx);
+		if(rx == tx){
+			//(Math.abs(ry) % 360 == 0): only allow x rotation if on new game face
+			//otherwise one will be able to view faces with text upside-down
+			if((Math.abs(ry) % 360 == 0)){
+				tx = tx + degrees;
+			}
+			//viewing right face
+			else if((Math.abs(ry) % 360 == 90)){
+			System.out.println("right ( 90 ) :" + (Math.abs(ry) % 360));
+			}
+			System.out.println("(Math.abs(ry) % 360) är :" + (Math.abs(ry) % 360));
+		}
 	}
 
 	/*
