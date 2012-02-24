@@ -27,8 +27,6 @@ import pong.model.GameItem;
 import pong.model.MenuCube;
 
 import com.jogamp.opengl.util.Animator;
-import com.jogamp.opengl.util.FPSAnimator;
-import com.jogamp.opengl.util.gl2.GLUT;
 
 public class GraphicsEngine implements GLEventListener {
 
