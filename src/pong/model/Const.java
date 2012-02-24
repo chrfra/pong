@@ -8,7 +8,7 @@ public class Const {
 	public static final int IN_GAME = 1;
 	public static final int GAME_ENDED = 3;
 	public static final int PAUSED = 4;
-	public static final int STARTUP_STATE = 0;	//starts the game in menu-mode/game-mode
+	public static final int STARTUP_STATE = 1;	//starts the game in menu-mode/game-mode
 	
 	//Camera Modes
 	public static final int CAM_STATIC = 0;

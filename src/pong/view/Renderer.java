@@ -254,7 +254,7 @@ public class Renderer {
 		bgRotation+=0.01;
 
 		// Set radius of background sphere
-		int r = 100;
+		int r = 300;
 
 		// Enable texturing.
 		gl.glEnable(GL.GL_TEXTURE_2D);
