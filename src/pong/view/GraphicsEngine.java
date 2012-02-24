@@ -108,19 +108,7 @@ public class GraphicsEngine implements GLEventListener {
 			// OLD ge.getMenu().setRy(calculateRotation(menu.getRy(), menu.getRotationSpeed()));
 			//decrease rotation speed
 			
-			//Check rotation around y axis
-			//if menu rotation < target rotation then rotate cube further
-			if(menu.getRy() < menu.getTy()){
-				ge.getMenu().setRy(menu.getRy() + RY_SPEED);
-			}else if(menu.getRy() > menu.getTy()){
-				ge.getMenu().setRy(menu.getRy() - RY_SPEED);
-			}
-			//Check rotation around x axis
-			if(menu.getRx() < menu.getTx()){
-				ge.getMenu().setRx(menu.getRx() + RY_SPEED);
-			}else if(menu.getRx() > menu.getTx()){
-				ge.getMenu().setRx(menu.getRx() - RY_SPEED);
-			}
+
 				
 		}else if (ge.getGameState() == PAUSED) {
 			//add resume -option to menu, since the game is now paused

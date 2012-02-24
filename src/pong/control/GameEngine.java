@@ -71,14 +71,13 @@ public class GameEngine {
 		System.out.println("Initializing graphics...");
 		ge = new GraphicsEngine(this);
 		ge.setUp();
-
-
-
-
 		runApplication();
 	}
 
 	public void runApplication() {
+		// create the menu cube, is needed for menu.tick call below!
+		initCube();
+		
 		//Initialize game if startstate is IN_GAME
 		if(gameState == IN_GAME){
 			initNewGame();
@@ -159,9 +158,6 @@ public class GameEngine {
 		player2 = new Player("Playername2", paddle2);
 		player2.addGoal(goal2);
 		addItemToGame(paddle2);
-
-		// create the menu cube
-		initCube();
 
 		// add ball to game
 		addItemToGame(mainBall = new Ball(BALL_DEFAULT_XPOS, BALL_DEFAULT_YPOS, 0, Const.BALL_RADIUS));

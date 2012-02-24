@@ -1,5 +1,7 @@
 package pong.model;
 
+import static pong.model.Const.RY_SPEED;
+
 import java.util.ArrayList;
 
 public class MenuCube {
@@ -17,7 +19,19 @@ public class MenuCube {
 	
 	
 	public void tick(){
-		//Do what has to be done (rotate cube and stuff)
+		//Check rotation around y axis
+		//if menu rotation < target rotation then rotate cube further
+		if(ry < ty){
+			ry = (ry + RY_SPEED);
+		}else if(ry > ty){
+			ry = (ry - RY_SPEED);
+		}
+		//Check rotation around x axis
+		if(rx < tx){
+			rx = (rx + RY_SPEED);
+		}else if(rx > tx){
+			rx = (rx - RY_SPEED);
+		}
 	}
 	
 	public float getxPos() {
