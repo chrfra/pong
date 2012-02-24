@@ -10,6 +10,13 @@ public class Const {
 	public static final int PAUSED = 4;
 	public static final int STARTUP_STATE = 1;	//starts the game in menu-mode/game-mode
 	
+	//Camera Modes
+	public static final int CAM_STATIC = 0;
+	public static final int CAM_FOLLOW_BALLS = 1;
+	public static final int CAM_LOOKAT_BALLS = 2;
+	public static final int CAM_PADDLE1 = 3;
+	public static final int CAM_PADDLE2 = 4;
+	
 	//input constants
 	public static final float MOUSE_OFFSET = 0.0f;
 	public static final float MOUSE_SENSE = 40f;
