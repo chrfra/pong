@@ -10,13 +10,6 @@ public class Const {
 	public static final int PAUSED = 4;
 	public static final int STARTUP_STATE = 1;	//starts the game in menu-mode/game-mode
 	
-	//Camera Modes
-	public static final int CAM_STATIC = 0;
-	public static final int CAM_FOLLOW_BALLS = 1;
-	public static final int CAM_LOOKAT_BALLS = 2;
-	public static final int CAM_PADDLE1 = 3;
-	public static final int CAM_PADDLE2 = 4;
-	
 	//input constants
 	public static final float MOUSE_OFFSET = 0.0f;
 	public static final float MOUSE_SENSE = 40f;
@@ -25,9 +18,9 @@ public class Const {
 	// For the screen area
 	public static final int SCREEN_WIDTH = 800;
 	public static final int SCREEN_HEIGHT = 600;
-	/*
-	 * Menu options
-	 */
+
+	/**************************MENU OPTIONS***************************/
+	
 	//size of the (cubic) menu
 	public static final float MENU_SIZE = 9f;
 	public static final float MENU_ZPOS = 98;
@@ -41,6 +34,10 @@ public class Const {
 	public static final int MENU_BOTTOM= 5;
 	public static final float RY_SPEED = 5f; //initial rotationspeed around the y-axis MUST BE DIVISIBLE BY 360!
 			
+	/******************************************************************/
+	
+	/********************GAME ITEM CONSTANTS***************************/
+	
 	// Game area values
 	public static final float GAME_WIDTH = 80;
 	public static final float GAME_HEIGHT = 80;
@@ -67,6 +64,21 @@ public class Const {
 	public static final float BALL_DEFAULT_XPOS = 0;
 	public static final float BALL_DEFAULT_YPOS = 0;
 	
+	/****************************************************************/
+	
+	// Default values for Players
+	public static final int DEFAULT_STARTING_SCORE = 0;
+	public static final int DEFAULT_AMOUNT_PLAYER_LIVES = 3;
+	
+	//sets how fast the game logic is to be updated, when this framerate is exceeded, the game(logic) thread sleeps
+	public static double TARGET_FRAMERATE = 60;
+	
+	//rendering constants
+	public static final int VSYNC = 1; //0 = off 1 = on
+	
+	
+	/*****************CAMERA****************************/
+	
 	// Default values for Camera
 	public static final float CAMERA_LOOK_AT_X = 0;
 	public static final float CAMERA_LOOK_AT_Y = 0;
@@ -80,13 +92,15 @@ public class Const {
 	public static final float CAMERA_UPVECTOR_Y = 1;
 	public static final float CAMERA_UPVECTOR_Z = 0;
 	
-	// Default values for Players
-	public static final int DEFAULT_STARTING_SCORE = 0;
-	public static final int DEFAULT_AMOUNT_PLAYER_LIVES = 3;
+	//Sensitivity. Affects cameramodes 2 and 3
+	public static final float CAM_SENSITIVITY = 0.5f;
 	
-	//sets how fast the game logic is to be updated, when this framerate is exceeded, the game(logic) thread sleeps
-	public static double TARGET_FRAMERATE = 60;
+	//Camera Modes
+	public static final int CAM_STATIC = 1;
+	public static final int CAM_FOLLOW_BALLS = 2;
+	public static final int CAM_LOOKAT_BALLS = 3;
+	public static final int CAM_PADDLE1 = 4;
+	public static final int CAM_PADDLE2 = 5;
 	
-	//rendering constants
-	public static final int VSYNC = 1; //0 = off 1 = on
+	/**************************************************/
 }

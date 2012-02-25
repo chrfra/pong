@@ -1,8 +1,13 @@
 package pong.view;
 
 import static pong.model.Const.*;
+
+import java.util.List;
+
+
 import pong.control.GameEngine;
 import pong.model.Ball;
+import pong.model.GameItem;
 import pong.model.Paddle;
 
 public class Camera {
@@ -67,23 +72,51 @@ public class Camera {
 	private static void lookAtBalls() {
 		resetPosition();
 		resetUpVector();
-
-		Ball mainball = ge.getMainBall();
-		lookPoint[0] = mainball.getxPos();
-		lookPoint[1] = mainball.getyPos();
-		lookPoint[2] = mainball.getzPos();
+		float xAvg=0, yAvg=0, zAvg=0;
+		int count = 0;
+		
+		List<GameItem> items = ge.getGameItems();
+		
+		for(GameItem item : items){
+			xAvg+=item.getxPos();
+			yAvg+=item.getyPos();
+			zAvg+=item.getzPos();
+			count++;
+		}
+		xAvg = xAvg/count;
+		yAvg = yAvg/count;
+		zAvg = zAvg/count;
+		
+		lookPoint[0] = xAvg * CAM_SENSITIVITY;
+		lookPoint[1] = yAvg * CAM_SENSITIVITY;
+		lookPoint[2] = zAvg * CAM_SENSITIVITY;
 	}
 
 	private static void followBalls() {
 		resetUpVector();
 
-		Ball mainball = ge.getMainBall();
-		lookPoint[0] = mainball.getxPos();
-		lookPoint[1] = mainball.getyPos();
-		lookPoint[2] = mainball.getzPos();
+		float xAvg=0, yAvg=0, zAvg=0;
+		int count = 0;
+		
+		List<GameItem> items = ge.getGameItems();
+		
+		for(GameItem item : items){
+			xAvg+=item.getxPos();
+			yAvg+=item.getyPos();
+			zAvg+=item.getzPos();
+			count++;
+		}
+		xAvg = xAvg/count;
+		yAvg = yAvg/count;
+		zAvg = zAvg/count;
+		
+		
+		lookPoint[0] = xAvg * CAM_SENSITIVITY;
+		lookPoint[1] = yAvg * CAM_SENSITIVITY;
+		lookPoint[2] = zAvg * CAM_SENSITIVITY;
 
-		position[0] = mainball.getxPos();
-		position[1] = mainball.getyPos();
+		position[0] = xAvg * CAM_SENSITIVITY;
+		position[1] = yAvg * CAM_SENSITIVITY;
 		position[2] = CAMERA_POSITION_Z;
 	}
 
