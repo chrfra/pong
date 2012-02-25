@@ -37,14 +37,15 @@ public class GraphicsEngine implements GLEventListener {
 	private Renderer render;
 	private GLAutoDrawable drawable;
 	private Camera cam;
-	//x,y,z rotation (degrees) to rotate the menu cube and the speed at which to do so
+	// x,y,z rotation (degrees) to rotate the menu cube and the speed at which to do so
 	float rotationSpeed;
-	//Dimension of the frame
+	// Dimension of the frame
 	private int frameWidth, frameHeight;
 
 	// animator drives display method in a loop
 	private static Animator animator = new Animator(canvas);
-	//private static FPSAnimator animator= new FPSAnimator(60);
+
+	// private static FPSAnimator animator= new FPSAnimator(60);
 	public GraphicsEngine(GameEngine ge) {
 		this.ge = ge;
 		this.cam = new Camera(ge);
@@ -57,12 +58,12 @@ public class GraphicsEngine implements GLEventListener {
 		render = new Renderer(glu);
 		frame.add(canvas);
 		frame.setSize(Const.SCREEN_WIDTH, Const.SCREEN_HEIGHT);
-		
-		//spawn window in the center of the screen
-		Toolkit toolkit =  Toolkit.getDefaultToolkit ();
+
+		// spawn window in the center of the screen
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension dim = toolkit.getScreenSize();
 		frame.setLocation(dim.width / 2 - SCREEN_WIDTH / 2, dim.height / 2 - SCREEN_HEIGHT / 2);
-		
+
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				exit();
@@ -78,43 +79,42 @@ public class GraphicsEngine implements GLEventListener {
 	public void display(GLAutoDrawable gLDrawable) {
 		GL2 gl = gLDrawable.getGL().getGL2();
 		// Items to be drawn
-		MenuCube menu = ge.getMenu();	//will be using the menu object a lot, store reference to it in "menu" variable
+		MenuCube menu = ge.getMenu(); // will be using the menu object a lot, store reference to it in "menu" variable
 		// render.setGl(gl);
 
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
 		// Uses the cameras position and direction
-		glu.gluLookAt(cam.getPosition()[0], cam.getPosition()[1],
-				cam.getPosition()[2], cam.getLookPoint()[0],
-				cam.getLookPoint()[1], cam.getLookPoint()[2], 0.0, 1.0, 0.0);
+		glu.gluLookAt(Camera.getPosition()[0], Camera.getPosition()[1], Camera.getPosition()[2],
+				Camera.getLookPoint()[0], Camera.getLookPoint()[1], Camera.getLookPoint()[2], Camera.getUpVector()[0],
+				Camera.getUpVector()[1], Camera.getUpVector()[2]);
 
 		gl.glPushMatrix();
 		render.drawBackground(gl);
 		gl.glPopMatrix();
-		
-		//Write updates per second and sleeptime
-		render.renderTextAtPixels(0, frameHeight-12, frameWidth, frameHeight, "Updates per second: "+ge.getFps()+" Sleeptime: " + ge.getSleepTime()+"ms",new Font("font", Font.PLAIN, 12));
+
+		// Write updates per second and sleeptime
+		render.renderTextAtPixels(0, frameHeight - 12, frameWidth, frameHeight, "Updates per second: " + ge.getFps()
+				+ " Sleeptime: " + ge.getSleepTime() + "ms", new Font("font", Font.PLAIN, 12));
 
 		// check gameState to determine whether to zoom out and draw menu or to draw the game
 		if (ge.getGameState() == IN_MENU) {
-			
-			// render the Menu Cube
-			render.drawMenu(drawable,menu,menu.getRx(),menu.getRy(),menu.getRz());
-			System.out.println("ty"+menu.getTx());
-			System.out.println("ry"+menu.getRx());
-			//spin menu (if it is supposed to spin)
-			// OLD ge.getMenu().setRy(calculateRotation(menu.getRy(), menu.getRotationSpeed()));
-			//decrease rotation speed
-			
 
-				
-		}else if (ge.getGameState() == PAUSED) {
-			//add resume -option to menu, since the game is now paused
+			// render the Menu Cube
+			render.drawMenu(drawable, menu, menu.getRx(), menu.getRy(), menu.getRz());
+			System.out.println("ty" + menu.getTx());
+			System.out.println("ry" + menu.getRx());
+			// spin menu (if it is supposed to spin)
+			// OLD ge.getMenu().setRy(calculateRotation(menu.getRy(), menu.getRotationSpeed()));
+			// decrease rotation speed
+
+		} else if (ge.getGameState() == PAUSED) {
+			// add resume -option to menu, since the game is now paused
 			menu.updateOption(MENU_FRONT, 0, "Resume");
 			// render the Menu Cube
-			render.drawMenu(drawable,menu,menu.getRx(),menu.getRy(),menu.getRz());
-			//spin menu (if it is supposed to spin)
+			render.drawMenu(drawable, menu, menu.getRx(), menu.getRy(), menu.getRz());
+			// spin menu (if it is supposed to spin)
 			ge.getMenu().setRy(calculateRotation(menu.getRy(), rotationSpeed));
 		}
 		// game has started/resumed, draw all game related components
@@ -128,18 +128,17 @@ public class GraphicsEngine implements GLEventListener {
 
 			gl.glPushMatrix();
 			// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350)
-			render.render2DText(SCREEN_WIDTH-860, SCREEN_HEIGHT-645, "Player 1: " +
-					ge.getPlayer1().getScore() + " Lives: " + ge.getPlayer1().getLives(), gl);
-			render.render2DText(SCREEN_WIDTH-800, SCREEN_HEIGHT-645, "Player 2: " +
-					ge.getPlayer2().getScore() + " Lives: " + ge.getPlayer2().getLives(), gl);
+			render.render2DText(SCREEN_WIDTH - 860, SCREEN_HEIGHT - 645, "Player 1: " + ge.getPlayer1().getScore()
+					+ " Lives: " + ge.getPlayer1().getLives(), gl);
+			render.render2DText(SCREEN_WIDTH - 800, SCREEN_HEIGHT - 645, "Player 2: " + ge.getPlayer2().getScore()
+					+ " Lives: " + ge.getPlayer2().getLives(), gl);
 
 			// render.render3DText(drawable, 0, 0, "START");
 			gl.glPopMatrix();
-			
-			
-			if(ge.isBallExplode()){
+
+			if (ge.isBallExplode()) {
 				gl.glPushMatrix();
-				render.drawExplosion(gl, ge.getMainBall() );
+				render.drawExplosion(gl, ge.getMainBall());
 				gl.glPopMatrix();
 			}
 
@@ -167,14 +166,13 @@ public class GraphicsEngine implements GLEventListener {
 				e.printStackTrace();
 			}
 		}
-		
+
 		// game has ended, print score
-		else if(ge.getGameState() == GAME_ENDED){
-			if(ge.getPlayer1().getLives() > ge.getPlayer2().getLives()){
+		else if (ge.getGameState() == GAME_ENDED) {
+			if (ge.getPlayer1().getLives() > ge.getPlayer2().getLives()) {
 				render.render2DText(-30, 0, "Player 1 WINS!!", gl);
 				render.render2DText(-30, -5, "Score: " + ge.getPlayer1().getScore(), gl);
-			}
-			else{
+			} else {
 				render.render2DText(-30, 0, "Player 2 WINS!!", gl);
 				render.render2DText(-30, -5, "Score: " + ge.getPlayer2().getScore(), gl);
 			}
@@ -194,10 +192,9 @@ public class GraphicsEngine implements GLEventListener {
 
 		drawable = glDrawable;
 
-
 		// Required Init-functions
 		GL2 gl = glDrawable.getGL().getGL2();
-		gl.setSwapInterval(VSYNC);			//disable/enable v-sync
+		gl.setSwapInterval(VSYNC); // disable/enable v-sync
 		gl.glShadeModel(GLLightingFunc.GL_SMOOTH);
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 		gl.glClearDepth(1.0f);
@@ -235,15 +232,16 @@ public class GraphicsEngine implements GLEventListener {
 
 	}
 
-/*
- * calculates the menu's rotation to gradually bring the cube from spinning to forward facing
- * @param rotation	current menu rotation
- * @param speed		current cube rotation speed
- */
-	public float calculateRotation(float rotation, float speed){
-		if(rotation != 360)
+	/*
+	 * calculates the menu's rotation to gradually bring the cube from spinning to forward facing
+	 * @param rotation	current menu rotation
+	 * @param speed		current cube rotation speed
+	 */
+	public float calculateRotation(float rotation, float speed) {
+		if (rotation != 360)
 			return (rotation + speed);
-		else return 0;
+		else
+			return 0;
 		/*
 		if (speed > 0){		//rotationSpeed can't be negative! (object would rotate backwards)
 			rotation = (rotation + speed) % 360;	//rotate on y axis 0-360 degrees
@@ -263,8 +261,7 @@ public class GraphicsEngine implements GLEventListener {
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable gLDrawable, int x, int y, int width,
-			int height) {
+	public void reshape(GLAutoDrawable gLDrawable, int x, int y, int width, int height) {
 		GL2 gl = gLDrawable.getGL().getGL2();
 		frameWidth = width;
 		frameHeight = height;

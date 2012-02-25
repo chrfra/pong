@@ -35,9 +35,9 @@ public class GameEngine {
 	private MouseInput mouse;
 	// Listens for commands to do something with the game
 	private CommandInput cmdInput;
-	// references the paddle to be controlled by player 1
+	// references the paddle to be controlled by player 1 (LOWER PADDLE)
 	private Paddle paddle1;
-	// references the paddle to be controlled by player 2
+	// references the paddle to be controlled by player 2 (UPPER PADDLE)
 	private Paddle paddle2;
 	// The main ball in the game. This ball will never die
 	private Ball mainBall;

@@ -14,6 +14,7 @@ public class Player {
 	
 	public Player(String name, Paddle paddle) {
 		this.setName(name);
+		this.paddle = paddle;
 	}
 
 	public String getName() {

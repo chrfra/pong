@@ -3,6 +3,7 @@ package pong.view;
 import static pong.model.Const.*;
 import pong.control.GameEngine;
 import pong.model.Ball;
+import pong.model.Paddle;
 
 public class Camera {
 	// Contains the position of the camera. (x,y,z)
@@ -14,11 +15,12 @@ public class Camera {
 	// Contains the Up vector for the camera. (This will probably never be changed)
 	private static float[] upVector = new float[3];
 
-	
 	// The mode of the camera.
 	private static int mode;
-	
+
 	private static GameEngine ge;
+
+	private static float rotatedY;
 
 	public Camera(GameEngine engine) {
 
@@ -36,46 +38,82 @@ public class Camera {
 		upVector[0] = 0.0f;
 		upVector[1] = 1.0f;
 		upVector[2] = 0.0f;
-		
+
 		ge = engine;
 	}
 
-	public static void tick(){
-		if(ge.getGameState() == IN_GAME){
-			if(mode == CAM_STATIC){
+	public static void tick() {
+		if (ge.getGameState() == IN_GAME) {
+			if (mode == CAM_STATIC) {
 				staticCam();
-			}
-			else if(mode == CAM_LOOKAT_BALLS){
+			} else if (mode == CAM_LOOKAT_BALLS) {
 				lookAtBalls();
-			}else if(mode == CAM_FOLLOW_BALLS){
+			} else if (mode == CAM_FOLLOW_BALLS) {
 				followBalls();
+			} else if (mode == CAM_PADDLE1) {
+				followPaddle1();
+			} else if (mode == CAM_PADDLE2) {
+				followPaddle2();
 			}
 		}
 	}
-	
-	private static void staticCam(){
+
+	private static void staticCam() {
 		resetPosition();
 		resetLookat();
+		resetUpVector();
 	}
-	
-	private static void lookAtBalls(){
-		Ball mainball = ge.getMainBall();
+
+	private static void lookAtBalls() {
 		resetPosition();
-		lookPoint[0] = mainball.getxPos();
-		lookPoint[1] = mainball.getyPos();
-		lookPoint[2] = mainball.getzPos();
-	}
-	
-	private static void followBalls(){
+		resetUpVector();
+
 		Ball mainball = ge.getMainBall();
 		lookPoint[0] = mainball.getxPos();
 		lookPoint[1] = mainball.getyPos();
 		lookPoint[2] = mainball.getzPos();
-		
+	}
+
+	private static void followBalls() {
+		resetUpVector();
+
+		Ball mainball = ge.getMainBall();
+		lookPoint[0] = mainball.getxPos();
+		lookPoint[1] = mainball.getyPos();
+		lookPoint[2] = mainball.getzPos();
+
 		position[0] = mainball.getxPos();
 		position[1] = mainball.getyPos();
+		position[2] = CAMERA_POSITION_Z;
 	}
-	
+
+	private static void followPaddle1() {
+		resetUpVector();
+
+		Paddle pad = ge.getPlayer1().getPaddle();
+		lookPoint[0] = pad.getxPos();
+		lookPoint[1] = pad.getyPos();
+		lookPoint[2] = pad.getzPos();
+
+		position[0] = pad.getxPos();
+		position[1] = pad.getyPos() - 40;
+		position[2] = pad.getzPos() + 20;
+
+	}
+
+	private static void followPaddle2() {
+		Paddle pad = ge.getPlayer2().getPaddle();
+		lookPoint[0] = pad.getxPos();
+		lookPoint[1] = pad.getyPos();
+		lookPoint[2] = pad.getzPos();
+
+		position[0] = pad.getxPos();
+		position[1] = pad.getyPos() + 40;
+		position[2] = pad.getzPos() + 20;
+
+		upVector[1] = -1;
+	}
+
 	/** Makes a smooth increment or decrement of zPos of the camera. */
 	public static void smoothZoom(float zTarget) {
 		float startPos = position[2];
@@ -84,7 +122,7 @@ public class Camera {
 		float acc = 0.00001f;
 		float speed = 0;
 		boolean moveInward;
-		dist = Math.abs(startPos-zTarget);
+		dist = Math.abs(startPos - zTarget);
 		if (zTarget < startPos) {
 			moveInward = true;
 		} else {
@@ -93,31 +131,32 @@ public class Camera {
 
 		try {
 			while (distTraveled <= dist) {
-				
-				// Increment or decrement zPos based on if you move inwards (zPos decreasing) or outwards (zPos increasing)
+
+				// Increment or decrement zPos based on if you move inwards (zPos decreasing) or outwards (zPos
+				// increasing)
 				if (moveInward) {
 					position[2] -= speed;
 					distTraveled = startPos - position[2];
-				}else{
+				} else {
 					position[2] += speed;
 					distTraveled = position[2] - startPos;
 				}
-				
+
 				// Accceleration (first 1/3 of the distance)
-				if(distTraveled <= (dist / 3)) {
+				if (distTraveled <= (dist / 3)) {
 					speed = speed + acc;
 				}
 				// Constant speed (from 1/3 to 2/3 of the distance)
-				else if(distTraveled <= 2 * (dist / 3)) {
-					//Do nothing
+				else if (distTraveled <= 2 * (dist / 3)) {
+					// Do nothing
 				}
-				
+
 				// Deaccelerate speed (from 2/3 to the end)
-				else{
+				else {
 					speed = speed - acc;
 
-					//The camera has stopped. This is here to stop the camera when zooming out.
-					if(speed <= 0)
+					// The camera has stopped. This is here to stop the camera when zooming out.
+					if (speed <= 0)
 						break;
 				}
 				Thread.sleep(1);
@@ -130,22 +169,29 @@ public class Camera {
 		// Sets the position to be exactly the target Z.
 		position[2] = zTarget;
 	}
-	
+
 	// Set standard location for the Camera
-	public static void resetPosition(){
+	public static void resetPosition() {
 		position[0] = CAMERA_POSITION_X;
 		position[1] = CAMERA_POSITION_Y;
 		position[2] = CAMERA_POSITION_Z;
 	}
-	
+
 	// Set standard point to look at
-	public static void resetLookat(){
+	public static void resetLookat() {
 		lookPoint[0] = CAMERA_LOOK_AT_X;
 		lookPoint[1] = CAMERA_LOOK_AT_Y;
 		lookPoint[2] = CAMERA_LOOK_AT_Z;
 	}
-	
-	public static void setMode(int camMode){
+
+	// Set standard up-vector
+	public static void resetUpVector() {
+		upVector[0] = CAMERA_UPVECTOR_X;
+		upVector[1] = CAMERA_UPVECTOR_Y;
+		upVector[2] = CAMERA_UPVECTOR_Z;
+	}
+
+	public static void setMode(int camMode) {
 		mode = camMode;
 	}
 
@@ -157,4 +203,7 @@ public class Camera {
 		return lookPoint;
 	}
 
+	public static float[] getUpVector() {
+		return upVector;
+	}
 }
