@@ -89,6 +89,10 @@ public class GameEngine {
 			e.printStackTrace();
 		}
 		
+		// Initialize sound, no delays afterwards in game
+		SoundPlayer.playMP3("padhit.mp3");
+		SoundPlayer.stopMp3();
+		
 		// Used to calculate FPS
 		int frames = 0;
 		long lastTimer1 = System.currentTimeMillis();
@@ -200,6 +204,13 @@ public class GameEngine {
 
 	}
 
+	/**
+	 * @param losingPlayer, ball
+	 * This method is called from HitDetection when a ball has hit a goal.
+	 * The method calls a explosion rendering effect, plays a sound, removes items if the ball was not the Mainball,
+	 * It also reduces the amount of lives, increases score. If a player has no lives left a score screen is shown
+	 * and a method that resets the game is called.
+	 */
 	public void ballOut(Player losingPlayer, Ball ball) {
 
 		// Resets the ball to the center if the ball is the mainball. All other balls are deleted.
@@ -251,21 +262,24 @@ public class GameEngine {
 
 	}
 
+	/**
+	 * Resets the ball to the middle of the game and its direction is faced to the winning players paddle(goal).
+	 */
 	public void resetBall() {
 		Body ball;
-		ball = mainBall.getBody();
 		Vec2 vec;
+		ball = mainBall.getBody();
 		Random gen = new Random();
 		float r = gen.nextFloat() + 2;
 		float y = ball.getPosition().y;
 		vec = new Vec2(ball.getLinearVelocity());
 		float yVec = 0;
-		float xVec = vec.x;
+		float xVec = 0;
 		// Set Y to opposite direction..
 		if (y > 0) {
-			yVec = -15;
+			yVec = -BALL_MAXSPEED;
 		} else if (y < 0) {
-			yVec = 15;
+			yVec = BALL_MAXSPEED;
 		}
 		// Randomize X
 		if (gen.nextBoolean() == true) {
@@ -279,7 +293,7 @@ public class GameEngine {
 		resetGame = false;
 	}
 
-	/*
+	/**
 	 * Increase the winning players score by 100
 	 * 
 	 * @param winner
@@ -310,7 +324,7 @@ public class GameEngine {
 		items.remove(item);
 	}
 
-	/*
+	/**
 	 * Updates the coordinates of the objects in the scene. Reads from the physic simulation
 	 */
 	public void updatePos() {

@@ -15,7 +15,10 @@ public class SoundPlayer {
 	static Player player;
 	
 	
-	
+	/**
+	 * @param String url
+	 * Takes a string which is the name of the sound to be played, plays MP3 files (and others..)
+	 */
 	public static void playMP3(String url) {
 		Format input1 = new AudioFormat(AudioFormat.MPEGLAYER3);
 		Format input2 = new AudioFormat(AudioFormat.MPEG);
@@ -54,10 +57,10 @@ public class SoundPlayer {
 	}
 	
 	/**
-	 * Play sound testing http://www.soundbyter.com/2011/04/free-sci-fi-tone-sound-effect/ blip sound source
+	 * @param String url
+	 * Takes in a filename for the sound to be played, plays it in a own thread
+	 * plays WAV-files.
 	 * 
-	 * @param Takes
-	 *            in a filename for the sound to be played, plays it in a own thread
 	 */
 	public static synchronized void playWav(final String url) {
 		new Thread(new Runnable() { // the wrapper thread is unnecessary, unless it blocks on the Clip finishing, see
