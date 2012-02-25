@@ -110,8 +110,7 @@ public class GameEngine {
 			}
 			//Do camera tick
 			Camera.tick();
-			//Do camera tick
-			Camera.tick();
+
 			// Calculate how long to sleep.
 			nextGameTick += skipTicks;
 			sleepTime = nextGameTick - getTickCount();
