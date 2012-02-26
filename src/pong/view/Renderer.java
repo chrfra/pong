@@ -63,7 +63,7 @@ public class Renderer {
 		// Load texture from resource directory, feel free to put files in there
 		try {
 			InputStream stream;
-			if( (stream = getClass().getResourceAsStream("/resource/" + texture)) == null )
+			if( (stream = getClass().getResourceAsStream("/textures/"+texture)) == null )
 			{
 				System.out.println("Texture not loaded..");
 			}

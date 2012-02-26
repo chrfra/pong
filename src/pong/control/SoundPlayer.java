@@ -31,7 +31,7 @@ public class SoundPlayer {
 		);
 		
 		
-		URL defaultImage = SoundPlayer.class.getResource("/resource/" + url);
+		URL defaultImage = SoundPlayer.class.getResource("/sound/" + url);
 		try{
 			player = Manager.createRealizedPlayer(defaultImage);
 			player.realize();
