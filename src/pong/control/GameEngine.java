@@ -196,6 +196,9 @@ public class GameEngine {
 
 		// get mousepointer position on canvas, move the player controlled paddle
 		paddle1.moveItem(mouse.getxPos(), mouse.getyPos());
+		
+		paddle1.adjustYPos(DEFAULT_DPADDLE_YPOS, true);
+		paddle2.adjustYPos(DEFAULT_UPADDLE_YPOS, false);
 		// restrict maximum ball speed by lineardampening it over a certain speed
 		checkBallSpeed();
 		physics.update();

@@ -49,11 +49,11 @@ public class Const {
 	public static final float DEFAULT_PADDLE_DEPTH = 2;
 	
 	public static final float DEFAULT_UPADDLE_XPOS = 0;
-	public static final float DEFAULT_UPADDLE_YPOS = GAME_HEIGHT/2 - DEFAULT_PADDLE_HEIGHT;
+	public static final float DEFAULT_UPADDLE_YPOS = GAME_HEIGHT/2 - DEFAULT_PADDLE_HEIGHT -2;
 	public static final float DEFAULT_UPADDLE_ZPOS = 0;
 	
 	public static final float DEFAULT_DPADDLE_XPOS = 0;
-	public static final float DEFAULT_DPADDLE_YPOS = -GAME_HEIGHT/2 + DEFAULT_PADDLE_HEIGHT;
+	public static final float DEFAULT_DPADDLE_YPOS = -GAME_HEIGHT/2 + DEFAULT_PADDLE_HEIGHT +2;
 	public static final float DEFAULT_DPADDLE_ZPOS = 0;
 	
 	// Default values for balls
