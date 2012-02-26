@@ -9,10 +9,12 @@ public class MoveableItem extends GameItem{
 	}
 	
 	//move item according to (mouse) input
-	public void moveItem(float inputX, float inputY){
+	public void moveItem(float inputX, float inputY, float frameWidth, float frameHeight){
 		//map x,y coordinates in window to numbers working well with linearVelocity function (using Const.MOUSE_SENSE)
-		float normalizedX = mapRange(0 , Const.SCREEN_WIDTH , -Const.MOUSE_SENSE , Const.MOUSE_SENSE ,  inputX );
-		float normalizedY = mapRange(0 , -Const.SCREEN_HEIGHT , -Const.MOUSE_SENSE , Const.MOUSE_SENSE ,inputY );
+//		float normalizedX = mapRange(0 , Const.SCREEN_WIDTH , -Const.MOUSE_SENSE , Const.MOUSE_SENSE ,  inputX );
+//		float normalizedY = mapRange(0 , -Const.SCREEN_HEIGHT , -Const.MOUSE_SENSE , Const.MOUSE_SENSE ,inputY );
+		float normalizedX = mapRange(0 , frameWidth , -Const.MOUSE_SENSE , Const.MOUSE_SENSE ,  inputX );
+		float normalizedY = mapRange(0 , -frameHeight, -Const.MOUSE_SENSE , Const.MOUSE_SENSE ,inputY );
 		
 		//implement a deadzone with a radious of MOUSE_DEADZONE
 		if(Math.abs(normalizedX) <= Const.MOUSE_DEADZONE)

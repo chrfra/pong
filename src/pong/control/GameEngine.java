@@ -195,7 +195,7 @@ public class GameEngine {
 		itemsToAdd.clear();
 
 		// get mousepointer position on canvas, move the player controlled paddle
-		paddle1.moveItem(mouse.getxPos(), mouse.getyPos());
+		paddle1.moveItem(mouse.getxPos(), mouse.getyPos(), ge.getFrameWidth(), ge.getFrameHeight());
 		
 		paddle1.adjustYPos(DEFAULT_DPADDLE_YPOS, true);
 		paddle2.adjustYPos(DEFAULT_UPADDLE_YPOS, false);

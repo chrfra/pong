@@ -286,4 +286,12 @@ public class GraphicsEngine implements GLEventListener {
 	public GLAutoDrawable getDrawable() {
 		return drawable;
 	}
+	
+	public int getFrameHeight() {
+		return frameHeight;
+	}
+	
+	public int getFrameWidth() {
+		return frameWidth;
+	}
 }
