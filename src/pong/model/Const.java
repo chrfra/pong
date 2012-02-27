@@ -61,7 +61,7 @@ public class Const {
 	public static final float DEFAULT_DPADDLE_ZPOS = 0;
 	
 	// Default values for balls
-	public static final float BALL_MAXSPEED = 30;
+	public static final float BALL_MAXSPEED = 50;
 	public static final float BALL_RADIUS = 1.5f;
 	
 	// Default value for the main ball
@@ -72,7 +72,7 @@ public class Const {
 	
 	// Default values for Players
 	public static final int DEFAULT_STARTING_SCORE = 0;
-	public static final int DEFAULT_AMOUNT_PLAYER_LIVES = 10;
+	public static final int DEFAULT_AMOUNT_PLAYER_LIVES = 3;
 	
 	//sets how fast the game logic is to be updated, when this framerate is exceeded, the game(logic) thread sleeps
 	public static double TARGET_FRAMERATE = 60;

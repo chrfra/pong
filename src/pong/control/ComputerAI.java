@@ -26,12 +26,12 @@ public class ComputerAI {
 		if( ballvector.y > 0){
 			
 			// NUDGE THE BALL IF IT IS CLOSE TO THE PADDLE --- THIS DOES NOT WORK YET
-			if( ballvector.y < paddlevector.y && ballvector.y > 32 ){
-				paddleBody.setLinearVelocity(new Vec2( 0f , -30f));
+			if( ballvector.y < paddlevector.y && ballvector.y > 28 ){
+				paddleBody.setLinearVelocity(new Vec2( 0f , -300f));
 //				paddleBody.applyForce(new Vec2(0, -30), new Vec2(0,0) );
 			}
 
-			if( paddlevector.x == ballvector.x ){
+			else if( paddlevector.x == ballvector.x ){
 				// SET FORCE TO ZERO - PADDLEPOSITION IS GOOD
 				paddleBody.setLinearVelocity(new Vec2( 0f , 0f));
 			}
