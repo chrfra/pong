@@ -71,7 +71,7 @@ public class SoundPlayer {
 							AudioInputStream inputStream = AudioSystem
 									.getAudioInputStream(getClass()
 											.getResourceAsStream(
-													"/resource/" + url));
+													"/sound/" + url));
 							clip.open(inputStream);
 							clip.start();
 						} catch (Exception e) {

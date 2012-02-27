@@ -58,6 +58,8 @@ public class GameEngine {
 	private MenuCube menu;
 	private boolean resetGame = false;
 	private boolean ballExplode = false;
+	// Reference to the AI
+	private ComputerAI cpuPlayer;
 
 	public GameEngine() {
 	}
@@ -161,6 +163,10 @@ public class GameEngine {
 		player2 = new Player("Playername2", paddle2);
 		player2.addGoal(goal2);
 		addItemToGame(paddle2);
+		
+		// Player 2 is a computer AI!
+		
+		cpuPlayer = new ComputerAI(AI_MODE_EASY);
 
 		// add ball to game
 		addItemToGame(mainBall = new Ball(BALL_DEFAULT_XPOS, BALL_DEFAULT_YPOS, 0, Const.BALL_RADIUS));
@@ -203,6 +209,9 @@ public class GameEngine {
 		checkBallSpeed();
 		physics.update();
 		updatePos();
+		
+		// Calculate where AI paddle is supposed to be!
+		cpuPlayer.MoveAI(player2, getMainBall() );
 
 	}
 
@@ -465,4 +474,5 @@ public class GameEngine {
 	public void setBallExplode(boolean ballExplode) {
 		this.ballExplode = ballExplode;
 	}
+	
 }
