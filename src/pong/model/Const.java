@@ -8,7 +8,7 @@ public class Const {
 	public static final int IN_GAME = 1;
 	public static final int GAME_ENDED = 3;
 	public static final int PAUSED = 4;
-	public static final int STARTUP_STATE = 1;	//starts the game in menu-mode/game-mode
+	public static final int STARTUP_STATE = 0;	//starts the game in menu-mode/game-mode
 	
 	//input constants
 	public static final float MOUSE_OFFSET = 0.0f;
@@ -33,8 +33,12 @@ public class Const {
 	public static final int MENU_LEFT = 4;
 	public static final int MENU_BOTTOM= 5;
 	public static final float RY_SPEED = 5f; //initial rotationspeed around the y-axis MUST BE DIVISIBLE BY 360!
-			
-	/******************************************************************/
+	
+	
+	/********************LOGIC CONSTANTS***************************/
+	public static final int RESUME = 5;	//used by menu.select() to indicate that the resume game option has been selected, must be != from all gamestates
+	public static final int ERROR = 9999;
+
 	
 	/********************GAME ITEM CONSTANTS***************************/
 	
