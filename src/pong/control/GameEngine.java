@@ -79,26 +79,25 @@ public class GameEngine {
 	public void runApplication() {
 		// create the menu cube, is needed for menu.tick call below!
 		initCube();
-		
-		//Initialize game if startstate is IN_GAME
-		if(gameState == IN_GAME){
-			initNewGame();
-		}
+
+		//FOR FUTURE REFERENCE: THIS.INITNEWGAME() MUST BE CALLED FROM HEREBEFORE GAME IS STARTED
+		//IT IS NOW CALLED WHEN SELECTING "NEW GAME" IN THE MENU FROM THIS.SELECT() METHOD
+
 		// Delay to start the game after the window is drawn.
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
+
 		// Initialize sound, no delays afterwards in game
 		SoundPlayer.playMP3("padhit.mp3");
 		SoundPlayer.stopMp3();
-		
+
 		// Used to calculate FPS
 		int frames = 0;
 		long lastTimer1 = System.currentTimeMillis();
-		
+
 		while (true) {
 			//Used to calculate sleeptime after next tick
 			sleepTime = 0;
@@ -135,7 +134,8 @@ public class GameEngine {
 		}
 	}
 
-	/** Called when a new game is started. Resets all the players, items and physics. */
+	/* Called from select method when a new game is started. Resets all the players, items and physics. 
+	 */
 	public void initNewGame() {
 
 		System.out.println("Initializing new game...");
@@ -183,6 +183,7 @@ public class GameEngine {
 		// Add listeners for the new paddleobjects.
 		createControlListeners(ge.getDrawable());
 		gameState = IN_GAME;
+
 	}
 
 	private void gameTick() {
@@ -202,7 +203,7 @@ public class GameEngine {
 
 		// get mousepointer position on canvas, move the player controlled paddle
 		paddle1.moveItem(mouse.getxPos(), mouse.getyPos(), ge.getFrameWidth(), ge.getFrameHeight());
-		
+
 		paddle1.adjustYPos(DEFAULT_DPADDLE_YPOS, true);
 		paddle2.adjustYPos(DEFAULT_UPADDLE_YPOS, false);
 		// restrict maximum ball speed by lineardampening it over a certain speed
@@ -386,7 +387,7 @@ public class GameEngine {
 		options.add(backOptions);
 
 		ArrayList<String> leftOptions = new ArrayList<String>();
-		leftOptions.add("Left");
+		leftOptions.add("Resume");
 		options.add(leftOptions);
 
 		ArrayList<String> bottomOptions = new ArrayList<String>();
@@ -394,7 +395,6 @@ public class GameEngine {
 		options.add(bottomOptions);
 
 		menu.setOptions(options);
-
 	}
 
 	/** Creates mouse object, adds listeners that control paddles
@@ -414,6 +414,29 @@ public class GameEngine {
 	public void createCommandListener(GLAutoDrawable glDrawable) {
 		cmdInput = new CommandInput(this);
 		((Component) glDrawable).addKeyListener(cmdInput);
+	}
+
+	/*
+	 * method is called when pressing select, determines what action to perform based on the selected menu option
+	 */
+	public void select(){
+		// only let the user select options if in the menu
+		if(gameState == IN_MENU){
+			//get the action to be performed from the menu object
+			int action = menu.select();
+			//New game
+			if(action == IN_GAME){
+				//Initialize game if startstate is IN_GAME
+				initNewGame();
+				setGameState(IN_GAME);
+			}//resume game
+			else if (action ==  RESUME ){
+				//only resume game if there is a game to be resumed (items object exists)
+				if(items != null){
+					setGameState(IN_GAME);
+				}
+			}
+		}
 	}
 
 	/** returns the time in milliseconds
@@ -456,7 +479,9 @@ public class GameEngine {
 	}
 
 	public void setGameState(int gameState) {
+		//	if(this.gameState == IN_MENU){
 		this.gameState = gameState;
+		//}
 	}
 
 	public Ball getMainBall() {

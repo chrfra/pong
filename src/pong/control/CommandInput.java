@@ -48,6 +48,13 @@ public class CommandInput implements KeyListener {
 		}
 
 		/*
+		 * handle enter (select) keypress
+		 */
+		if(arg0.getKeyCode() == KeyEvent.VK_ENTER){
+			ge.select();
+		}
+		
+		/*
 		 * Up,down,left,right presses
 		 */
 		
@@ -88,8 +95,8 @@ public class CommandInput implements KeyListener {
 		//escape key pauses the game, prints resume option etc on menu
 		if(arg0.getKeyCode() == KeyEvent.VK_ESCAPE){
 			if(ge.getGameState()==IN_GAME){	//only set gamestate to paused if game is running and escape is pressed
-				ge.setGameState(PAUSED);
-			}else if(ge.getGameState() == PAUSED){	//pressing escape while game is paused and in the menu resumes the game
+				ge.setGameState(IN_MENU);
+			}else if(ge.getGameState() == IN_MENU){	//pressing escape while game is paused and in the menu resumes the game
 				ge.setGameState(IN_GAME);
 			}
 		}
