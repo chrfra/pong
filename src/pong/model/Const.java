@@ -72,7 +72,7 @@ public class Const {
 	
 	// Default values for Players
 	public static final int DEFAULT_STARTING_SCORE = 0;
-	public static final int DEFAULT_AMOUNT_PLAYER_LIVES = 3;
+	public static final int DEFAULT_AMOUNT_PLAYER_LIVES = 10;
 	
 	//sets how fast the game logic is to be updated, when this framerate is exceeded, the game(logic) thread sleeps
 	public static double TARGET_FRAMERATE = 60;
@@ -105,6 +105,17 @@ public class Const {
 	public static final int CAM_LOOKAT_BALLS = 3;
 	public static final int CAM_PADDLE1 = 4;
 	public static final int CAM_PADDLE2 = 5;
+	
+	/*************AI ***********************************/
+	
+	public static final int DEFAULT_AI_DIFFICULTY = 8;
+	public static final int DEFAULT_AI_SPEED = 10;
+	
+	public static final int AI_MODE_EASY = 4;
+	public static final int AI_MODE_MEDIUM = 6;
+	public static final int AI_MODE_HARD = 8;
+	public static final int AI_MODE_INSANE = 10;
+	
 	
 	/**************************************************/
 }
