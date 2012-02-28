@@ -110,6 +110,7 @@ public class Const {
 	
 	public static final int DEFAULT_AI_DIFFICULTY = 8;
 	public static final int DEFAULT_AI_SPEED = 10;
+	public static final int AI_NUDGE_FORCE = 100;
 	
 	public static final int AI_MODE_EASY = 4;
 	public static final int AI_MODE_MEDIUM = 6;

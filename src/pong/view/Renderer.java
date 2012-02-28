@@ -291,9 +291,10 @@ public class Renderer {
 	}
 
 
-	public void renderTextAtPixels(int x, int y, int frameWidth, int frameHeight, String text, Font font){
+	public void renderTextAtPixels(int x, int y, int frameWidth, int frameHeight, String text, Font font, Color fontcolor){
 		TextRenderer tr = new TextRenderer(font);
 		tr.beginRendering(frameWidth, frameHeight);
+		tr.setColor(fontcolor);
 		tr.draw(text, x, y);
 		tr.endRendering();
 		tr.flush();
