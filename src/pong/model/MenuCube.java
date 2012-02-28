@@ -12,7 +12,7 @@ public class MenuCube {
 	private float height;
 	private float width;
 	private float rx,ry,rz,tx,ty,tz; //the cube's rotation in x,y,z in degrees, target x,y,z
-	private String Player1Name;
+	private String Player1Name = new String("Player");
 	private String Player2Name = new String("AI");
 	//two dimensional list holding the menu options, 
 	//first list holds the lists of strings for each side of the menu
