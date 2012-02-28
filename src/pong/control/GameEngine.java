@@ -212,7 +212,8 @@ public class GameEngine {
 		itemsToAdd.clear();
 
 		// Calculate where AI paddle is supposed to be!
-		cpuPlayer.MoveAI(player2, getMainBall() );
+		//cpuPlayer.MoveAI(player2, getMainBall() );
+		cpuPlayer.MoveAI(player2, this.getGameItems(), this.getMainBall() );
 
 		// get mousepointer position on canvas, move the player controlled paddle
 		paddle1.moveItem(mouse.getxPos(), mouse.getyPos(), ge.getFrameWidth(), ge.getFrameHeight());
