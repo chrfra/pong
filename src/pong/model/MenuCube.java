@@ -101,11 +101,6 @@ public class MenuCube {
 			if((Math.abs(ry) % 360 == 0)){
 				tx = tx + degrees;
 			}
-			//viewing right face
-			else if((Math.abs(ry) % 360 == 90)){
-				System.out.println("right flip");
-			}
-			//System.out.println("(Math.abs(ry) % 360) �r :" + (Math.abs(ry) % 360));
 		}
 	}
 
@@ -115,16 +110,21 @@ public class MenuCube {
 	 */
 	public int select(){
 		System.out.println("ry " +ry);
+		/*
+		 * NOTE that if the first move the player makes is one step to the right then ry = 0-90 = -90
+		 * but if the player takes three steps to the left (=0+90+90+90 = 270) we will also be facing the rightmost face
+		 * This results in viewing eg. the rightmost face being identified by ry == -90 OR ry == 270
+		 */
 		//menu facing forward => init new and start new game
 		if(ry == 0){
 			return IN_GAME;
 		}
 		// selected resume
-		else if(ry == 90){
+		else if(ry == 90 || ry == -270){
 			return RESUME;
 		}
 		// selected to input player name
-		else if(ry == -90){
+		else if(ry == -90 || ry == 270){
 			return TEXT_INPUT;
 		}
 		else if(ry == -180){
@@ -149,6 +149,15 @@ public class MenuCube {
 	public String getOption(int sideNr,int eltNr) {
 		return options[sideNr][eltNr];
 	}
+	/*
+	 * Sets the  option for a specified side of the menu
+	 * @param sideNr	the number(const.MENU_*****) of the side for which you would like the list of options)
+	 * @param eltNr		The number of the option in the list to get
+	 * @param text		The text to be displayed at the provided location
+	 */
+	public void setOption(int sideNr,int eltNr, String text) {
+		options[sideNr][eltNr] = text;
+	}
 	public String[][] getOptions() {
 		return options;
 	}
@@ -167,7 +176,7 @@ public class MenuCube {
 		options[MENU_FRONT][0] = "New Game";
 		options[MENU_RIGHT][0] = "Enter P1 Name: ";
 		options[MENU_BACK][0] = "Enter P2 Name: ";
-		options[MENU_LEFT][0] = "Left";
+		options[MENU_LEFT][0] = "";
 		options[MENU_BOTTOM][0] = "Top";
 	}
 	/*
