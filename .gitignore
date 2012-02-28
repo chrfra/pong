@@ -1,3 +1,4 @@
 *.class
 /JBox2d.log
 /.classpath
+org.eclipse.jdt.core.prefs

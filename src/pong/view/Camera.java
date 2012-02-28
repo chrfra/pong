@@ -152,7 +152,7 @@ public class Camera {
 		float startPos = position[2];
 		float dist;
 		float distTraveled = 0;
-		float acc = 0.00001f;
+		float acc = 0.0001f;
 		float speed = 0;
 		boolean moveInward;
 		dist = Math.abs(startPos - zTarget);
