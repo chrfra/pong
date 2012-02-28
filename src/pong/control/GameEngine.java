@@ -57,7 +57,6 @@ public class GameEngine {
 	// the menu cube
 	private MenuCube menu;
 	private boolean resetGame = false;
-	private boolean ballExplode = false;
 	// Reference to the AI
 	private ComputerAI cpuPlayer;
 
@@ -227,15 +226,8 @@ public class GameEngine {
 		// Resets the ball to the center if the ball is the mainball. All other balls are deleted.
 
 		SoundPlayer.playMP3("ballout.mp3");
-
-		// Render explosion
-		ballExplode = true;
-
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
+		
+		ge.addExplosion(ball.getxPos(), ball.getyPos(), ball.getzPos());
 
 		if (ball == mainBall) {
 			resetGame = true;
@@ -265,11 +257,9 @@ public class GameEngine {
 				e.printStackTrace();
 			}
 			SoundPlayer.stopMp3();
-			ballExplode = false;
 			initNewGame();
 
 		}
-		ballExplode = false;
 
 	}
 
@@ -489,14 +479,6 @@ public class GameEngine {
 
 	public void setMainBall(Ball mainBall) {
 		this.mainBall = mainBall;
-	}
-
-	public boolean isBallExplode() {
-		return ballExplode;
-	}
-
-	public void setBallExplode(boolean ballExplode) {
-		this.ballExplode = ballExplode;
 	}
 	
 }

@@ -9,6 +9,8 @@ import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.InvalidClassException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.media.opengl.GL;
@@ -41,6 +43,9 @@ public class GraphicsEngine implements GLEventListener {
 	float rotationSpeed;
 	// Dimension of the frame
 	private int frameWidth, frameHeight;
+	
+	//List of explosions
+	private ArrayList<Explosion> explosions = new ArrayList<Explosion>();
 
 	// animator drives display method in a loop
 	private static Animator animator = new Animator(canvas);
@@ -123,11 +128,23 @@ public class GraphicsEngine implements GLEventListener {
 			// render.render3DText(drawable, 0, 0, "START");
 			gl.glPopMatrix();
 
-			if (ge.isBallExplode()) {
+			
+			Iterator<Explosion> it = explosions.iterator();
+			while(it.hasNext()){
+				Explosion exp = it.next();
+				exp.tick();
+
 				gl.glPushMatrix();
-				render.drawExplosion(gl, ge.getMainBall());
+				render.drawExplosion(gl, exp);
 				gl.glPopMatrix();
+				if(exp.isEnded()){
+					it.remove();
+				}
 			}
+			
+
+
+
 
 			// Draw paddles, ball etc
 			try {
@@ -240,6 +257,9 @@ public class GraphicsEngine implements GLEventListener {
 		animator.stop();
 		frame.dispose();
 		System.exit(0);
+	}
+	public void addExplosion(float x, float y, float z){
+		explosions.add(new Explosion(x, y, z));
 	}
 
 	public GLAutoDrawable getDrawable() {
