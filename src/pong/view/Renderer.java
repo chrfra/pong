@@ -31,10 +31,6 @@ public class Renderer {
 	private GLU glu;
 
 	private float bgRotation = 90;
-	private Texture balltexture;
-	private Texture spacetexture;
-	private Texture paddletexture;
-	private Texture washedtexture;
 	private TextRenderer textrenderer;
 	private float textScaleFactor;
 
@@ -46,34 +42,7 @@ public class Renderer {
 	 * Loads the textures from imagefiles into Texture-objects
 	 */
 	public void setupTextures(){
-		spacetexture = loadTexture("outer_space_trip.jpg");
-		balltexture = loadTexture("earth-1k.png");
-		paddletexture = loadTexture("paddle_texture1.jpg");
-		washedtexture = loadTexture("washedtexture4.jpg");
-	}
-
-	/** 
-	 * Load texture into GraphicsEngine as a String example: earth-1k.png
-	 * @param String
-	 * @return Textureobject ready to be applied
-	 */
-	private Texture loadTexture(String texture){
-
-		// Load texture from resource directory, feel free to put files in there
-		try {
-			InputStream stream;
-			if( (stream = getClass().getResourceAsStream("/textures/"+texture)) == null )
-			{
-				System.out.println("Texture not loaded..");
-			}
-			TextureData data = TextureIO.newTextureData(GLProfile.getDefault(), stream, false, "png");
-			return TextureIO.newTexture(data);
-		}
-		catch (IOException exc) {
-			exc.printStackTrace();
-			System.exit(1);
-		}
-		return null;
+		
 	}
 
 
@@ -104,8 +73,8 @@ public class Renderer {
 		gl.glEnable(GL.GL_TEXTURE_2D);
 
 		// Apply earth texture
-		balltexture.enable(gl);
-		balltexture.bind(gl);
+		Textures.ball1.enable(gl);
+		Textures.ball1.bind(gl);
 
 		gl.glTranslatef(x, y, z);
 		// Draw Ball (possible styles: FILL, LINE, POINT).
@@ -142,7 +111,7 @@ public class Renderer {
 			w = pad.getWidth();
 			h = pad.getHeight();
 			d = pad.getDepth();
-			texture = this.paddletexture;
+			texture = Textures.paddle1;
 		} 
 		//check if object is a menu cube, set appropriate texture for menu cube
 		else if (item instanceof MenuCube) {
@@ -153,7 +122,7 @@ public class Renderer {
 			w = menuCube.getWidth();
 			h = menuCube.getHeight();
 			d = menuCube.getDepth();
-			texture = this.paddletexture;
+			texture = Textures.paddle1;
 		} else {
 			throw new InvalidClassException("Wrong class of GameItem in draw3DRectangle(GL2 gl, GameItem item)");
 		}
@@ -212,8 +181,8 @@ public class Renderer {
 	 * Draws the gamearea.
 	 */
 	public void drawGamearea(GL2 gl){
-		washedtexture.enable(gl);
-		washedtexture.bind(gl);
+		Textures.wall1.enable(gl);
+		Textures.wall1.bind(gl);
 		gl.glBegin(GL2.GL_QUADS);
 
 		gl.glNormal3f(1.0f, 0.0f, 0.0f);
@@ -259,8 +228,8 @@ public class Renderer {
 		gl.glEnable(GL.GL_TEXTURE_2D);
 
 		// Apply space texture
-		spacetexture.enable(gl);
-		spacetexture.bind(gl);
+		Textures.spacetexture.enable(gl);
+		Textures.spacetexture.bind(gl);
 
 		// Draw Ball (possible styles: FILL, LINE, POINT).
 		//gl.glRotatef(rotation, 1.0f, 1.0f, 1.0f);
@@ -404,7 +373,7 @@ public class Renderer {
 		//C:\Users\cf\Downloads\java3declipse-20090302	
 		
 		//set texture for the menu
-		Texture texture = this.paddletexture;
+		Texture texture = Textures.paddle1;
 		
 		float halfFaceSize = faceSize / 2;
 		gl.glColor3f(r, g, b);
