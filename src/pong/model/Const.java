@@ -92,6 +92,7 @@ public class Const {
 	public static final float CAMERA_POSITION_X = 0;
 	public static final float CAMERA_POSITION_Y = 0;
 	public static final float CAMERA_POSITION_Z = 200;
+	public static final float CAMERA_IN_GAME_POSITION_Z = 100;
 	
 	public static final float CAMERA_UPVECTOR_X = 0;
 	public static final float CAMERA_UPVECTOR_Y = 1;
@@ -108,7 +109,6 @@ public class Const {
 	public static final int CAM_PADDLE2 = 5;
 	
 
-	public static final float CAMERA_IN_GAME_POSITION_Z = 100;
 	
 	/*************AI ***********************************/
 	

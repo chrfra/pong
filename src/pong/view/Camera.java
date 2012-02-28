@@ -21,7 +21,7 @@ public class Camera {
 	private static float[] upVector = new float[3];
 
 	// The mode of the camera.
-	private static int mode;
+	private static int mode = CAM_STATIC;
 
 	private static GameEngine ge;
 
@@ -64,7 +64,9 @@ public class Camera {
 	}
 
 	private static void staticCam() {
-		resetPosition();
+		position[0] = CAMERA_POSITION_X;
+		position[1] = CAMERA_POSITION_Y;
+		position[2] = CAMERA_IN_GAME_POSITION_Z;
 		resetLookat();
 		resetUpVector();
 	}
@@ -117,7 +119,7 @@ public class Camera {
 
 		position[0] = xAvg * CAM_SENSITIVITY;
 		position[1] = yAvg * CAM_SENSITIVITY;
-		position[2] = CAMERA_POSITION_Z;
+		position[2] = CAMERA_IN_GAME_POSITION_Z;
 	}
 
 	private static void followPaddle1() {
@@ -211,7 +213,7 @@ public class Camera {
 	public static void resetPosition() {
 		position[0] = CAMERA_POSITION_X;
 		position[1] = CAMERA_POSITION_Y;
-		position[2] = CAMERA_POSITION_Z;
+		position[2] = CAMERA_IN_GAME_POSITION_Z;
 	}
 
 	// Set standard point to look at
@@ -230,6 +232,9 @@ public class Camera {
 
 	public static void setMode(int camMode) {
 		mode = camMode;
+	}
+	public static int getMode() {
+		return mode;
 	}
 
 	public static float[] getPosition() {

@@ -107,13 +107,20 @@ public class GameEngine {
 			//Do tick
 			if(gameState == IN_GAME){
 				gameTick();
-				Camera.smoothZoom(CAMERA_IN_GAME_POSITION_Z);	//make sure camera is zoomed in to proper z distance from game area
+				//make sure camera is zoomed in to proper z distance from game area 
+				//if this is run when camera is not static, it will ruin the other camera modes
+				System.out.println(Camera.getMode());
+				if(Camera.getMode() == CAM_STATIC){
+					Camera.smoothZoom(CAMERA_IN_GAME_POSITION_Z);	
+				}
 			}else if(gameState == IN_MENU){
 				gameState = IN_GAME;
-				Camera.smoothZoom(CAMERA_POSITION_Z);
+				//make sure camera is zoomed out to cube, otherwise zoom out
+				if(Camera.getMode() == CAM_STATIC)
+					Camera.smoothZoom(CAMERA_POSITION_Z);
 				gameState = IN_MENU;
 				menu.tick();
-					//make sure camera is zoomed out to cube, otherwise zoom out
+				
 				//update the name printed on the menu as it is typed by the player
 				if(cmdInput.getInput()!=null)
 					menu.updateOption(MENU_RIGHT, 0, cmdInput.getInput());
