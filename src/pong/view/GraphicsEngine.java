@@ -107,10 +107,68 @@ public class GraphicsEngine implements GLEventListener {
 
 		// check gameState to determine whether to zoom out and draw menu or to draw the game
 		if (ge.getGameState() == IN_MENU) {
+
+			// render the Menu Cube
 			render.drawMenu(drawable, menu, menu.getRx(), menu.getRy(), menu.getRz());
 		}
 		// game has started/resumed, draw all game related components
 		else if (ge.getGameState() == IN_GAME) {
+			List<GameItem> items = ge.getGameItems();
+			// IMPORTANT! PopMatrix() resets glTranslatef and glRotatef to what it was before the previous PushMatrix()
+
+			gl.glPushMatrix();
+			render.drawGamearea(gl);
+			gl.glPopMatrix();
+
+			gl.glPushMatrix();
+			// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350)
+			render.renderTextAtPixels(10, 10, frameWidth, frameHeight, ge.getPlayer1().getName() +" Score: " + ge.getPlayer1().getScore()
+					+ " Lives: " + ge.getPlayer1().getLives(), new Font("font", Font.PLAIN, 18), Color.RED);
+			render.renderTextAtPixels(frameWidth-frameWidth/4, 10, frameWidth, frameHeight, ge.getPlayer2().getName() + " Score: " + ge.getPlayer2().getScore()
+					+ " Lives: " + ge.getPlayer2().getLives(), new Font("font", Font.PLAIN, 18), Color.RED);
+			gl.glPopMatrix();
+
+			
+			Iterator<Explosion> it = explosions.iterator();
+			while(it.hasNext()){
+				Explosion exp = it.next();
+				exp.tick();
+
+				gl.glPushMatrix();
+				render.drawExplosion(gl, exp);
+				gl.glPopMatrix();
+				if(exp.isEnded()){
+					it.remove();
+				}
+			}
+			
+
+
+
+
+			// Draw paddles, ball etc
+			try {
+				synchronized (items) {
+					items = ge.getGameItems();
+
+					for (GameItem item : items) {
+						gl.glPushMatrix();
+						if (item.getType().equals("PADDLE")) {
+							render.draw3DRectangle(gl, item);
+						} else if (item.getType().equals("BALL")) {
+							render.drawBall(gl, item);
+						}
+						gl.glPopMatrix();
+					}
+				}
+				gl.glPushMatrix();
+				// Render a string on screen
+				// render.renderStrokeString(gl, GLUT.STROKE_MONO_ROMAN, "Hej");
+				gl.glPopMatrix();
+
+			} catch (InvalidClassException e) {
+				e.printStackTrace();
+			}
 			renderGame(gl);
 		}
 		// game has ended, print score

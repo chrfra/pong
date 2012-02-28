@@ -330,25 +330,25 @@ public class Renderer {
 		// Top face
 		gl.glPushMatrix();
 		gl.glRotatef(-90, 1, 0, 0);
-		drawFace(gl, 1.0f, 0.2f, 0.2f, 0.8f, menu.getOptionsBySide(MENU_TOP).get(0),0);
+		drawFace(gl, 1.0f, 0.2f, 0.2f, 0.8f, menu.getOption(MENU_TOP,0),0);
 		gl.glPopMatrix();
 		// Front face
-		drawFace(gl, 1.0f, 0.8f, 0.2f, 0.2f, menu.getOptionsBySide(MENU_FRONT).get(0),0);
+		drawFace(gl, 1.0f, 0.8f, 0.2f, 0.2f, menu.getOption(MENU_FRONT,0),0);
 		// Right face
 		gl.glPushMatrix();
 		gl.glRotatef(90, 0, 1, 0);
-		drawFace(gl, 1.0f, 0.2f, 0.8f, 0.2f, menu.getOptionsBySide(MENU_RIGHT).get(0),0);
+		drawFace(gl, 1.0f, 0.2f, 0.8f, 0.2f, menu.getOption(MENU_RIGHT,0),0);
 		// Back face    
 		gl.glRotatef(90, 0, 1, 0);
-		drawFace(gl, 1.0f, 0.8f, 0.8f, 0.2f, menu.getOptionsBySide(MENU_BACK).get(0),0);
+		drawFace(gl, 1.0f, 0.8f, 0.8f, 0.2f, menu.getOption(MENU_BACK,0),0);
 		// Left face    
 		gl.glRotatef(90, 0, 1, 0);
-		drawFace(gl, 1.0f, 0.2f, 0.8f, 0.8f, menu.getOptionsBySide(MENU_LEFT).get(0),0);
+		drawFace(gl, 1.0f, 0.2f, 0.8f, 0.8f, menu.getOption(MENU_LEFT,0),0);
 		gl.glPopMatrix();
 		// Bottom face
 		gl.glPushMatrix();
 		gl.glRotatef(90, 1, 0, 0);
-		drawFace(gl, 1.0f, 0.8f, 0.2f, 0.8f, menu.getOptionsBySide(MENU_BOTTOM).get(0),0);
+		drawFace(gl, 1.0f, 0.8f, 0.2f, 0.8f, menu.getOption(MENU_BOTTOM,0),0);
 		gl.glPopMatrix();
 	}
 
@@ -358,7 +358,7 @@ public class Renderer {
 		gl.glLoadIdentity();
 		glu.gluPerspective(15, (float) width / (float) height, 5, 15);
 	}
-
+	
 	/*
 	 * draws one face of a cube
 	 * @param gl
@@ -371,7 +371,7 @@ public class Renderer {
 		//unders�k 3d text http://www.geofx.com/html/OpenGL_Eclipse/TextRenderer3D.html			
 		//https://github.com/sgothel/jogl-utils/commit/bac504811d3fde4675b9a8f464a74f1c41be77d5#diff-2
 		//C:\Users\cf\Downloads\java3declipse-20090302	
-		
+		//System.out.println(text);
 		//set texture for the menu
 		Texture texture = Textures.paddle1;
 		

@@ -16,7 +16,8 @@ public class MenuCube {
 	private String Player2Name = new String("AI");
 	//two dimensional list holding the menu options, 
 	//first list holds the lists of strings for each side of the menu
-	private ArrayList<ArrayList<String>> options;
+	//private ArrayList<ArrayList<String>> options;
+	private String[][] options;
 
 	/*
 	 * updates the menucube's rotation angles, called every tick of the game engine
@@ -27,7 +28,7 @@ public class MenuCube {
 		 */
 		//Two first if:s are special cases; if cube is rotated almost -270 degrees(three steps to the right)
 		//then instead of going back three steps to reach rotation = 0, simply rotate once to the right
-		
+
 		//cube is rotated three steps to the right of original rotation
 		//=>rotate another 90 degrees to the right to reach original rotation
 		if(ry < ty && ry <= -270){ 
@@ -45,20 +46,21 @@ public class MenuCube {
 		}else if(ry > ty){
 			setRy(ry - RY_SPEED);
 		}
-		
+
+
 		/*
 		 * Check rotation around x axis
 //		 */
-//		if(rx < tx && rx >= 90){
-//			setRx(rx + RY_SPEED);
-//			//setRy(ry + 180);
-//		}
-//
-//		if(rx < tx){
-//			setRx(rx + RY_SPEED);
-//		}else if(rx > tx){
-//			setRx(rx - RY_SPEED);
-//		}
+		//		if(rx < tx && rx >= 90){
+		//			setRx(rx + RY_SPEED);
+		//			//setRy(ry + 180);
+		//		}
+		//
+		//		if(rx < tx){
+		//			setRx(rx + RY_SPEED);
+		//		}else if(rx > tx){
+		//			setRx(rx - RY_SPEED);
+		//		}
 	}
 
 
@@ -71,7 +73,9 @@ public class MenuCube {
 		this.height = height;
 		this.width = width;
 		this.depth = depth;
-		options = new ArrayList<ArrayList<String>>();
+		//options = new ArrayList<ArrayList<String>>();
+		options = new String[6][10]; 
+		this.initCube();	// load the text for each side of the cube
 		rx = ry = rz = tx = ty = tz = 0;	//the rotation of the cube is initiated as 0,0,0
 	}
 	/*
@@ -97,43 +101,64 @@ public class MenuCube {
 			if((Math.abs(ry) % 360 == 0)){
 				tx = tx + degrees;
 			}
-			//viewing right face
-			else if((Math.abs(ry) % 360 == 90)){
-				System.out.println("right flip");
-			}
-			//System.out.println("(Math.abs(ry) % 360) �r :" + (Math.abs(ry) % 360));
 		}
 	}
-	
+
 	/*
 	 * Determines what action to perform, based on which direction the cube is facing
 	 * @return	the gamestate (Const.*)to be initialized depending on what direction the cube is facing
 	 */
 	public int select(){
 		System.out.println("ry " +ry);
+		/*
+		 * NOTE that if the first move the player makes is one step to the right then ry = 0-90 = -90
+		 * but if the player takes three steps to the left (=0+90+90+90 = 270) we will also be facing the rightmost face
+		 * This results in viewing eg. the rightmost face being identified by ry == -90 OR ry == 270
+		 */
 		//menu facing forward => init new and start new game
 		if(ry == 0){
 			return IN_GAME;
 		}
 		// selected resume
-		else if(ry == 90){
+		else if(ry == 90 || ry == -270){
 			return RESUME;
 		}
 		// selected to input player name
-		else if(ry == -90){
+		else if(ry == -90 || ry == 270){
+			return TEXT_INPUT;
+		}
+		else if(ry == -180){
 			return TEXT_INPUT;
 		}
 		//no approriate option for the direction the cube is facing, return error
 		return Const.ERROR;
 	}
 	/*
+	 * DO NOT USE THIS METHOD AS IT EXPOSES THE MENUCUBE UNDERLYING DATASTRUCTURE TO THE REST OF THE PROGRAM
 	 * returns all the options for a specified side of the menu
 	 * @param int (number of the side for which you would like the list of options)
 	 */
-	public ArrayList<String> getOptionsBySide(int x) {
-		return options.get(x);
+	public String[] getOptionsBySide(int x) {
+		return options[x];
 	}
-	public ArrayList<ArrayList<String>> getOptions() {
+	/*
+	 * returns the  option for a specified side of the menu
+	 * @param sideNr	the number(const.MENU_*****) of the side for which you would like the list of options)
+	 * @param eltNr		The number of the option in the list to get
+	 */
+	public String getOption(int sideNr,int eltNr) {
+		return options[sideNr][eltNr];
+	}
+	/*
+	 * Sets the  option for a specified side of the menu
+	 * @param sideNr	the number(const.MENU_*****) of the side for which you would like the list of options)
+	 * @param eltNr		The number of the option in the list to get
+	 * @param text		The text to be displayed at the provided location
+	 */
+	public void setOption(int sideNr,int eltNr, String text) {
+		options[sideNr][eltNr] = text;
+	}
+	public String[][] getOptions() {
 		return options;
 	}
 	/*
@@ -144,13 +169,21 @@ public class MenuCube {
 	 * @param text		the text to be displayed
 	 */
 	public void updateOption(int sideId,int eltNr, String text) {
-		this.options.get(sideId).set(eltNr, text);
+		this.options[sideId][eltNr] = text;
+	}
+	private void initCube() {
+		options[MENU_TOP][0] = "Top";
+		options[MENU_FRONT][0] = "New Game";
+		options[MENU_RIGHT][0] = "Enter P1 Name: ";
+		options[MENU_BACK][0] = "Enter P2 Name: ";
+		options[MENU_LEFT][0] = "";
+		options[MENU_BOTTOM][0] = "Top";
 	}
 	/*
 	 * add entire menu system
 	 * @param options	list of list of options, one for each side
 	 */
-	public void setOptions(ArrayList<ArrayList<String>> options) {
+	public void setOptions(String[][] options) {
 		this.options = options;
 	}
 
