@@ -2,6 +2,7 @@ package pong.view;
 
 import static pong.model.Const.*;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -96,7 +97,7 @@ public class GraphicsEngine implements GLEventListener {
 
 		// Write updates per second and sleeptime
 		render.renderTextAtPixels(0, frameHeight - 12, frameWidth, frameHeight, "Updates per second: " + ge.getFps()
-				+ " Sleeptime: " + ge.getSleepTime() + "ms", new Font("font", Font.PLAIN, 12));
+				+ " Sleeptime: " + ge.getSleepTime() + "ms", new Font("font", Font.PLAIN, 12), Color.YELLOW);
 
 		// check gameState to determine whether to zoom out and draw menu or to draw the game
 		if (ge.getGameState() == IN_MENU) {
@@ -116,9 +117,9 @@ public class GraphicsEngine implements GLEventListener {
 			gl.glPushMatrix();
 			// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350)
 			render.renderTextAtPixels(10, 10, frameWidth, frameHeight, "Player 1: " + ge.getPlayer1().getScore()
-					+ " Lives: " + ge.getPlayer1().getLives(), new Font("font", Font.PLAIN, 18));
+					+ " Lives: " + ge.getPlayer1().getLives(), new Font("font", Font.PLAIN, 18), Color.RED);
 			render.renderTextAtPixels(frameWidth-frameWidth/4, 10, frameWidth, frameHeight, "Player 2: " + ge.getPlayer2().getScore()
-					+ " Lives: " + ge.getPlayer2().getLives(), new Font("font", Font.PLAIN, 18));
+					+ " Lives: " + ge.getPlayer2().getLives(), new Font("font", Font.PLAIN, 18), Color.RED);
 			gl.glPopMatrix();
 
 			if (ge.isBallExplode()) {
@@ -156,14 +157,14 @@ public class GraphicsEngine implements GLEventListener {
 		else if ( ge.getGameState() == GAME_ENDED ){
 			
 			if (ge.getPlayer1().getLives() > ge.getPlayer2().getLives()) {
-				render.renderTextAtPixels(frameWidth/3, (frameHeight/2), frameWidth, frameHeight, "Player 1 WINS!!", new Font("font", Font.PLAIN, 32));
-				render.renderTextAtPixels(frameWidth/3, (frameHeight/2)-40, frameWidth, frameHeight, "Score: " + ge.getPlayer1().getScore(), new Font("font", Font.PLAIN, 32));
+				render.renderTextAtPixels(frameWidth/3, (frameHeight/2), frameWidth, frameHeight, "Player 1 WINS!!", new Font("font", Font.PLAIN, 32), Color.YELLOW);
+				render.renderTextAtPixels(frameWidth/3, (frameHeight/2)-40, frameWidth, frameHeight, "Score: " + ge.getPlayer1().getScore(), new Font("font", Font.PLAIN, 32), Color.YELLOW);
 			} else {
-				render.renderTextAtPixels(frameWidth/3, (frameHeight/2), frameWidth, frameHeight, "Player 2 WINS!!", new Font("font", Font.PLAIN, 32));
-				render.renderTextAtPixels(frameWidth/3, (frameHeight/2)-40, frameWidth, frameHeight, "Score: " + ge.getPlayer2().getScore(), new Font("font", Font.PLAIN, 32));
+				render.renderTextAtPixels(frameWidth/3, (frameHeight/2), frameWidth, frameHeight, "Player 2 WINS!!", new Font("font", Font.PLAIN, 32), Color.YELLOW);
+				render.renderTextAtPixels(frameWidth/3, (frameHeight/2)-40, frameWidth, frameHeight, "Score: " + ge.getPlayer2().getScore(), new Font("font", Font.PLAIN, 32), Color.YELLOW);
 
 			}
-			render.renderTextAtPixels(frameWidth/3, (frameHeight/2)-80, frameWidth, frameHeight, "New Game coming up...", new Font("font", Font.PLAIN, 32));
+			render.renderTextAtPixels(frameWidth/3, (frameHeight/2)-80, frameWidth, frameHeight, "New Game coming up...", new Font("font", Font.PLAIN, 32), Color.RED);
 		}
 
 	}
