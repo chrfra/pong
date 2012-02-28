@@ -18,13 +18,26 @@ import pong.view.Camera;
 public class CommandInput implements KeyListener {
 
 	GameEngine ge;
-
+	private String input;
+	private String keyString;
 	public CommandInput(GameEngine ge) {
 		this.ge = ge;
 	}
 
+
 	@Override
 	public void keyPressed(KeyEvent arg0) {
+
+		//store text if text input is enabled ( beginInput() has been called, but not endInput() yet  )
+		if(input != null){
+			int keyCode = arg0.getKeyCode();
+			String key = KeyEvent.getKeyText(keyCode);
+			// only accept one character input ( disregard ENTER string etc...)
+			if(key.length() == 1){
+				input = input + key;
+				System.out.println("INPUT= " + input);
+			}
+		}
 
 		//Add ball to game
 		if(arg0.getKeyCode() == KeyEvent.VK_B){
@@ -53,11 +66,11 @@ public class CommandInput implements KeyListener {
 		if(arg0.getKeyCode() == KeyEvent.VK_ENTER){
 			ge.select();
 		}
-		
+
 		/*
 		 * Up,down,left,right presses
 		 */
-		
+
 		/*
 		 * RIGHT/LEFT
 		 */
@@ -86,7 +99,7 @@ public class CommandInput implements KeyListener {
 		else if(arg0.getKeyCode() == KeyEvent.VK_DOWN){
 			if(ge.getGameState() == IN_MENU){
 				ge.getMenu().rotateX(-90);
-		}
+			}
 		}
 	}
 
@@ -103,12 +116,27 @@ public class CommandInput implements KeyListener {
 
 
 	}
+	/*
+	 * enables storing of text input
+	 */
+	public void beginInput(){
+		input = new String();
+	}
+	/*
+	 * disables storing of text input
+	 */
+	public void endInput(){
+		input = null;
+	}
+
+	public String getInput() {
+		return input;
+	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
+
+
 	}
-
-
-
 
 }

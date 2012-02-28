@@ -444,15 +444,15 @@ public class Renderer {
 				textScaleFactor);
 		
 		textrenderer.end3DRendering();
-		
+		textrenderer.flush();	//avoid memory leaks, can't call .dispose() too, since reusing the textrenderer
 	}
 
-	//readies settings for printing 3D text
+	//readies settings for printing 3D text, used on menucube
 	public void setUpText(GLAutoDrawable drawable) {
-		textrenderer = new TextRenderer(new Font("SansSerif", Font.PLAIN, 72));
+		textrenderer = new TextRenderer(new Font("SansSerif", Font.PLAIN, 72),true,false);	//sans serif,AA=on,useFractionalMetrics=off
 		GL2 gl = drawable.getGL().getGL2();
 		//enable depth testing
-		gl.glEnable(GL2.GL_DEPTH_TEST);
+		gl.glEnable(GL2.GL_DEPTH_TEST); //does nothing right now
 	}
 	
 	public void drawExplosion(GL2 gl, Explosion exp) {

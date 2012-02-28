@@ -156,6 +156,11 @@ public class Camera {
 		float speed = 0;
 		boolean moveInward;
 		dist = Math.abs(startPos - zTarget);
+		//if already at target, return
+		if(dist == 0){
+			return;
+		}
+			
 		if (zTarget < startPos) {
 			moveInward = true;
 		} else {
@@ -164,7 +169,6 @@ public class Camera {
 
 		try {
 			while (distTraveled <= dist) {
-
 				// Increment or decrement zPos based on if you move inwards (zPos decreasing) or outwards (zPos
 				// increasing)
 				if (moveInward) {

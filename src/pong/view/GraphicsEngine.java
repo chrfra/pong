@@ -121,9 +121,9 @@ public class GraphicsEngine implements GLEventListener {
 
 			gl.glPushMatrix();
 			// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350)
-			render.renderTextAtPixels(10, 10, frameWidth, frameHeight, "Player 1: " + ge.getPlayer1().getScore()
+			render.renderTextAtPixels(10, 10, frameWidth, frameHeight, ge.getPlayer1().getName() + ge.getPlayer1().getScore()
 					+ " Lives: " + ge.getPlayer1().getLives(), new Font("font", Font.PLAIN, 18), Color.RED);
-			render.renderTextAtPixels(frameWidth-frameWidth/4, 10, frameWidth, frameHeight, "Player 2: " + ge.getPlayer2().getScore()
+			render.renderTextAtPixels(frameWidth-frameWidth/4, 10, frameWidth, frameHeight, ge.getPlayer2().getName() + ge.getPlayer2().getScore()
 					+ " Lives: " + ge.getPlayer2().getLives(), new Font("font", Font.PLAIN, 18), Color.RED);
 			gl.glPopMatrix();
 

@@ -23,7 +23,7 @@ public class Const {
 	
 	//size of the (cubic) menu
 	public static final float MENU_SIZE = 9f;
-	public static final float MENU_ZPOS = 98;
+	public static final float MENU_ZPOS = 198;
 	
 	//identifiers for the different sides of the cube, used logically to identify the sides from eachother when calling updateOption()
 	public static final int MENU_TOP = 0;
@@ -37,6 +37,7 @@ public class Const {
 	
 	/********************LOGIC CONSTANTS***************************/
 	public static final int RESUME = 5;	//used by menu.select() to indicate that the resume game option has been selected, must be != from all gamestates
+	public static final int TEXT_INPUT = 6;	//returned by menu to indicate user text input is beginning
 	public static final int ERROR = 9999;
 
 	
@@ -90,7 +91,7 @@ public class Const {
 	
 	public static final float CAMERA_POSITION_X = 0;
 	public static final float CAMERA_POSITION_Y = 0;
-	public static final float CAMERA_POSITION_Z = 100;
+	public static final float CAMERA_POSITION_Z = 200;
 	
 	public static final float CAMERA_UPVECTOR_X = 0;
 	public static final float CAMERA_UPVECTOR_Y = 1;
@@ -105,6 +106,9 @@ public class Const {
 	public static final int CAM_LOOKAT_BALLS = 3;
 	public static final int CAM_PADDLE1 = 4;
 	public static final int CAM_PADDLE2 = 5;
+	
+
+	public static final float CAMERA_IN_GAME_POSITION_Z = 100;
 	
 	/*************AI ***********************************/
 	
