@@ -446,8 +446,8 @@ public class Renderer {
 			gl.glPushMatrix();
 			
 			gl.glColor3f(1f, 1f, 1f);
-			gl.glRotatef(0, 1f, 1f, 1f);
 			gl.glTranslatef(explosions[i][0], explosions[i][1], explosions[i][2]);
+			gl.glRotatef(explosions[i][4], 1f, 1f, 1f);
 			
 			GLUquadric explosion = glu.gluNewQuadric();
 			glu.gluQuadricTexture(explosion, true);
