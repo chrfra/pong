@@ -11,6 +11,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.InvalidClassException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class GraphicsEngine implements GLEventListener {
 	private int frameWidth, frameHeight;
 	
 	//List of explosions
-	private ArrayList<Explosion> explosions = new ArrayList<Explosion>();
+	private List<Explosion> explosions = Collections.synchronizedList(new ArrayList<Explosion>());
 
 	// animator drives display method in a loop
 	private static Animator animator = new Animator(canvas);
@@ -127,19 +128,21 @@ public class GraphicsEngine implements GLEventListener {
 					+ " Lives: " + ge.getPlayer2().getLives(), new Font("font", Font.PLAIN, 18), Color.RED);
 			gl.glPopMatrix();
 
-			
-			Iterator<Explosion> it = explosions.iterator();
-			while(it.hasNext()){
-				Explosion exp = it.next();
-				exp.tick();
+			synchronized(explosions){
+				Iterator<Explosion> it = explosions.iterator();
+				while(it.hasNext()){
+					Explosion exp = it.next();
+					exp.tick();
 
-				gl.glPushMatrix();
-				render.drawExplosion(gl, exp);
-				gl.glPopMatrix();
-				if(exp.isEnded()){
-					it.remove();
+					gl.glPushMatrix();
+					render.drawExplosion(gl, exp);
+					gl.glPopMatrix();
+					if(exp.isEnded()){
+						it.remove();
+					}
 				}
 			}
+			
 			
 
 
@@ -260,7 +263,10 @@ public class GraphicsEngine implements GLEventListener {
 		System.exit(0);
 	}
 	public void addExplosion(float x, float y, float z){
-		explosions.add(new Explosion(x, y, z));
+		synchronized(explosions){
+			explosions.add(new Explosion(x, y, z));
+		}
+		
 	}
 
 	public GLAutoDrawable getDrawable() {
