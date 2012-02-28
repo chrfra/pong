@@ -115,12 +115,10 @@ public class GraphicsEngine implements GLEventListener {
 
 			gl.glPushMatrix();
 			// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350)
-			render.render2DText(SCREEN_WIDTH - 860, SCREEN_HEIGHT - 645, "Player 1: " + ge.getPlayer1().getScore()
-					+ " Lives: " + ge.getPlayer1().getLives(), gl);
-			render.render2DText(SCREEN_WIDTH - 800, SCREEN_HEIGHT - 645, "Player 2: " + ge.getPlayer2().getScore()
-					+ " Lives: " + ge.getPlayer2().getLives(), gl);
-
-			// render.render3DText(drawable, 0, 0, "START");
+			render.renderTextAtPixels(10, 10, frameWidth, frameHeight, "Player 1: " + ge.getPlayer1().getScore()
+					+ " Lives: " + ge.getPlayer1().getLives(), new Font("font", Font.PLAIN, 18));
+			render.renderTextAtPixels(frameWidth-frameWidth/4, 10, frameWidth, frameHeight, "Player 2: " + ge.getPlayer2().getScore()
+					+ " Lives: " + ge.getPlayer2().getLives(), new Font("font", Font.PLAIN, 18));
 			gl.glPopMatrix();
 
 			if (ge.isBallExplode()) {
@@ -155,15 +153,17 @@ public class GraphicsEngine implements GLEventListener {
 		}
 
 		// game has ended, print score
-		else if (ge.getGameState() == GAME_ENDED) {
+		else if ( ge.getGameState() == GAME_ENDED ){
+			
 			if (ge.getPlayer1().getLives() > ge.getPlayer2().getLives()) {
-				render.render2DText(-30, 0, "Player 1 WINS!!", gl);
-				render.render2DText(-30, -5, "Score: " + ge.getPlayer1().getScore(), gl);
+				render.renderTextAtPixels(frameWidth/3, (frameHeight/2), frameWidth, frameHeight, "Player 1 WINS!!", new Font("font", Font.PLAIN, 32));
+				render.renderTextAtPixels(frameWidth/3, (frameHeight/2)-40, frameWidth, frameHeight, "Score: " + ge.getPlayer1().getScore(), new Font("font", Font.PLAIN, 32));
 			} else {
-				render.render2DText(-30, 0, "Player 2 WINS!!", gl);
-				render.render2DText(-30, -5, "Score: " + ge.getPlayer2().getScore(), gl);
+				render.renderTextAtPixels(frameWidth/3, (frameHeight/2), frameWidth, frameHeight, "Player 2 WINS!!", new Font("font", Font.PLAIN, 32));
+				render.renderTextAtPixels(frameWidth/3, (frameHeight/2)-40, frameWidth, frameHeight, "Score: " + ge.getPlayer2().getScore(), new Font("font", Font.PLAIN, 32));
+
 			}
-			render.render2DText(-30, -10, "New Game coming up...", gl);
+			render.renderTextAtPixels(frameWidth/3, (frameHeight/2)-80, frameWidth, frameHeight, "New Game coming up...", new Font("font", Font.PLAIN, 32));
 		}
 
 	}
