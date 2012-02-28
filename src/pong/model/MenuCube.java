@@ -12,6 +12,8 @@ public class MenuCube {
 	private float height;
 	private float width;
 	private float rx,ry,rz,tx,ty,tz; //the cube's rotation in x,y,z in degrees, target x,y,z
+	private String Player1Name;
+	private String Player2Name = new String("AI");
 	//two dimensional list holding the menu options, 
 	//first list holds the lists of strings for each side of the menu
 	private ArrayList<ArrayList<String>> options;
@@ -108,12 +110,18 @@ public class MenuCube {
 	 * @return	the gamestate (Const.*)to be initialized depending on what direction the cube is facing
 	 */
 	public int select(){
+		System.out.println("ry " +ry);
 		//menu facing forward => init new and start new game
 		if(ry == 0){
 			return IN_GAME;
 		}
+		// selected resume
 		else if(ry == 90){
 			return RESUME;
+		}
+		// selected to input player name
+		else if(ry == -90){
+			return TEXT_INPUT;
 		}
 		//no approriate option for the direction the cube is facing, return error
 		return Const.ERROR;
@@ -239,5 +247,17 @@ public class MenuCube {
 
 	public void setDepth(float depth) {
 		this.depth = depth;
+	}
+	public void setPlayer1Name(String player1Name) {
+		Player1Name = player1Name;
+	}
+	public String getPlayer1Name() {
+		return Player1Name;
+	}
+	public void setPlayer2Name(String player2Name) {
+		Player2Name = player2Name;
+	}
+	public String getPlayer2Name() {
+		return Player2Name;
 	}
 }

@@ -106,6 +106,7 @@ public class GameEngine {
 			//Do tick
 			if(gameState == IN_GAME){
 				gameTick();
+				Camera.smoothZoom(CAMERA_IN_GAME_POSITION_Z);	//make sure camera is zoomed in to proper z distance from game area
 			}else if(gameState == IN_MENU){
 				menu.tick();
 			}
@@ -135,8 +136,9 @@ public class GameEngine {
 	}
 
 	/* Called from select method when a new game is started. Resets all the players, items and physics. 
+	 * @param playerName the name input by the player in the menu
 	 */
-	public void initNewGame() {
+	public void initNewGame(String player1Name,String player2Name) {
 
 		System.out.println("Initializing new game...");
 		items = Collections.synchronizedList(new ArrayList<GameItem>());
@@ -153,14 +155,14 @@ public class GameEngine {
 		// add player 1 to game
 		paddle1 = new Paddle(0, Const.DEFAULT_DPADDLE_YPOS, 0, Const.DEFAULT_PADDLE_HEIGHT, Const.DEFAULT_PADDLE_WIDTH,
 				Const.DEFAULT_PADDLE_DEPTH);
-		player1 = new Player("Playername1", paddle1);
+		player1 = new Player(player1Name, paddle1);
 		player1.addGoal(goal1);
 		addItemToGame(paddle1);
 
 		// add player 2 to game
 		paddle2 = new Paddle(0, Const.DEFAULT_UPADDLE_YPOS, 0, Const.DEFAULT_PADDLE_HEIGHT, Const.DEFAULT_PADDLE_WIDTH,
 				Const.DEFAULT_PADDLE_DEPTH);
-		player2 = new Player("Playername2", paddle2);
+		player2 = new Player(player2Name, paddle2);
 		player2.addGoal(goal2);
 		addItemToGame(paddle2);
 		
@@ -266,7 +268,8 @@ public class GameEngine {
 			}
 			SoundPlayer.stopMp3();
 			ballExplode = false;
-			initNewGame();
+			//init new game, with the same player names as before
+			initNewGame(player1.getName(), player2.getName());
 
 		}
 		ballExplode = false;
@@ -378,11 +381,11 @@ public class GameEngine {
 		options.add(frontOptions);
 
 		ArrayList<String> rightOptions = new ArrayList<String>();
-		rightOptions.add("Right");
+		rightOptions.add("Enter Name");
 		options.add(rightOptions);
 
 		ArrayList<String> backOptions = new ArrayList<String>();
-		backOptions.add("Back");
+		backOptions.add("");
 		options.add(backOptions);
 
 		ArrayList<String> leftOptions = new ArrayList<String>();
@@ -419,20 +422,31 @@ public class GameEngine {
 	 * method is called when pressing select, determines what action to perform based on the selected menu option
 	 */
 	public void select(){
-		// only let the user select options if in the menu
+		// only let the user select options if in menu mode (viewing the menu)
 		if(gameState == IN_MENU){
 			//get the action to be performed from the menu object
 			int action = menu.select();
 			//New game
 			if(action == IN_GAME){
-				//Initialize game if startstate is IN_GAME
-				initNewGame();
+				//Initialize game if startstate is IN_GAME, with the same player names as before
+				initNewGame(menu.getPlayer1Name(),menu.getPlayer2Name());
 				setGameState(IN_GAME);
 			}//resume game
 			else if (action ==  RESUME ){
 				//only resume game if there is a game to be resumed (items object exists)
 				if(items != null){
 					setGameState(IN_GAME);
+				}
+			}//enter key is pressed on text input option
+			else if(action == TEXT_INPUT){
+				//if not already inputting text, begin reading what the user types
+				if(cmdInput.getInput() == null){
+					cmdInput.beginInput();
+				}// if already reading text input from user, save text to player's name and stop input
+				else{
+					//store player names in menu cube until game is started, 
+					menu.setPlayer1Name(cmdInput.getInput());
+					cmdInput.endInput();
 				}
 			}
 		}
