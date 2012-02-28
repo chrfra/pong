@@ -2,6 +2,7 @@ package pong.view;
 
 import static pong.model.Const.*;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -9,6 +10,8 @@ import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.InvalidClassException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.media.opengl.GL;
@@ -41,6 +44,9 @@ public class GraphicsEngine implements GLEventListener {
 	float rotationSpeed;
 	// Dimension of the frame
 	private int frameWidth, frameHeight;
+	
+	//List of explosions
+	private ArrayList<Explosion> explosions = new ArrayList<Explosion>();
 
 	// animator drives display method in a loop
 	private static Animator animator = new Animator(canvas);
@@ -96,7 +102,7 @@ public class GraphicsEngine implements GLEventListener {
 
 		// Write updates per second and sleeptime
 		render.renderTextAtPixels(0, frameHeight - 12, frameWidth, frameHeight, "Updates per second: " + ge.getFps()
-				+ " Sleeptime: " + ge.getSleepTime() + "ms", new Font("font", Font.PLAIN, 12));
+				+ " Sleeptime: " + ge.getSleepTime() + "ms", new Font("font", Font.PLAIN, 12), Color.YELLOW);
 
 		// check gameState to determine whether to zoom out and draw menu or to draw the game
 		if (ge.getGameState() == IN_MENU) {
@@ -115,19 +121,29 @@ public class GraphicsEngine implements GLEventListener {
 
 			gl.glPushMatrix();
 			// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350)
-			render.render2DText(SCREEN_WIDTH - 860, SCREEN_HEIGHT - 645, "Player 1: " + ge.getPlayer1().getScore()
-					+ " Lives: " + ge.getPlayer1().getLives(), gl);
-			render.render2DText(SCREEN_WIDTH - 800, SCREEN_HEIGHT - 645, "Player 2: " + ge.getPlayer2().getScore()
-					+ " Lives: " + ge.getPlayer2().getLives(), gl);
-
-			// render.render3DText(drawable, 0, 0, "START");
+			render.renderTextAtPixels(10, 10, frameWidth, frameHeight, "Player 1: " + ge.getPlayer1().getScore()
+					+ " Lives: " + ge.getPlayer1().getLives(), new Font("font", Font.PLAIN, 18), Color.RED);
+			render.renderTextAtPixels(frameWidth-frameWidth/4, 10, frameWidth, frameHeight, "Player 2: " + ge.getPlayer2().getScore()
+					+ " Lives: " + ge.getPlayer2().getLives(), new Font("font", Font.PLAIN, 18), Color.RED);
 			gl.glPopMatrix();
 
-			if (ge.isBallExplode()) {
+			
+			Iterator<Explosion> it = explosions.iterator();
+			while(it.hasNext()){
+				Explosion exp = it.next();
+				exp.tick();
+
 				gl.glPushMatrix();
-				render.drawExplosion(gl, ge.getMainBall());
+				render.drawExplosion(gl, exp);
 				gl.glPopMatrix();
+				if(exp.isEnded()){
+					it.remove();
+				}
 			}
+			
+
+
+
 
 			// Draw paddles, ball etc
 			try {
@@ -155,15 +171,17 @@ public class GraphicsEngine implements GLEventListener {
 		}
 
 		// game has ended, print score
-		else if (ge.getGameState() == GAME_ENDED) {
+		else if ( ge.getGameState() == GAME_ENDED ){
+			
 			if (ge.getPlayer1().getLives() > ge.getPlayer2().getLives()) {
-				render.render2DText(-30, 0, "Player 1 WINS!!", gl);
-				render.render2DText(-30, -5, "Score: " + ge.getPlayer1().getScore(), gl);
+				render.renderTextAtPixels(frameWidth/3, (frameHeight/2), frameWidth, frameHeight, "Player 1 WINS!!", new Font("font", Font.PLAIN, 32), Color.YELLOW);
+				render.renderTextAtPixels(frameWidth/3, (frameHeight/2)-40, frameWidth, frameHeight, "Score: " + ge.getPlayer1().getScore(), new Font("font", Font.PLAIN, 32), Color.YELLOW);
 			} else {
-				render.render2DText(-30, 0, "Player 2 WINS!!", gl);
-				render.render2DText(-30, -5, "Score: " + ge.getPlayer2().getScore(), gl);
+				render.renderTextAtPixels(frameWidth/3, (frameHeight/2), frameWidth, frameHeight, "Player 2 WINS!!", new Font("font", Font.PLAIN, 32), Color.YELLOW);
+				render.renderTextAtPixels(frameWidth/3, (frameHeight/2)-40, frameWidth, frameHeight, "Score: " + ge.getPlayer2().getScore(), new Font("font", Font.PLAIN, 32), Color.YELLOW);
+
 			}
-			render.render2DText(-30, -10, "New Game coming up...", gl);
+			render.renderTextAtPixels(frameWidth/3, (frameHeight/2)-80, frameWidth, frameHeight, "New Game coming up...", new Font("font", Font.PLAIN, 32), Color.RED);
 		}
 
 	}
@@ -240,6 +258,9 @@ public class GraphicsEngine implements GLEventListener {
 		animator.stop();
 		frame.dispose();
 		System.exit(0);
+	}
+	public void addExplosion(float x, float y, float z){
+		explosions.add(new Explosion(x, y, z));
 	}
 
 	public GLAutoDrawable getDrawable() {

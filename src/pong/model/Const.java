@@ -123,4 +123,10 @@ public class Const {
 	
 	
 	/**************************************************/
+	
+	/******************EXPLOSION CONSTANTS*************/
+	public static final int EXPLOSION_COUNT = 10;
+	public static final float EXPLOSION_SPREAD = 0.05f;
+	
+	/**************************************************/
 }

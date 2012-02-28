@@ -37,7 +37,6 @@ public class Renderer {
 	private Texture washedtexture;
 	private TextRenderer textrenderer;
 	private float textScaleFactor;
-	private int spheresize = 0;
 
 	public Renderer(GLU glu) {
 		this.glu = glu;
@@ -292,9 +291,10 @@ public class Renderer {
 	}
 
 
-	public void renderTextAtPixels(int x, int y, int frameWidth, int frameHeight, String text, Font font){
+	public void renderTextAtPixels(int x, int y, int frameWidth, int frameHeight, String text, Font font, Color fontcolor){
 		TextRenderer tr = new TextRenderer(font);
 		tr.beginRendering(frameWidth, frameHeight);
+		tr.setColor(fontcolor);
 		tr.draw(text, x, y);
 		tr.endRendering();
 		tr.flush();
@@ -455,50 +455,25 @@ public class Renderer {
 		gl.glEnable(GL2.GL_DEPTH_TEST); //does nothing right now
 	}
 	
-	public void drawExplosion(GL2 gl, Ball ball) {
+	public void drawExplosion(GL2 gl, Explosion exp) {
 		GLUT glut = new GLUT();
-		float ballposX = ball.getxPos();
-		float ballposY = ball.getyPos();
-		int length = 5;
 		
 		// THIS FOLLOWING LINE CHANGE THE COLORS OF THE WHOLE GAME... WUT.
-		gl.glEnable(GL2.GL_COLOR_MATERIAL);
+//		gl.glEnable(GL2.GL_COLOR_MATERIAL);
 		
-		gl.glPushMatrix();
-		gl.glColor3f(1f, 0f, 0f);
-		gl.glRotatef(spheresize, 1f, 1f, 1f);
-		gl.glTranslatef(ballposX+length, ballposY-length, 0);
-		glut.glutSolidSphere(1+spheresize++, 10, 30);
-		gl.glPopMatrix();
-		
-		gl.glPushMatrix();
-		gl.glColor3f(0f, 1f, 0f);
-		gl.glRotatef(1f, spheresize, 1f, 1f);
-		gl.glTranslatef(ballposX-length, ballposY+length, 0);
-		glut.glutSolidSphere(3+spheresize++, 10, 30);
-		gl.glPopMatrix();
-		
-		gl.glPushMatrix();
-		gl.glColor3f(1f, 1f, 1f);
-		gl.glRotatef(1f, 1f, spheresize, 1f);
-		gl.glTranslatef(ballposX+length, ballposY+length, 0);
-		glut.glutSolidSphere(2+spheresize++, 50, 50);
-		gl.glPopMatrix();
-		
-		gl.glDisable(GL2.GL_COLOR_MATERIAL);
-		
-		// New thread cause since we render too fast otherwise
-		Thread t = new Thread();
-		t.start();
-		
-		try {
-			t.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		float[][] explosions = exp.getExplosions();
+		for(int i = 0 ; i<explosions.length ; i++){
+			gl.glPushMatrix();
+			gl.glColor3f(1f, 0f, 0f);
+			gl.glRotatef(0, 1f, 1f, 1f);
+			gl.glTranslatef(explosions[i][0], explosions[i][1], explosions[i][2]);
+			glut.glutSolidSphere(explosions[i][3], 10, 30);
+			gl.glPopMatrix();
 		}
-		if(spheresize > 10){
-			spheresize = 0;
-		}
+		
+		
+//		gl.glDisable(GL2.GL_COLOR_MATERIAL);
+
 	}
 	
 
