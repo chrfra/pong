@@ -18,8 +18,8 @@ import pong.view.Camera;
 public class CommandInput implements KeyListener {
 
 	GameEngine ge;
+	//input stores the string (player name) entered by the player(s)
 	private String input;
-	private String keyString;
 	public CommandInput(GameEngine ge) {
 		this.ge = ge;
 	}

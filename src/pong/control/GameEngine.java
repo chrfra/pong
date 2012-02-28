@@ -108,6 +108,9 @@ public class GameEngine {
 				Camera.smoothZoom(CAMERA_IN_GAME_POSITION_Z);	//make sure camera is zoomed in to proper z distance from game area
 			}else if(gameState == IN_MENU){
 				menu.tick();
+				//update the name printed on the menu as it is typed by the player
+				if(cmdInput.getInput()!=null)
+					menu.updateOption(MENU_RIGHT, 0, cmdInput.getInput());
 			}
 			//Do camera tick
 			Camera.tick();
@@ -164,9 +167,9 @@ public class GameEngine {
 		player2 = new Player(player2Name, paddle2);
 		player2.addGoal(goal2);
 		addItemToGame(paddle2);
-		
+
 		// Player 2 is a computer AI!
-		
+
 		cpuPlayer = new ComputerAI(AI_MODE_EASY);
 
 		// add ball to game
@@ -201,7 +204,7 @@ public class GameEngine {
 			createObject(item);
 		}
 		itemsToAdd.clear();
-		
+
 		// Calculate where AI paddle is supposed to be!
 		cpuPlayer.MoveAI(player2, getMainBall() );
 
@@ -228,7 +231,7 @@ public class GameEngine {
 		// Resets the ball to the center if the ball is the mainball. All other balls are deleted.
 
 		SoundPlayer.playMP3("ballout.mp3");
-		
+
 		ge.addExplosion(ball.getxPos(), ball.getyPos(), ball.getzPos());
 
 		if (ball == mainBall) {
@@ -359,34 +362,6 @@ public class GameEngine {
 	 */
 	private void initCube() {
 		menu = new MenuCube(0, 0, MENU_ZPOS, MENU_SIZE, MENU_SIZE, MENU_SIZE);
-		// add the options to be shown on the menu cube's sides
-		ArrayList<ArrayList<String>> options = new ArrayList<ArrayList<String>>();
-
-		ArrayList<String> topOptions = new ArrayList<String>();
-		topOptions.add("Top");
-		options.add(topOptions);
-
-		ArrayList<String> frontOptions = new ArrayList<String>();
-		frontOptions.add("New Game");
-		options.add(frontOptions);
-
-		ArrayList<String> rightOptions = new ArrayList<String>();
-		rightOptions.add("Enter Name");
-		options.add(rightOptions);
-
-		ArrayList<String> backOptions = new ArrayList<String>();
-		backOptions.add("");
-		options.add(backOptions);
-
-		ArrayList<String> leftOptions = new ArrayList<String>();
-		leftOptions.add("Resume");
-		options.add(leftOptions);
-
-		ArrayList<String> bottomOptions = new ArrayList<String>();
-		bottomOptions.add("Bottom");
-		options.add(bottomOptions);
-
-		menu.setOptions(options);
 	}
 
 	/** Creates mouse object, adds listeners that control paddles
@@ -494,5 +469,5 @@ public class GameEngine {
 	public void setMainBall(Ball mainBall) {
 		this.mainBall = mainBall;
 	}
-	
+
 }
