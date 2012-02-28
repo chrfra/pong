@@ -27,18 +27,18 @@ public class ComputerAI {
 			
 			// NUDGE THE BALL IF IT IS CLOSE TO THE PADDLE --- THIS DOES NOT WORK YET
 			if( ballvector.y < paddlevector.y && ballvector.y > 28 ){
-				paddleBody.setLinearVelocity(new Vec2( 0f , -300f));
-//				paddleBody.applyForce(new Vec2(0, -30), new Vec2(0,0) );
+				paddleBody.setLinearVelocity(new Vec2( 0f , -AI_NUDGE_FORCE));
+				//paddleBody.applyForce(new Vec2(0, -30), new Vec2(0,0) );
 			}
 
 			else if( paddlevector.x == ballvector.x ){
 				// SET FORCE TO ZERO - PADDLEPOSITION IS GOOD
 				paddleBody.setLinearVelocity(new Vec2( 0f , 0f));
-			}
-			else if( paddlevector.x > ballvector.x ){
+			} // paddle is to the right of the ball
+			else if( paddlevector.x > ballvector.x - DEFAULT_PADDLE_WIDTH / 2){
 				paddleBody.setLinearVelocity(new Vec2( -DEFAULT_AI_SPEED*difficulty , 0f));
 			}
-			else if( paddlevector.x < ballvector.x ){
+			else if( paddlevector.x < ballvector.x + DEFAULT_PADDLE_WIDTH / 2){
 				paddleBody.setLinearVelocity(new Vec2( DEFAULT_AI_SPEED*difficulty , 0f));
 			}
 		} // END IF BALL IS NOT ON AI's SIDE
