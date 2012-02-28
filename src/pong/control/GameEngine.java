@@ -494,13 +494,5 @@ public class GameEngine {
 	public void setMainBall(Ball mainBall) {
 		this.mainBall = mainBall;
 	}
-
-	public boolean isBallExplode() {
-		return ballExplode;
-	}
-
-	public void setBallExplode(boolean ballExplode) {
-		this.ballExplode = ballExplode;
-	}
 	
 }
