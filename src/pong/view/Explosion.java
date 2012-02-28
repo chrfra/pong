@@ -9,8 +9,8 @@ public class Explosion {
 
 	//The position of the origin. Only used to calculate the positions of the subexplosions
 	private float[] position = new float[3];
-	//Every explosion has x,y,z and radius
-	private float[][] explosions = new float[Const.EXPLOSION_COUNT][4];
+	//Every explosion has x,y,z,radius and rotation
+	private float[][] explosions = new float[Const.EXPLOSION_COUNT][5];
 	private float TTL = 1000;
 	private long startTime;
 	private boolean ended = false;
@@ -41,7 +41,10 @@ public class Explosion {
 			for(int u = 0 ; u<3 ; u++){
 				explosions[i][u] = position[u] + (rnd.nextFloat()*4) -2;
 			}
+			//Randomize radius
 			explosions[i][3] = (rnd.nextFloat())+1;
+			//Randomize rotation
+			explosions[i][4] = rnd.nextFloat()*360;
 		}
 		
 	}

@@ -11,10 +11,11 @@ import com.jogamp.opengl.util.texture.TextureIO;
 
 public class Textures {
 
-	public static Texture spacetexture = load("outer_space_trip.jpg");
+	public static Texture space = load("outer_space_trip.jpg");
 	public static Texture ball1 = load("earth-1k.png");
 	public static Texture paddle1 = load("paddle_texture1.jpg");
 	public static Texture wall1 = load("washedtexture4.jpg");
+	public static Texture explosion1 = load("fire_transparent.png");
 	
 	
 	/** 

@@ -228,8 +228,8 @@ public class Renderer {
 		gl.glEnable(GL.GL_TEXTURE_2D);
 
 		// Apply space texture
-		Textures.spacetexture.enable(gl);
-		Textures.spacetexture.bind(gl);
+		Textures.space.enable(gl);
+		Textures.space.bind(gl);
 
 		// Draw Ball (possible styles: FILL, LINE, POINT).
 		//gl.glRotatef(rotation, 1.0f, 1.0f, 1.0f);
@@ -430,17 +430,37 @@ public class Renderer {
 		// THIS FOLLOWING LINE CHANGE THE COLORS OF THE WHOLE GAME... WUT.
 //		gl.glEnable(GL2.GL_COLOR_MATERIAL);
 		
+		
+		gl.glEnable(GL.GL_TEXTURE_2D);
+		// Really basic and most common alpha blend function
+//		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		// Apply the texture
+		Textures.explosion1.enable(gl);
+		Textures.explosion1.bind(gl);
+		
 		float[][] explosions = exp.getExplosions();
 		for(int i = 0 ; i<explosions.length ; i++){
+			
 			gl.glPushMatrix();
-			gl.glColor3f(1f, 0f, 0f);
-			gl.glRotatef(0, 1f, 1f, 1f);
+			
+			gl.glColor3f(1f, 1f, 1f);
 			gl.glTranslatef(explosions[i][0], explosions[i][1], explosions[i][2]);
-			glut.glutSolidSphere(explosions[i][3], 10, 30);
+			gl.glRotatef(explosions[i][4], 1f, 1f, 1f);
+			
+			GLUquadric explosion = glu.gluNewQuadric();
+			glu.gluQuadricTexture(explosion, true);
+			glu.gluQuadricDrawStyle(explosion, GLU.GLU_FILL);
+			glu.gluQuadricNormals(explosion, GLU.GLU_FLAT);
+//			glu.gluQuadricOrientation(explosion, GLU.GLU_OUTSIDE);
+			glu.gluSphere(explosion,explosions[i][3], 10, 30);
+			glu.gluDeleteQuadric(explosion);
+			
 			gl.glPopMatrix();
 		}
-		
-		
+		Textures.explosion1.disable(gl);
+		gl.glDisable(GL.GL_TEXTURE_2D);
 //		gl.glDisable(GL2.GL_COLOR_MATERIAL);
 
 	}
