@@ -86,7 +86,7 @@ public class GraphicsEngine implements GLEventListener {
 	public void display(GLAutoDrawable gLDrawable) {
 		GL2 gl = gLDrawable.getGL().getGL2();
 		// Items to be drawn
-		MenuCube menu = ge.getMenu(); // will be using the menu object a lot, store reference to it in "menu" variable
+		
 		// render.setGl(gl);
 
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
@@ -107,7 +107,7 @@ public class GraphicsEngine implements GLEventListener {
 
 		// check gameState to determine whether to zoom out and draw menu or to draw the game
 		if (ge.getGameState() == IN_MENU) {
-
+			MenuCube menu = ge.getMenu(); // will be using the menu object a lot, store reference to it in "menu" variable
 			// render the Menu Cube
 			render.drawMenu(drawable, menu, menu.getRx(), menu.getRy(), menu.getRz());
 		}

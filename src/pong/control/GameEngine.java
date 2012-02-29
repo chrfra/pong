@@ -109,7 +109,6 @@ public class GameEngine {
 				gameTick();
 				//make sure camera is zoomed in to proper z distance from game area 
 				//if this is run when camera is not static, it will ruin the other camera modes
-				System.out.println(Camera.getMode());
 				if(Camera.getMode() == CAM_STATIC){
 					Camera.smoothZoom(CAMERA_IN_GAME_POSITION_Z);	
 				}

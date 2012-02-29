@@ -25,8 +25,6 @@ public class Camera {
 
 	private static GameEngine ge;
 
-	private static float rotatedY;
-
 	public Camera(GameEngine engine) {
 
 		// Set standard startinglocation for the Camera
