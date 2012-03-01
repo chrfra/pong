@@ -2,6 +2,8 @@ package pong.view;
 
 import java.util.Random;
 
+import com.jogamp.opengl.util.texture.Texture;
+
 import pong.model.Const;
 
 public class Explosion {
@@ -15,12 +17,15 @@ public class Explosion {
 	private long startTime;
 	private boolean ended = false;
 	
+	private Texture texture;
+	
 	public Explosion(float x, float y, float z) {
 		position[0] = x;
 		position[1] = y;
 		position[2] = z;
 		startTime = System.currentTimeMillis();
 		generateRandomExplosions();
+		texture = Textures.explosion1;
 	}
 	
 	
@@ -55,6 +60,9 @@ public class Explosion {
 	
 	public boolean isEnded() {
 		return ended;
+	}
+	public Texture getTexture() {
+		return texture;
 	}
 	
 }

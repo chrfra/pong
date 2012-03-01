@@ -2,6 +2,8 @@ package pong.model;
 
 import org.jbox2d.common.Vec2;
 
+import pong.view.Textures;
+
 
 public class Paddle extends MoveableItem {
 	
@@ -15,6 +17,8 @@ public class Paddle extends MoveableItem {
 		this.height = height;
 		this.width = width;
 		this.depth = depth;
+		
+		texture = Textures.paddle1;
 	}
 	
 	public void adjustYPos(float targetY, boolean isBottom){
