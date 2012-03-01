@@ -203,19 +203,22 @@ public class GraphicsEngine implements GLEventListener {
 		List<GameItem> items = ge.getGameItems();
 		// IMPORTANT! PopMatrix() resets glTranslatef and glRotatef to what it was before the previous PushMatrix()
 
+		//Don't draw the game if there are no gameitems
+		if (!ge.gameInitiated()) {
+			return;
+		}
+		
 		gl.glPushMatrix();
 		render.drawGamearea(gl);
 		gl.glPopMatrix();
 
-		if(ge.getPlayer1() != null || ge.getPlayer2() != null){
-			gl.glPushMatrix();
-			// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350)
-			render.renderTextAtPixels(10, 10, frameWidth, frameHeight, ge.getPlayer1().getName() + " Score: " + ge.getPlayer1().getScore()
-					+ " Lives: " + ge.getPlayer1().getLives(), FONT_GAMESCORE, Color.RED);
-			render.renderTextAtPixels(frameWidth-frameWidth/4, 10, frameWidth, frameHeight, ge.getPlayer2().getName() + " Score: " + ge.getPlayer2().getScore()
-					+ " Lives: " + ge.getPlayer2().getLives(), FONT_GAMESCORE, Color.RED);
-			gl.glPopMatrix();
-		}
+		gl.glPushMatrix();
+		// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350)
+		render.renderTextAtPixels(10, 10, frameWidth, frameHeight, ge.getPlayer1().getName() + " Score: " + ge.getPlayer1().getScore()
+				+ " Lives: " + ge.getPlayer1().getLives(), FONT_GAMESCORE, Color.RED);
+		render.renderTextAtPixels(frameWidth-frameWidth/4, 10, frameWidth, frameHeight, ge.getPlayer2().getName() + " Score: " + ge.getPlayer2().getScore()
+				+ " Lives: " + ge.getPlayer2().getLives(), FONT_GAMESCORE, Color.RED);
+		gl.glPopMatrix();
 		synchronized(explosions){
 			Iterator<Explosion> it = explosions.iterator();
 			while(it.hasNext()){
