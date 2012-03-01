@@ -105,6 +105,7 @@ public class GameEngine {
 			long nextGameTick = getTickCount();
 
 			//Do tick
+			//in game
 			if(gameState == IN_GAME){
 				gameTick();
 				//make sure camera is zoomed in to proper z distance from game area 
@@ -112,8 +113,10 @@ public class GameEngine {
 				if(Camera.getMode() == CAM_STATIC){
 					Camera.smoothZoom(CAMERA_IN_GAME_POSITION_Z);	
 				}
-			}else if(gameState == IN_MENU){
-				gameState = IN_GAME;
+
+			}//in the menu
+			else if(gameState == IN_MENU){
+				gameState = IN_GAME; // setting gamestate to IN_GAME to render all the game items before calling the blocking camera zoom method
 				//make sure camera is zoomed out to cube, otherwise zoom out
 				if(Camera.getMode() == CAM_STATIC)
 					Camera.smoothZoom(CAMERA_POSITION_Z);
@@ -126,8 +129,13 @@ public class GameEngine {
 				menu.tick();
 				
 				//update the name printed on the menu as it is typed by the player
-				if(cmdInput.getInput()!=null)
-					menu.updateOption(MENU_RIGHT, 0, cmdInput.getInput());
+				//player1's name is being input
+				if( cmdInput.getInput() != null && menu.select() == TEXT_INPUT_P1 ){
+					menu.updateOption(MENU_RIGHT, 0, cmdInput.getInput()); //update printed text every gametick
+				}//player2's name is being input
+				else if( cmdInput.getInput() != null && menu.select() == TEXT_INPUT_P2 ){
+					menu.updateOption(MENU_BACK, 0, cmdInput.getInput()); //update printed text every gametick
+				}
 			}
 			//Do camera tick
 			Camera.tick();
@@ -414,15 +422,22 @@ public class GameEngine {
 				if(items != null){
 					setGameState(IN_GAME);
 				}
-			}//enter key is pressed on text input option
-			else if(action == TEXT_INPUT){
+			}//enter key is pressed on text input option, either player1 or player2
+			else if(action == TEXT_INPUT_P1 || action == TEXT_INPUT_P2 ){
 				//if not already inputting text, begin reading what the user types
 				if(cmdInput.getInput() == null){
 					cmdInput.beginInput();
 				}// if already reading text input from user, save text to player's name and stop input
 				else{
-					//store player names in menu cube until game is started, 
-					menu.setPlayer1Name(cmdInput.getInput());
+					//handle text input for player 1
+					if(action == TEXT_INPUT_P1){
+						//store player names in menu cube until game is started, 
+						menu.setPlayer1Name(cmdInput.getInput());
+					}//handle text input for player 2
+					else{
+						//store player names in menu cube until game is started, 
+						menu.setPlayer2Name(cmdInput.getInput());
+					}
 					cmdInput.endInput();
 				}
 			}

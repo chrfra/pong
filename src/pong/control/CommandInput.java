@@ -124,7 +124,8 @@ public class CommandInput implements KeyListener {
 		input = new String();
 	}
 	/*
-	 * disables storing of text input
+	 * disables storing of text input, 
+	 * the check input == null is used to determine wether the user is inputting data or not
 	 */
 	public void endInput(){
 		input = null;
