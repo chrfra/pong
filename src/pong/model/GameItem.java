@@ -2,6 +2,8 @@ package pong.model;
 
 import org.jbox2d.dynamics.Body;
 
+import com.jogamp.opengl.util.texture.Texture;
+
 public class GameItem {
 	
 	protected float xPos;
@@ -10,6 +12,9 @@ public class GameItem {
 	//what type the object is, eg. ball, paddle etc. used in graphicsEngine when traversing items list and drawing them
 	private Type type;
 	protected Body body;
+	
+	//Texture
+	protected Texture texture;
 	
 	public GameItem(float xPos, float yPos, float zPos, Type type) {
 		this.xPos = xPos;
@@ -47,5 +52,9 @@ public class GameItem {
 
 	public void setBody(Body body) {
 		this.body = body;
+	}
+	
+	public Texture getTexture() {
+		return texture;
 	}
 }

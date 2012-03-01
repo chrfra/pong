@@ -59,6 +59,8 @@ public class GameEngine {
 	private boolean resetGame = false;
 	// Reference to the AI
 	private ComputerAI cpuPlayer;
+	// For random balls spawning
+	private Random gen = new Random();
 
 	public GameEngine() {
 	}
@@ -118,8 +120,14 @@ public class GameEngine {
 				gameState = IN_GAME; // setting gamestate to IN_GAME to render all the game items before calling the blocking camera zoom method
 				//make sure camera is zoomed out to cube, otherwise zoom out
 				if(Camera.getMode() == CAM_STATIC)
-					Camera.smoothZoom(CAMERA_POSITION_Z); //smopthZooma is a blocking method
-				gameState = IN_MENU; // stop rendering the game items when finished zooming out
+					Camera.smoothZoom(CAMERA_POSITION_Z);
+				else{
+					Camera.setMode(CAM_STATIC);
+					Camera.tick();
+					Camera.smoothZoom(CAMERA_POSITION_Z);
+				}
+				gameState = IN_MENU;
+				menu.tick();
 				
 				menu.tick(cmdInput.getLastKey());
 
@@ -228,6 +236,9 @@ public class GameEngine {
 		// Calculate where AI paddle is supposed to be!
 		//cpuPlayer.MoveAI(player2, getMainBall() );
 		cpuPlayer.MoveAI(player2, this.getGameItems(), this.getMainBall() );
+		
+		// Random chance a second ball will spawn.
+		RandomBallSpawn();
 
 		// get mousepointer position on canvas, move the player controlled paddle
 		paddle1.moveItem(mouse.getxPos(), mouse.getyPos(), ge.getFrameWidth(), ge.getFrameHeight());
@@ -238,6 +249,15 @@ public class GameEngine {
 		checkBallSpeed();
 		physics.update();
 		updatePos();
+	}
+
+	/**
+	 * Slight chance to spawn a new ball into the gamearea.
+	 */
+	public void RandomBallSpawn() {
+		if( gen.nextInt(1000) == 1 ){
+			addItemToGame(new Ball(BALL_DEFAULT_XPOS, BALL_DEFAULT_YPOS, 0, BALL_RADIUS));
+		}
 	}
 
 	/**
@@ -285,7 +305,6 @@ public class GameEngine {
 			SoundPlayer.stopMp3();
 			//init new game, with the same player names as before
 			initNewGame(player1.getName(), player2.getName());
-
 		}
 
 	}

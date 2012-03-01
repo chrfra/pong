@@ -57,14 +57,15 @@ public class Renderer {
 	 */
 	public void drawBall(GL2 gl, GameItem item) throws InvalidClassException {
 		float x, y, z, r;
-
+		Texture texture;
 		// Check that item is a Paddle. Need to support all classes that have the same shape in the future.
 		if (item.getType().equals("BALL")) {
-			Ball Ball = (Ball) item;
-			x = Ball.getxPos();
-			y = Ball.getyPos();
-			z = Ball.getzPos();
-			r = Ball.getRadius();
+			Ball ball = (Ball) item;
+			x = ball.getxPos();
+			y = ball.getyPos();
+			z = ball.getzPos();
+			r = ball.getRadius();
+			texture = ball.getTexture();
 		} else {
 			throw new InvalidClassException("Wrong class of GameItem in draw3DRectangle(GL2 gl, GameItem item)");
 		}
@@ -73,8 +74,8 @@ public class Renderer {
 		gl.glEnable(GL.GL_TEXTURE_2D);
 
 		// Apply earth texture
-		Textures.ball1.enable(gl);
-		Textures.ball1.bind(gl);
+		texture.enable(gl);
+		texture.bind(gl);
 
 		gl.glTranslatef(x, y, z);
 		// Draw Ball (possible styles: FILL, LINE, POINT).
@@ -111,7 +112,7 @@ public class Renderer {
 			w = pad.getWidth();
 			h = pad.getHeight();
 			d = pad.getDepth();
-			texture = Textures.paddle1;
+			texture = pad.getTexture();
 		} 
 		//check if object is a menu cube, set appropriate texture for menu cube
 		else if (item instanceof MenuCube) {
@@ -122,7 +123,7 @@ public class Renderer {
 			w = menuCube.getWidth();
 			h = menuCube.getHeight();
 			d = menuCube.getDepth();
-			texture = Textures.paddle1;
+			texture = Textures.menu;
 		} else {
 			throw new InvalidClassException("Wrong class of GameItem in draw3DRectangle(GL2 gl, GameItem item)");
 		}
@@ -373,7 +374,7 @@ public class Renderer {
 		//C:\Users\cf\Downloads\java3declipse-20090302	
 		//System.out.println(text);
 		//set texture for the menu
-		Texture texture = Textures.paddle1;
+		Texture texture = Textures.menu;
 		
 		float halfFaceSize = faceSize / 2;
 		gl.glColor3f(r, g, b);
@@ -437,8 +438,9 @@ public class Renderer {
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		// Apply the texture
-		Textures.explosion1.enable(gl);
-		Textures.explosion1.bind(gl);
+		Texture texture = exp.getTexture();
+		texture.enable(gl);
+		texture.bind(gl);
 		
 		float[][] explosions = exp.getExplosions();
 		for(int i = 0 ; i<explosions.length ; i++){

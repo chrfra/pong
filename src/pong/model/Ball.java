@@ -1,9 +1,12 @@
 package pong.model;
 
+import pong.view.Textures;
+
 public class Ball extends MoveableItem {
 	float radius;
 	public Ball(float xPos, float yPos, float zPos, float radius) {
 		super(xPos, yPos, zPos, Type.BALL);
+		texture = Textures.ball1;
 		this.radius=radius;
 	}
 	
