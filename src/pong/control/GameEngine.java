@@ -61,8 +61,8 @@ public class GameEngine {
 	private ComputerAI cpuPlayer;
 	// For random balls spawning
 	private Random gen = new Random();
-	
-	private MotionInput mi;
+
+	private float f = 0f;
 
 	public GameEngine() {
 	}
@@ -73,11 +73,11 @@ public class GameEngine {
 	}
 
 	public void initApplication() {
-		
+
 		System.out.println("Initialize serial input reading...");
-		mi = new MotionInput();
-		mi.initialize();
-		
+//		mi = new MotionInput();
+		MotionInput.start();
+
 		System.out.println("Initializing graphics...");
 		ge = new GraphicsEngine(this);
 		ge.setUp();
@@ -134,7 +134,7 @@ public class GameEngine {
 					Camera.smoothZoom(CAMERA_POSITION_Z);
 				}
 				gameState = IN_MENU;
-				
+
 				menu.tick(cmdInput.getLastKey());
 
 				//update the name printed on the menu as it is typed by the player
@@ -242,13 +242,23 @@ public class GameEngine {
 		// Calculate where AI paddle is supposed to be!
 		//cpuPlayer.MoveAI(player2, getMainBall() );
 		cpuPlayer.MoveAI(player2, this.getGameItems(), this.getMainBall() );
-		
+
 		// Random chance a second ball will spawn.
 		RandomBallSpawn();
 
 		// get mousepointer position on canvas, move the player controlled paddle
-		paddle1.moveItem(mouse.getxPos(), mouse.getyPos(), ge.getFrameWidth(), ge.getFrameHeight());
-
+		//paddle1.moveItem(mouse.getxPos(), mouse.getyPos(), ge.getFrameWidth(), ge.getFrameHeight());
+		String s = new String(MotionInput.getXy());
+		System.out.println(s);
+		float f = Float.valueOf(s.trim()).floatValue();
+		//System.out.println(f);
+//		String[] s = mi.getXy().split(":");
+//		System.out.println(s[0]);
+//		if(s != null && s.length >=1){
+//			float sc = Float.valueOf(s[0]).floatValue();
+//			System.out.println(sc);
+//		}
+		//paddle1.moveItem(sc,0, ge.getFrameWidth(), ge.getFrameHeight());
 		paddle1.adjustYPos(DEFAULT_DPADDLE_YPOS, true);
 		paddle2.adjustYPos(DEFAULT_UPADDLE_YPOS, false);
 		// restrict maximum ball speed by lineardampening it over a certain speed
@@ -473,7 +483,7 @@ public class GameEngine {
 	public void exit() {
 		System.exit(0);
 	}
-	
+
 	/*
 	 * @return true if game has been started before during this execution
 	 */
