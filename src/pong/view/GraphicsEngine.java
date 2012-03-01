@@ -110,7 +110,6 @@ public class GraphicsEngine implements GLEventListener {
 			MenuCube menu = ge.getMenu(); // will be using the menu object a lot, store reference to it in "menu" variable
 			// render the Menu Cube
 			render.drawMenu(drawable, menu, menu.getRx(), menu.getRy(), menu.getRz());
-			System.out.println("ry: " + menu.getRy());
 		}
 		// game has started/resumed, draw all game related components
 		else if (ge.getGameState() == IN_GAME) {
