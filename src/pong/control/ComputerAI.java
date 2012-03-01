@@ -26,14 +26,12 @@ public class ComputerAI {
 
 		ballBody = findClosestBall(paddleBody, items);
 
+		// If no other balls have been found, take the mainballs body as the object.
 		if(ballBody == null){
 			ballBody = mainBall.getBody();
 		}
-
 		ballvector = ballBody.getPosition();
 		paddlevector = paddleBody.getPosition();
-		
-		//System.out.println("Closest balls Ypos: " + ballvector.y);
 
 		if( ballvector.y > 0){
 
@@ -41,11 +39,6 @@ public class ComputerAI {
 			if( ballvector.y < paddlevector.y && ballvector.y > 28 ){
 				paddleBody.setLinearVelocity(new Vec2( 0f , -AI_NUDGE_FORCE));
 			}
-
-			//			else if( paddlevector.x == ballvector.x ){
-			//				// SET FORCE TO ZERO - PADDLEPOSITION IS GOOD
-			//				paddleBody.setLinearVelocity(new Vec2( 0f , 0f));
-			//			} // paddle is to the right of the ball
 			else if( paddlevector.x > ballvector.x - DEFAULT_PADDLE_WIDTH / 2){
 				paddleBody.setLinearVelocity(new Vec2( -DEFAULT_AI_SPEED*difficulty , 0f));
 			}
@@ -68,6 +61,8 @@ public class ComputerAI {
 
 	public Body findClosestBall(Body paddleBody, List<GameItem> items) {
 
+		// mostClose must be initialized to a large value otherwise so it can never be closer
+		// to the paddle compared to the balls 
 		mostClose = 9999;
 		Body ballbody = null;
 		float paddlePosY = paddleBody.getPosition().y;
@@ -77,11 +72,10 @@ public class ComputerAI {
 				float itemYpos = item.getBody().getPosition().y;
 				// Is this item closer to the AI's paddle then then another item?
 				float isItemClose = paddlePosY-itemYpos;
-//				System.out.println("Value from isItemClose: " + isItemClose);
 				if( isItemClose < mostClose ){
+					// A better match is found!
 					mostClose = paddlePosY-itemYpos;
 					ballbody = item.getBody();
-//					System.out.println("Found a better match!");
 				}
 			}
 		}
