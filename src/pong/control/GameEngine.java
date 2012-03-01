@@ -117,6 +117,11 @@ public class GameEngine {
 				//make sure camera is zoomed out to cube, otherwise zoom out
 				if(Camera.getMode() == CAM_STATIC)
 					Camera.smoothZoom(CAMERA_POSITION_Z);
+				else{
+					Camera.setMode(CAM_STATIC);
+					Camera.tick();
+					Camera.smoothZoom(CAMERA_POSITION_Z);
+				}
 				gameState = IN_MENU;
 				menu.tick();
 				
