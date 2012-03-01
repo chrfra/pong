@@ -61,7 +61,7 @@ public class GameEngine {
 	private ComputerAI cpuPlayer;
 	// For random balls spawning
 	private Random gen = new Random();
-
+	private MotionInput mi;
 	private float f = 0f;
 
 	public GameEngine() {
@@ -75,8 +75,8 @@ public class GameEngine {
 	public void initApplication() {
 
 		System.out.println("Initialize serial input reading...");
-//		mi = new MotionInput();
-		MotionInput.start();
+		mi = new MotionInput();
+		
 
 		System.out.println("Initializing graphics...");
 		ge = new GraphicsEngine(this);
@@ -246,19 +246,12 @@ public class GameEngine {
 		// Random chance a second ball will spawn.
 		RandomBallSpawn();
 
-		// get mousepointer position on canvas, move the player controlled paddle
-		//paddle1.moveItem(mouse.getxPos(), mouse.getyPos(), ge.getFrameWidth(), ge.getFrameHeight());
-		String s = new String(MotionInput.getXy());
-		System.out.println(s);
-		float f = Float.valueOf(s.trim()).floatValue();
-		//System.out.println(f);
-//		String[] s = mi.getXy().split(":");
-//		System.out.println(s[0]);
-//		if(s != null && s.length >=1){
-//			float sc = Float.valueOf(s[0]).floatValue();
-//			System.out.println(sc);
-//		}
-		//paddle1.moveItem(sc,0, ge.getFrameWidth(), ge.getFrameHeight());
+		// Get Arduino Input
+		float f = mi.getf();
+		//System.out.println("Float: " + xy);
+		Vec2 vec = new Vec2(f*MOTION_SENSITIVTY, 0);
+		paddle1.getBody().setLinearVelocity(vec);
+		
 		paddle1.adjustYPos(DEFAULT_DPADDLE_YPOS, true);
 		paddle2.adjustYPos(DEFAULT_UPADDLE_YPOS, false);
 		// restrict maximum ball speed by lineardampening it over a certain speed

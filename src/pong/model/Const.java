@@ -73,6 +73,8 @@ public class Const {
 	public static final float BALL_DEFAULT_XPOS = 0;
 	public static final float BALL_DEFAULT_YPOS = 0;
 	
+	public static final float MOTION_SENSITIVTY = 5;
+	
 	/****************************************************************/
 	
 	// Default values for Players
