@@ -15,7 +15,7 @@ public class Textures {
 	public static Texture ball1 = load("earth-1k.png");
 	public static Texture paddle1 = load("paddle_texture1.jpg");
 	public static Texture menu = load("menu_texture1.jpg");
-	public static Texture wall1 = load("washedtexture4.jpg");
+	public static Texture wall1 = load("wall1.jpg");
 	public static Texture explosion1 = load("fire_transparent.png");
 	
 	
