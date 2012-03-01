@@ -165,9 +165,6 @@ public class GraphicsEngine implements GLEventListener {
 		gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, rgba, 0);
 		gl.glMaterialf(GL2.GL_FRONT, GL2.GL_SHININESS, 0.5f);
 
-		// Set textures
-		render.setupTextures();
-
 		// add listeners for keyboard and mouse input
 		ge.createCommandListener(glDrawable);
 
@@ -210,14 +207,15 @@ public class GraphicsEngine implements GLEventListener {
 		render.drawGamearea(gl);
 		gl.glPopMatrix();
 
-		gl.glPushMatrix();
-		// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350)
-		render.renderTextAtPixels(10, 10, frameWidth, frameHeight, ge.getPlayer1().getName() + " Score: " + ge.getPlayer1().getScore()
-				+ " Lives: " + ge.getPlayer1().getLives(), new Font("font", Font.PLAIN, 18), Color.RED);
-		render.renderTextAtPixels(frameWidth-frameWidth/4, 10, frameWidth, frameHeight, ge.getPlayer2().getName() + " Score: " + ge.getPlayer2().getScore()
-				+ " Lives: " + ge.getPlayer2().getLives(), new Font("font", Font.PLAIN, 18), Color.RED);
-		gl.glPopMatrix();
-
+		if(ge.getPlayer1() != null || ge.getPlayer2() != null){
+			gl.glPushMatrix();
+			// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350)
+			render.renderTextAtPixels(10, 10, frameWidth, frameHeight, ge.getPlayer1().getName() + " Score: " + ge.getPlayer1().getScore()
+					+ " Lives: " + ge.getPlayer1().getLives(), new Font("font", Font.PLAIN, 18), Color.RED);
+			render.renderTextAtPixels(frameWidth-frameWidth/4, 10, frameWidth, frameHeight, ge.getPlayer2().getName() + " Score: " + ge.getPlayer2().getScore()
+					+ " Lives: " + ge.getPlayer2().getLives(), new Font("font", Font.PLAIN, 18), Color.RED);
+			gl.glPopMatrix();
+		}
 		synchronized(explosions){
 			Iterator<Explosion> it = explosions.iterator();
 			while(it.hasNext()){
