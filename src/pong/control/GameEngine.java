@@ -59,6 +59,8 @@ public class GameEngine {
 	private boolean resetGame = false;
 	// Reference to the AI
 	private ComputerAI cpuPlayer;
+	// For random balls spawning
+	private Random gen = new Random();
 
 	public GameEngine() {
 	}
@@ -228,6 +230,9 @@ public class GameEngine {
 		// Calculate where AI paddle is supposed to be!
 		//cpuPlayer.MoveAI(player2, getMainBall() );
 		cpuPlayer.MoveAI(player2, this.getGameItems(), this.getMainBall() );
+		
+		// Random chance a second ball will spawn.
+		RandomBallSpawn();
 
 		// get mousepointer position on canvas, move the player controlled paddle
 		paddle1.moveItem(mouse.getxPos(), mouse.getyPos(), ge.getFrameWidth(), ge.getFrameHeight());
@@ -238,6 +243,15 @@ public class GameEngine {
 		checkBallSpeed();
 		physics.update();
 		updatePos();
+	}
+
+	/**
+	 * Slight chance to spawn a new ball into the gamearea.
+	 */
+	public void RandomBallSpawn() {
+		if( gen.nextInt(1000) == 1 ){
+			addItemToGame(new Ball(BALL_DEFAULT_XPOS, BALL_DEFAULT_YPOS, 0, BALL_RADIUS));
+		}
 	}
 
 	/**
@@ -285,9 +299,7 @@ public class GameEngine {
 			SoundPlayer.stopMp3();
 			//init new game, with the same player names as before
 			initNewGame(player1.getName(), player2.getName());
-
 		}
-
 	}
 
 	/**

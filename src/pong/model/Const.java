@@ -74,7 +74,7 @@ public class Const {
 	
 	// Default values for Players
 	public static final int DEFAULT_STARTING_SCORE = 0;
-	public static final int DEFAULT_AMOUNT_PLAYER_LIVES = 3;
+	public static final int DEFAULT_AMOUNT_PLAYER_LIVES = 10;
 	
 	//sets how fast the game logic is to be updated, when this framerate is exceeded, the game(logic) thread sleeps
 	public static double TARGET_FRAMERATE = 60;
