@@ -3,16 +3,13 @@ package pong.view;
 import static pong.model.Const.*;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.geom.Rectangle2D;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InvalidClassException;
+import java.util.HashMap;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLProfile;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
 
@@ -24,25 +21,23 @@ import pong.model.Paddle;
 import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.opengl.util.gl2.GLUT;
 import com.jogamp.opengl.util.texture.Texture;
-import com.jogamp.opengl.util.texture.TextureData;
-import com.jogamp.opengl.util.texture.TextureIO;
 
 public class Renderer {
 	private GLU glu;
 
 	private float bgRotation = 90;
-	private TextRenderer textrenderer;
 	private float textScaleFactor;
+	//The textrenderers with different fonts
+	private HashMap<Integer, TextRenderer> textRenderers = new HashMap<Integer, TextRenderer>();
 
 	public Renderer(GLU glu) {
 		this.glu = glu;
-		setUpText();
+		setUpTextRenderers();
 	}
 
 
-	//readies settings for printing 3D text, used on menucube
-	public void setUpText() {
-		textrenderer = new TextRenderer(new Font("SansSerif", Font.PLAIN, 72),true,false);	//sans serif,AA=on,useFractionalMetrics=off
+	private void setUpTextRenderers() {
+		textRenderers = TextRenderers.getTextRenderers();
 	}
 
 
@@ -261,14 +256,13 @@ public class Renderer {
 	}
 
 
-	public void renderTextAtPixels(int x, int y, int frameWidth, int frameHeight, String text, Font font, Color fontcolor){
-		TextRenderer tr = new TextRenderer(font);
+	public void renderTextAtPixels(int x, int y, int frameWidth, int frameHeight, String text, int textRenderer, Color fontcolor){
+		TextRenderer tr = textRenderers.get(textRenderer);
 		tr.beginRendering(frameWidth, frameHeight);
 		tr.setColor(fontcolor);
 		tr.draw(text, x, y);
 		tr.endRendering();
 		tr.flush();
-		tr.dispose();
 	}
 	
 	/**
@@ -290,6 +284,7 @@ public class Renderer {
 
 	public void render3DText(GLAutoDrawable drawable, int x, int y, String text){
 
+		TextRenderer textrenderer = textRenderers.get(FONT_MENU);
 		textrenderer.begin3DRendering();
 
 		// optionally set the color
@@ -308,16 +303,9 @@ public class Renderer {
 	 */
 	//draws the menu cube
 	public void drawMenu(GLAutoDrawable drawable, MenuCube menu, float rx, float ry, float rz) {
-		Color textColor = Color.orange;
 		//setup the text properties, size etc.
 
 		GL2 gl = drawable.getGL().getGL2();
-
-		//gl.glMatrixMode(GL2.GL_MODELVIEW);
-		//gl.glLoadIdentity();
-		/*glu.gluLookAt(0, 0, 2,
-				0, 0, 0,
-				0, 1, 0);*/
 		
 		gl.glTranslatef(menu.getxPos(),menu.getyPos(), menu.getzPos());
 		
@@ -391,7 +379,7 @@ public class Renderer {
 		gl.glEnd();
 
 		gl.glDisable(GL.GL_TEXTURE_2D);
-		
+		TextRenderer textrenderer = textRenderers.get(FONT_MENU);
 		textrenderer.begin3DRendering();
 		//avoid z-fighting, that is between the text and the quad it sits on top of
 		gl.glDisable(GL2.GL_DEPTH_TEST);
@@ -418,15 +406,12 @@ public class Renderer {
 
 	
 	public void drawExplosion(GL2 gl, Explosion exp) {
-		GLUT glut = new GLUT();
-		
 		// THIS FOLLOWING LINE CHANGE THE COLORS OF THE WHOLE GAME... WUT.
 //		gl.glEnable(GL2.GL_COLOR_MATERIAL);
 		
 		
 		gl.glEnable(GL.GL_TEXTURE_2D);
 		// Really basic and most common alpha blend function
-//		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		// Apply the texture
@@ -447,7 +432,6 @@ public class Renderer {
 			glu.gluQuadricTexture(explosion, true);
 			glu.gluQuadricDrawStyle(explosion, GLU.GLU_FILL);
 			glu.gluQuadricNormals(explosion, GLU.GLU_FLAT);
-//			glu.gluQuadricOrientation(explosion, GLU.GLU_OUTSIDE);
 			glu.gluSphere(explosion,explosions[i][3], 10, 30);
 			glu.gluDeleteQuadric(explosion);
 			
@@ -455,7 +439,6 @@ public class Renderer {
 		}
 		Textures.explosion1.disable(gl);
 		gl.glDisable(GL.GL_TEXTURE_2D);
-//		gl.glDisable(GL2.GL_COLOR_MATERIAL);
 
 	}
 	

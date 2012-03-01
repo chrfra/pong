@@ -103,7 +103,7 @@ public class GraphicsEngine implements GLEventListener {
 
 		// Write updates per second and sleeptime
 		render.renderTextAtPixels(0, frameHeight - 12, frameWidth, frameHeight, "Updates per second: " + ge.getFps()
-				+ " Sleeptime: " + ge.getSleepTime() + "ms", new Font("font", Font.PLAIN, 12), Color.YELLOW);
+				+ " Sleeptime: " + ge.getSleepTime() + "ms", FONT_FPS, Color.YELLOW);
 
 		// check gameState to determine whether to zoom out and draw menu or to draw the game
 		if (ge.getGameState() == IN_MENU) {
@@ -203,19 +203,22 @@ public class GraphicsEngine implements GLEventListener {
 		List<GameItem> items = ge.getGameItems();
 		// IMPORTANT! PopMatrix() resets glTranslatef and glRotatef to what it was before the previous PushMatrix()
 
+		//Don't draw the game if there are no gameitems
+		if (!ge.gameInitiated()) {
+			return;
+		}
+		
 		gl.glPushMatrix();
 		render.drawGamearea(gl);
 		gl.glPopMatrix();
 
-		if(ge.getPlayer1() != null || ge.getPlayer2() != null){
-			gl.glPushMatrix();
-			// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350)
-			render.renderTextAtPixels(10, 10, frameWidth, frameHeight, ge.getPlayer1().getName() + " Score: " + ge.getPlayer1().getScore()
-					+ " Lives: " + ge.getPlayer1().getLives(), new Font("font", Font.PLAIN, 18), Color.RED);
-			render.renderTextAtPixels(frameWidth-frameWidth/4, 10, frameWidth, frameHeight, ge.getPlayer2().getName() + " Score: " + ge.getPlayer2().getScore()
-					+ " Lives: " + ge.getPlayer2().getLives(), new Font("font", Font.PLAIN, 18), Color.RED);
-			gl.glPopMatrix();
-		}
+		gl.glPushMatrix();
+		// Print scores, render at location (x-pos) SCREENWIDTH+160, (y-pos SCREENHEIGHT-350)
+		render.renderTextAtPixels(10, 10, frameWidth, frameHeight, ge.getPlayer1().getName() + " Score: " + ge.getPlayer1().getScore()
+				+ " Lives: " + ge.getPlayer1().getLives(), FONT_GAMESCORE, Color.RED);
+		render.renderTextAtPixels(frameWidth-frameWidth/4, 10, frameWidth, frameHeight, ge.getPlayer2().getName() + " Score: " + ge.getPlayer2().getScore()
+				+ " Lives: " + ge.getPlayer2().getLives(), FONT_GAMESCORE, Color.RED);
+		gl.glPopMatrix();
 		synchronized(explosions){
 			Iterator<Explosion> it = explosions.iterator();
 			while(it.hasNext()){
@@ -259,14 +262,14 @@ public class GraphicsEngine implements GLEventListener {
 	private void renderScoreScreen(GL2 gl){
 
 		if (ge.getPlayer1().getLives() > ge.getPlayer2().getLives()) {
-			render.renderTextAtPixels(frameWidth/3, (frameHeight/2), frameWidth, frameHeight, "Player 1 WINS!!", new Font("font", Font.PLAIN, 32), Color.YELLOW);
-			render.renderTextAtPixels(frameWidth/3, (frameHeight/2)-40, frameWidth, frameHeight, "Score: " + ge.getPlayer1().getScore(), new Font("font", Font.PLAIN, 32), Color.YELLOW);
+			render.renderTextAtPixels(frameWidth/3, (frameHeight/2), frameWidth, frameHeight, "Player 1 WINS!!", FONT_SCORESCREEN, Color.YELLOW);
+			render.renderTextAtPixels(frameWidth/3, (frameHeight/2)-40, frameWidth, frameHeight, "Score: " + ge.getPlayer1().getScore(), FONT_SCORESCREEN, Color.YELLOW);
 		} else {
-			render.renderTextAtPixels(frameWidth/3, (frameHeight/2), frameWidth, frameHeight, "Player 2 WINS!!", new Font("font", Font.PLAIN, 32), Color.YELLOW);
-			render.renderTextAtPixels(frameWidth/3, (frameHeight/2)-40, frameWidth, frameHeight, "Score: " + ge.getPlayer2().getScore(), new Font("font", Font.PLAIN, 32), Color.YELLOW);
+			render.renderTextAtPixels(frameWidth/3, (frameHeight/2), frameWidth, frameHeight, "Player 2 WINS!!", FONT_SCORESCREEN, Color.YELLOW);
+			render.renderTextAtPixels(frameWidth/3, (frameHeight/2)-40, frameWidth, frameHeight, "Score: " + ge.getPlayer2().getScore(), FONT_SCORESCREEN, Color.YELLOW);
 
 		}
-		render.renderTextAtPixels(frameWidth/3, (frameHeight/2)-80, frameWidth, frameHeight, "New Game coming up...", new Font("font", Font.PLAIN, 32), Color.RED);
+		render.renderTextAtPixels(frameWidth/3, (frameHeight/2)-80, frameWidth, frameHeight, "New Game coming up...", FONT_SCORESCREEN, Color.RED);
 	}
 	
 	public GLAutoDrawable getDrawable() {
