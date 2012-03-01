@@ -133,4 +133,12 @@ public class Const {
 	public static final float EXPLOSION_SPREAD = 0.05f;
 	
 	/**************************************************/
+	
+	/******************TEXT RENDERERS******************/
+	
+	public static final int FONT_MENU = 0;
+	public static final int FONT_FPS = 1;
+	public static final int FONT_GAMESCORE = 2;
+	public static final int FONT_SCORESCREEN = 3;
+	/**************************************************/
 }
