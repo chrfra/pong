@@ -125,10 +125,10 @@ public class MenuCube {
 		}
 		// selected to input player name
 		else if(ry == -90 || ry == 270){
-			return TEXT_INPUT;
+			return TEXT_INPUT_P1;
 		}
-		else if(ry == -180){
-			return TEXT_INPUT;
+		else if(ry == -180 || ry == 180){
+			return TEXT_INPUT_P2;
 		}
 		//no approriate option for the direction the cube is facing, return error
 		return Const.ERROR;
@@ -171,6 +171,9 @@ public class MenuCube {
 	public void updateOption(int sideId,int eltNr, String text) {
 		this.options[sideId][eltNr] = text;
 	}
+	/*
+	 * initiatesa the text to be drawn on the faces of the cube
+	 */
 	private void initCube() {
 		options[MENU_TOP][0] = "Top";
 		options[MENU_FRONT][0] = "New Game";
