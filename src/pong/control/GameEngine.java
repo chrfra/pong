@@ -127,7 +127,6 @@ public class GameEngine {
 					Camera.smoothZoom(CAMERA_POSITION_Z);
 				}
 				gameState = IN_MENU;
-				menu.tick();
 				
 				menu.tick(cmdInput.getLastKey());
 
