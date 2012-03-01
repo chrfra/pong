@@ -20,6 +20,9 @@ public class CommandInput implements KeyListener {
 	GameEngine ge;
 	//input stores the string (player name) entered by the player(s)
 	private String input;
+	//keeps track of the last pressed key ( used for determining which direction to rotate the menu cube )
+	private int lastKey;
+	
 	public CommandInput(GameEngine ge) {
 		this.ge = ge;
 	}
@@ -29,20 +32,18 @@ public class CommandInput implements KeyListener {
 	public void keyPressed(KeyEvent arg0) {
 
 		//store text if text input is enabled ( beginInput() has been called, but not endInput() yet  )
-		if(input != null){
+		if(activeInput()){
 			int keyCode = arg0.getKeyCode();
 			String key = KeyEvent.getKeyText(keyCode);
 			// only accept one character input ( disregard ENTER string etc...)
 			if(key.length() == 1){
 				input = input + key;
-				System.out.println("INPUT= " + input);
 			}
 		}
 
 		//Add ball to game
 		if(arg0.getKeyCode() == KeyEvent.VK_B){
 			ge.addItemToGame(new Ball(BALL_DEFAULT_XPOS, BALL_DEFAULT_YPOS, 0, BALL_RADIUS));
-			System.out.println("Adding ball...");
 		}
 		if(arg0.getKeyCode() == KeyEvent.VK_1){
 			Camera.setMode(CAM_STATIC);
@@ -68,6 +69,14 @@ public class CommandInput implements KeyListener {
 		}
 
 		/*
+		 * handle backspace (remove last char from input string)
+		 */
+		if(arg0.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+			if(activeInput())//only chop string if user is inputting data
+				input = chop(input);
+		}
+
+		/*
 		 * Up,down,left,right presses
 		 */
 
@@ -76,27 +85,30 @@ public class CommandInput implements KeyListener {
 		 */
 
 		//on right key press set the target menu rotation to 90 degrees to the right 
-		//of the current rotation 
+		//of the current rotation if user is not inputting text
 		if(arg0.getKeyCode() == KeyEvent.VK_RIGHT){
-			if(ge.getGameState() == IN_MENU){
+			if(ge.getGameState() == IN_MENU && !activeInput()){
+				lastKey = KEY_RIGHT;	//store what key was pressed
 				ge.getMenu().rotateY(-90);
 			}
 		}
-		else if(arg0.getKeyCode() == KeyEvent.VK_LEFT){
+		else if(arg0.getKeyCode() == KeyEvent.VK_LEFT && !activeInput()){
 			if(ge.getGameState() == IN_MENU){
+				lastKey = KEY_LEFT;		//store what key was pressed
 				ge.getMenu().rotateY(90);
 			}
 		}
 
 		/*
 		 * UP/DOWN
+		 * unused
 		 */
-		if(arg0.getKeyCode() == KeyEvent.VK_UP){
+		if(arg0.getKeyCode() == KeyEvent.VK_UP && !activeInput()){
 			if(ge.getGameState() == IN_MENU){
 				ge.getMenu().rotateX(90);
 			}
 		}
-		else if(arg0.getKeyCode() == KeyEvent.VK_DOWN){
+		else if(arg0.getKeyCode() == KeyEvent.VK_DOWN && !activeInput()){
 			if(ge.getGameState() == IN_MENU){
 				ge.getMenu().rotateX(-90);
 			}
@@ -105,13 +117,15 @@ public class CommandInput implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		//escape key pauses the game, prints resume option etc on menu
+		/*
+		 * escape key pauses the game, prints resume option on menu etc.
+		 */
 		if(arg0.getKeyCode() == KeyEvent.VK_ESCAPE){
 			if(ge.getGameState()==IN_GAME){	//only set gamestate to paused if game is running and escape is pressed
 				ge.setGameState(IN_MENU);
-				//Camera.smoothZoom(CAMERA_POSITION_Z);
 			}else if(ge.getGameState() == IN_MENU){	//pressing escape while game is paused and in the menu resumes the game
-				ge.setGameState(IN_GAME);
+				if( ge.gameInitiated() ) // only resume game if the game (gameitems etc.) have been initiated
+					ge.setGameState(IN_GAME);
 			}
 		}
 
@@ -140,5 +154,38 @@ public class CommandInput implements KeyListener {
 
 
 	}
-
+	/*
+	 * removes the last character of the argument string
+	 * @param the string to be chopped
+	 */
+	public static String chop(String str) {
+		if (str == null) {
+			return null;
+		}
+		int strLen = str.length();
+		if (strLen < 2) {
+			return "";
+		}
+		int lastIdx = strLen - 1;
+		String ret = str.substring(0, lastIdx);
+		char last = str.charAt(lastIdx);
+		System.out.println("LAST: " + last);
+		if (last == '\n') {
+			if (ret.charAt(lastIdx - 1) == '\r') {
+				System.out.println(ret.charAt(lastIdx - 1));
+				return ret.substring(0, lastIdx - 1);
+			}
+		}
+		return ret;
+	}
+	/*
+	 * keeps track of wether the user is inputting text or not
+	 * @return boolean input	returns true if input is active
+	 */
+	public boolean activeInput(){
+		return input != null;
+	}
+	public int getLastKey() {
+		return lastKey;
+	}
 }

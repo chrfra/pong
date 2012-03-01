@@ -16,29 +16,39 @@ public class MenuCube {
 	private String Player2Name = new String("AI");
 	//two dimensional list holding the menu options, 
 	//first list holds the lists of strings for each side of the menu
-	//private ArrayList<ArrayList<String>> options;
 	private String[][] options;
 
 	/*
 	 * updates the menucube's rotation angles, called every tick of the game engine
 	 */
-	public void tick(){
+	public void tick(int lastKey){
 		/*
 		 * Check rotation around y axis
 		 */
 		//Two first if:s are special cases; if cube is rotated almost -270 degrees(three steps to the right)
-		//then instead of going back three steps to reach rotation = 0, simply rotate once to the right
-
+		//and last keypress was the right-arrow keythen instead of going back three steps to reach rotation = 0
+		//simply rotate once to the right or rotate once to the left if the left key waas last pressed
 		//cube is rotated three steps to the right of original rotation
 		//=>rotate another 90 degrees to the right to reach original rotation
-		if(ry < ty && ry <= -270){ 
-			//"<= -270" abouve is vital, since we decrease ry below, so next time tick is run ry will be
-			//-280,-290 ... until reaching 360 and is assigned the value of 0  by the setRy method ( % 360 )
-			setRy(ry - RY_SPEED);
+		
+		//"<= -270" abouve is vital, since we decrease ry below, so next time tick is run ry will be
+		//-280,-290 ... until reaching 360 and is assigned the value of 0  by the setRy method ( % 360 )
+		if(ry < ty && ry <= -270 ){ 
+			//check which key direction was last pressed to determine which way to rotate
+			if(lastKey == KEY_RIGHT){
+				setRy(ry - RY_SPEED);
+			}else if(lastKey == KEY_LEFT){
+				setRy(ry + RY_SPEED);
+			}
+				
 		}
 		//cube is rotated three steps to the left of original rotation
 		else if(ry > ty && ry >= 270){
-			setRy(ry + RY_SPEED);
+			if(lastKey == KEY_RIGHT){
+				setRy(ry - RY_SPEED);
+			}else if(lastKey == KEY_LEFT){
+				setRy(ry + RY_SPEED);
+			}
 		}
 		//if menu rotation < target rotation then rotate cube RY_SPEED degrees further
 		else if(ry < ty){
@@ -79,7 +89,8 @@ public class MenuCube {
 		rx = ry = rz = tx = ty = tz = 0;	//the rotation of the cube is initiated as 0,0,0
 	}
 	/*
-	 * rotates menu around Y axis (sets targetY, ty), rotation is performed in this.tick()
+	 * rotates menu around Y axis (LEFT/RIGHT), only sets the target rotation
+	 * rotation is performed in this.tick()!
 	 * @param degrees	number of degrees to rotate
 	 */
 	public void rotateY(int degrees){
