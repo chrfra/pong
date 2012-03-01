@@ -34,6 +34,9 @@ public class Const {
 	public static final int MENU_BOTTOM= 5;
 	public static final float RY_SPEED = 5f; //initial rotationspeed around the y-axis MUST BE DIVISIBLE BY 360!
 	
+	//KEY_RIGHT/LEFT keep track of the last pressed key when rotating the menu cube
+	public static final int KEY_RIGHT = 0;
+	public static final int KEY_LEFT = 1;
 	
 	/********************LOGIC CONSTANTS***************************/
 	public static final int RESUME = 5;	//used by menu.select() to indicate that the resume game option has been selected, must be != from all gamestates

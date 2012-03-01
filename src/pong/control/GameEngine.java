@@ -79,7 +79,7 @@ public class GameEngine {
 
 		//creates the menu cube, constructor adds the options (strings) to print on each side etc.
 		menu = new MenuCube(0, 0, MENU_ZPOS, MENU_SIZE, MENU_SIZE, MENU_SIZE);
-		
+
 		//FOR FUTURE REFERENCE: THIS.INITNEWGAME() MUST BE CALLED FROM HEREBEFORE GAME IS STARTED
 		//IT IS NOW CALLED WHEN SELECTING "NEW GAME" IN THE MENU FROM THIS.SELECT() METHOD
 
@@ -121,7 +121,7 @@ public class GameEngine {
 					Camera.smoothZoom(CAMERA_POSITION_Z); //smopthZooma is a blocking method
 				gameState = IN_MENU; // stop rendering the game items when finished zooming out
 				
-				menu.tick();
+				menu.tick(cmdInput.getLastKey());
 
 				//update the name printed on the menu as it is typed by the player
 				//player1's name is being input
@@ -414,7 +414,7 @@ public class GameEngine {
 			}//resume game
 			else if (action ==  RESUME ){
 				//only resume game if there is a game to be resumed (items object exists)
-				if(items != null){
+				if(gameInitiated()){
 					setGameState(IN_GAME);
 				}
 			}//enter key is pressed on text input option, either player1 or player2
@@ -438,7 +438,6 @@ public class GameEngine {
 			}
 		}
 	}
-
 	/** returns the time in milliseconds
 	 * 
 	 * @return */
@@ -449,7 +448,13 @@ public class GameEngine {
 	public void exit() {
 		System.exit(0);
 	}
-
+	
+	/*
+	 * @return true if game has been started before during this execution
+	 */
+	public boolean gameInitiated() {
+		return items != null;
+	}
 	public List<GameItem> getGameItems() {
 		return items;
 	}
@@ -479,9 +484,7 @@ public class GameEngine {
 	}
 
 	public void setGameState(int gameState) {
-		//	if(this.gameState == IN_MENU){
 		this.gameState = gameState;
-		//}
 	}
 
 	public Ball getMainBall() {
