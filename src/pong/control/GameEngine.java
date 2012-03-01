@@ -61,6 +61,8 @@ public class GameEngine {
 	private ComputerAI cpuPlayer;
 	// For random balls spawning
 	private Random gen = new Random();
+	
+	private MotionInput mi;
 
 	public GameEngine() {
 	}
@@ -71,6 +73,11 @@ public class GameEngine {
 	}
 
 	public void initApplication() {
+		
+		System.out.println("Initialize serial input reading...");
+		mi = new MotionInput();
+		mi.initialize();
+		
 		System.out.println("Initializing graphics...");
 		ge = new GraphicsEngine(this);
 		ge.setUp();
@@ -127,7 +134,6 @@ public class GameEngine {
 					Camera.smoothZoom(CAMERA_POSITION_Z);
 				}
 				gameState = IN_MENU;
-				menu.tick();
 				
 				menu.tick(cmdInput.getLastKey());
 
