@@ -36,13 +36,13 @@ public class Renderer {
 
 	public Renderer(GLU glu) {
 		this.glu = glu;
+		setUpText();
 	}
 
-	/**
-	 * Loads the textures from imagefiles into Texture-objects
-	 */
-	public void setupTextures(){
-		
+
+	//readies settings for printing 3D text, used on menucube
+	public void setUpText() {
+		textrenderer = new TextRenderer(new Font("SansSerif", Font.PLAIN, 72),true,false);	//sans serif,AA=on,useFractionalMetrics=off
 	}
 
 
@@ -310,7 +310,6 @@ public class Renderer {
 	public void drawMenu(GLAutoDrawable drawable, MenuCube menu, float rx, float ry, float rz) {
 		Color textColor = Color.orange;
 		//setup the text properties, size etc.
-		setUpText(drawable);
 
 		GL2 gl = drawable.getGL().getGL2();
 
@@ -417,13 +416,6 @@ public class Renderer {
 		textrenderer.flush();	//avoid memory leaks, can't call .dispose() too, since reusing the textrenderer
 	}
 
-	//readies settings for printing 3D text, used on menucube
-	public void setUpText(GLAutoDrawable drawable) {
-		textrenderer = new TextRenderer(new Font("SansSerif", Font.PLAIN, 72),true,false);	//sans serif,AA=on,useFractionalMetrics=off
-		GL2 gl = drawable.getGL().getGL2();
-		//enable depth testing
-		gl.glEnable(GL2.GL_DEPTH_TEST); //does nothing right now
-	}
 	
 	public void drawExplosion(GL2 gl, Explosion exp) {
 		GLUT glut = new GLUT();
