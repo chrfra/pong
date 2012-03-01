@@ -81,7 +81,8 @@ public class GameEngine {
 
 		//creates the menu cube, constructor adds the options (strings) to print on each side etc.
 		menu = new MenuCube(0, 0, MENU_ZPOS, MENU_SIZE, MENU_SIZE, MENU_SIZE);
-		
+
+
 		//FOR FUTURE REFERENCE: THIS.INITNEWGAME() MUST BE CALLED FROM HEREBEFORE GAME IS STARTED
 		//IT IS NOW CALLED WHEN SELECTING "NEW GAME" IN THE MENU FROM THIS.SELECT() METHOD
 
@@ -120,11 +121,15 @@ public class GameEngine {
 				gameState = IN_GAME; // setting gamestate to IN_GAME to render all the game items before calling the blocking camera zoom method
 				//make sure camera is zoomed out to cube, otherwise zoom out
 				if(Camera.getMode() == CAM_STATIC)
-					Camera.smoothZoom(CAMERA_POSITION_Z); //smopthZooma is a blocking method
-				gameState = IN_MENU; // stop rendering the game items when finished zooming out
-				
+					Camera.smoothZoom(CAMERA_POSITION_Z);
+				else{
+					Camera.setMode(CAM_STATIC);
+					Camera.tick();
+					Camera.smoothZoom(CAMERA_POSITION_Z);
+				}
+				gameState = IN_MENU;
 				menu.tick();
-
+				
 				//update the name printed on the menu as it is typed by the player
 				//player1's name is being input
 				if( cmdInput.getInput() != null && menu.select() == TEXT_INPUT_P1 ){

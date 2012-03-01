@@ -229,7 +229,8 @@ public class Camera {
 	}
 
 	public static void setMode(int camMode) {
-		mode = camMode;
+		if(ge.getGameState() == IN_GAME)
+			mode = camMode;
 	}
 	public static int getMode() {
 		return mode;

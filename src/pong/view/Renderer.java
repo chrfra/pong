@@ -122,7 +122,7 @@ public class Renderer {
 			w = menuCube.getWidth();
 			h = menuCube.getHeight();
 			d = menuCube.getDepth();
-			texture = Textures.paddle1;
+			texture = Textures.menu;
 		} else {
 			throw new InvalidClassException("Wrong class of GameItem in draw3DRectangle(GL2 gl, GameItem item)");
 		}
@@ -373,7 +373,7 @@ public class Renderer {
 		//C:\Users\cf\Downloads\java3declipse-20090302	
 		//System.out.println(text);
 		//set texture for the menu
-		Texture texture = Textures.paddle1;
+		Texture texture = Textures.menu;
 		
 		float halfFaceSize = faceSize / 2;
 		gl.glColor3f(r, g, b);

@@ -14,6 +14,7 @@ public class Textures {
 	public static Texture space = load("outer_space_trip.jpg");
 	public static Texture ball1 = load("earth-1k.png");
 	public static Texture paddle1 = load("paddle_texture1.jpg");
+	public static Texture menu = load("menu_texture1.jpg");
 	public static Texture wall1 = load("washedtexture4.jpg");
 	public static Texture explosion1 = load("fire_transparent.png");
 	
@@ -25,10 +26,8 @@ public class Textures {
 	 */
 	private static Texture load(String texture){
 
-		// Load texture from resource directory, feel free to put files in there
 		try {
 			InputStream stream;
-//			if( (stream = getClass().getResourceAsStream("/textures/"+texture)) == null )
 			if( (stream = Object.class.getResourceAsStream("/textures/"+texture)) == null )
 			{
 				System.out.println("Texture not loaded..");
