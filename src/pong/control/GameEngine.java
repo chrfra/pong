@@ -75,8 +75,11 @@ public class GameEngine {
 	public void initApplication() {
 
 		System.out.println("Initialize serial input reading...");
-		mi = new MotionInput();
-		
+
+		//only create motionInput (RXTX) object if using com port for player controls
+		if(motionInput)
+			mi = new MotionInput();
+
 
 		System.out.println("Initializing graphics...");
 		ge = new GraphicsEngine(this);
@@ -245,13 +248,21 @@ public class GameEngine {
 
 		// Random chance a second ball will spawn.
 		RandomBallSpawn();
-
-		// Get Arduino Input
-		float f = mi.getf();
-		//System.out.println("Float: " + xy);
-		Vec2 vec = new Vec2(f*MOTION_SENSITIVTY, 0);
-		paddle1.getBody().setLinearVelocity(vec);
 		
+		//if motionInput is enabled get input from COM port,
+		//else use mouse input to move the player's paddle
+		if(motionInput){
+			// Get Arduino Input
+			float f = mi.getf();
+			//System.out.println("Float: " + xy);
+			Vec2 vec = new Vec2(f*MOTION_SENSITIVTY, 0);
+			paddle1.getBody().setLinearVelocity(vec);
+		}else{
+			// get mousepointer position on canvas, move the player controlled paddle
+			paddle1.moveItem(mouse.getxPos(), mouse.getyPos(), ge.getFrameWidth(), ge.getFrameHeight());
+		}
+
+
 		paddle1.adjustYPos(DEFAULT_DPADDLE_YPOS, true);
 		paddle2.adjustYPos(DEFAULT_UPADDLE_YPOS, false);
 		// restrict maximum ball speed by lineardampening it over a certain speed
@@ -452,14 +463,24 @@ public class GameEngine {
 					cmdInput.beginInput();
 				}// if already reading text input from user, save text to player's name and stop input
 				else{
+					//get entered name
+					String name = cmdInput.getInput();
 					//handle text input for player 1
 					if(action == TEXT_INPUT_P1){
-						//store player names in menu cube until game is started, 
-						menu.setPlayer1Name(cmdInput.getInput());
+						//store player names in menu cube until game is started
+						menu.setPlayer1Name(name);
+						//this will update player name if the game has been started already 
+						//without this the updated name would not show until starting a new game
+						if(gameInitiated()){
+							player1.setName(name);
+						}
 					}//handle text input for player 2
 					else{
 						//store player names in menu cube until game is started, 
 						menu.setPlayer2Name(cmdInput.getInput());
+						if(gameInitiated()){
+							player2.setName(name);
+						}
 					}
 					cmdInput.endInput();
 				}
@@ -494,7 +515,6 @@ public class GameEngine {
 	public Player getPlayer1() {
 		return player1;
 	}
-
 	public Player getPlayer2() {
 		return player2;
 	}
