@@ -51,7 +51,7 @@ public class Renderer {
 	 * Renders a 3D ball.
 	 */
 	public void drawBall(GL2 gl, GameItem item) throws InvalidClassException {
-		float x, y, z, r, rotation;
+		float x, y, z, r, rotationX, rotationY;
 		Texture texture;
 		// Check that item is a Paddle. Need to support all classes that have the same shape in the future.
 		if (item.getType().equals("BALL")) {
@@ -60,7 +60,9 @@ public class Renderer {
 			y = ball.getyPos();
 			z = ball.getzPos();
 			r = ball.getRadius();
-			rotation = ball.getRotation();
+			rotationX = ball.getRotationX();
+			rotationY = ball.getRotationY();
+			
 			texture = ball.getTexture();
 		} else {
 			throw new InvalidClassException("Wrong class of GameItem in draw3DRectangle(GL2 gl, GameItem item)");
@@ -73,7 +75,10 @@ public class Renderer {
 		texture.enable(gl);
 		texture.bind(gl);
 		gl.glTranslatef(x, y, z);
-		gl.glRotatef(rotation, 1.0f, 1.0f, 1.0f);
+		//Rotate around x-axis
+		gl.glRotatef(rotationX, 1.0f, 0.0f, 0.0f);
+		//Rotate around y-axis
+		gl.glRotatef(rotationY, 0.0f, 1.0f, 0.0f);
 
 //		gl.glColor3f(0.3f, 0.5f, 1f);
 		// Draw Ball (possible styles: FILL, LINE, POINT).

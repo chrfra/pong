@@ -4,7 +4,8 @@ import pong.view.Textures;
 
 public class Ball extends MoveableItem {
 	float radius;
-	float rotation = 0;
+	float rotationX = 0;
+	float rotationY = 0;
 	
 	public Ball(float xPos, float yPos, float zPos, float radius) {
 		super(xPos, yPos, zPos, Type.BALL);
@@ -12,11 +13,19 @@ public class Ball extends MoveableItem {
 		this.radius=radius;
 	}
 	
+	
+	
+	//Sets rotation of the ball and adjusts speed
+	public void tick(){
+		setRotation();
+		adjustSpeed();
+	}
+	
 	/**
 	 * Adjusts the ball's speed if too fast.
 	 * @return
 	 */
-	public void adjustSpeed(){
+	private void adjustSpeed(){
 		float speed = body.getLinearVelocity().length();
 		
 		if(speed > Const.BALL_MAXSPEED){
@@ -25,22 +34,26 @@ public class Ball extends MoveableItem {
 			body.setLinearDamping(0.0f);
 		}
 	}
+	/**
+	 * sets the rotation based on the direction of the balls 
+	 */
+	public void setRotation(){
+		int rotationSpeed = 10;
+		rotationX-=(body.getLinearVelocity().y / rotationSpeed);
+		rotationY+=(body.getLinearVelocity().x / rotationSpeed);
+		rotationX = rotationX%360;
+		rotationY = rotationY%360;
+	}
 	
 	public float getRadius(){
 		return radius;
 	}
 	
-	//Sets rotation of the ball and adjusts speed
-	public void tick(){
-		rotation++;
-		rotation = rotation%360;
-		
-		adjustSpeed();
+	public float getRotationX() {
+		return rotationX;
 	}
 	
-	
-	public float getRotation() {
-		return rotation;
+	public float getRotationY() {
+		return rotationY;
 	}
-
 }
