@@ -12,7 +12,8 @@ import com.jogamp.opengl.util.texture.TextureIO;
 public class Textures {
 
 	public static Texture space = load("outer_space_trip.jpg");
-	public static Texture ball1 = load("earth-1k.png");
+	public static Texture ball1 = load("balltexture1.png");
+	public static Texture mainBall1 = load("balltexture3.png");
 	public static Texture paddle1 = load("paddle_texture1.jpg");
 	public static Texture menu = load("menu_texture1.jpg");
 	public static Texture wall1 = load("wall1.jpg");

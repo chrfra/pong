@@ -22,6 +22,7 @@ import pong.model.Player;
 import pong.model.Wall;
 import pong.view.Camera;
 import pong.view.GraphicsEngine;
+import pong.view.Textures;
 
 public class GameEngine {
 	private Physics physics;
@@ -62,7 +63,6 @@ public class GameEngine {
 	// For random balls spawning
 	private Random gen = new Random();
 	private MotionInput mi;
-	private float f = 0f;
 
 	public GameEngine() {
 	}
@@ -211,6 +211,7 @@ public class GameEngine {
 
 		// add ball to game
 		addItemToGame(mainBall = new Ball(BALL_DEFAULT_XPOS, BALL_DEFAULT_YPOS, 0, Const.BALL_RADIUS));
+		mainBall.setTexture(Textures.mainBall1);
 		resetGame = false;
 
 		// Adds the goals to physics simulation
@@ -266,7 +267,7 @@ public class GameEngine {
 		paddle1.adjustYPos(DEFAULT_DPADDLE_YPOS, true);
 		paddle2.adjustYPos(DEFAULT_UPADDLE_YPOS, false);
 		// restrict maximum ball speed by lineardampening it over a certain speed
-		checkBallSpeed();
+		doBallTicks();
 		physics.update();
 		updatePos();
 	}
@@ -406,12 +407,12 @@ public class GameEngine {
 	}
 
 	/** Checks a ball's speed. If it's over maximum: set lineardamping to something. If not: set lineardamping to zero. */
-	public void checkBallSpeed() {
+	public void doBallTicks() {
 
 		for (GameItem item : items) {
 			if (item.getType().equals("BALL")) {
 				Ball ball = (Ball) item;
-				ball.adjustSpeed();
+				ball.tick();
 			}
 		}
 

@@ -4,6 +4,8 @@ import pong.view.Textures;
 
 public class Ball extends MoveableItem {
 	float radius;
+	float rotation = 0;
+	
 	public Ball(float xPos, float yPos, float zPos, float radius) {
 		super(xPos, yPos, zPos, Type.BALL);
 		texture = Textures.ball1;
@@ -26,6 +28,19 @@ public class Ball extends MoveableItem {
 	
 	public float getRadius(){
 		return radius;
+	}
+	
+	//Sets rotation of the ball and adjusts speed
+	public void tick(){
+		rotation++;
+		rotation = rotation%360;
+		
+		adjustSpeed();
+	}
+	
+	
+	public float getRotation() {
+		return rotation;
 	}
 
 }
