@@ -79,7 +79,7 @@ public class Const {
 	
 	// Default values for Players
 	public static final int DEFAULT_STARTING_SCORE = 0;
-	public static final int DEFAULT_AMOUNT_PLAYER_LIVES = 10;
+	public static final int DEFAULT_AMOUNT_PLAYER_LIVES = 8;
 	
 	//The amount of points the balls give
 	public static final int BALL_MAIN_POINTS= 100;
