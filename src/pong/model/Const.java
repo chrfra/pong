@@ -81,6 +81,11 @@ public class Const {
 	public static final int DEFAULT_STARTING_SCORE = 0;
 	public static final int DEFAULT_AMOUNT_PLAYER_LIVES = 10;
 	
+	//The amount of points the balls give
+	public static final int BALL_MAIN_POINTS= 100;
+	public static final int BALL_EXTRA_POINTS= 25;
+	
+	
 	//sets how fast the game logic is to be updated, when this framerate is exceeded, the game(logic) thread sleeps
 	public static double TARGET_FRAMERATE = 60;
 	

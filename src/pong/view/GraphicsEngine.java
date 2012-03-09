@@ -261,7 +261,7 @@ public class GraphicsEngine implements GLEventListener {
 
 	private void renderScoreScreen(GL2 gl){
 
-		if (ge.getPlayer1().getLives() > ge.getPlayer2().getLives()) {
+		if (ge.getPlayer1().getScore() > ge.getPlayer2().getScore()) {
 			render.renderTextAtPixels(frameWidth/3, (frameHeight/2), frameWidth, frameHeight, "Player 1 WINS!!", FONT_SCORESCREEN, Color.YELLOW);
 			render.renderTextAtPixels(frameWidth/3, (frameHeight/2)-40, frameWidth, frameHeight, "Score: " + ge.getPlayer1().getScore(), FONT_SCORESCREEN, Color.YELLOW);
 		} else {

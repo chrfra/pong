@@ -289,30 +289,39 @@ public class GameEngine {
 	 * and a method that resets the game is called.
 	 */
 	public void ballOut(Player losingPlayer, Ball ball) {
-
-		// Resets the ball to the center if the ball is the mainball. All other balls are deleted.
-
+		//the score that will be added to the winningplayer.
+		int score;
+		
+		//Play a sound to express the game's dissapointment in you
 		SoundPlayer.playMP3("ballout.mp3");
-
+		
+		//Draw explosion
 		ge.addExplosion(ball.getxPos(), ball.getyPos(), ball.getzPos());
-
+		
+		// Resets the ball to the center if the ball is the mainball. All other balls are deleted.
 		if (ball == mainBall) {
 			resetGame = true;
+			score = BALL_MAIN_POINTS;
 		} else {
 			itemsToRemove.add(ball);
+			score = BALL_EXTRA_POINTS;
 		}
 
 		Player winner = new Player("", null);
 		if (losingPlayer == player1) {
 			winner = player2;
-			losingPlayer.setLives(losingPlayer.getLives() - 1);
+			//Only take lives if the ball is the mainball
+			if(ball == mainBall)
+				losingPlayer.setLives(losingPlayer.getLives() - 1);
 		} else {
 			winner = player1;
-			losingPlayer.setLives(losingPlayer.getLives() - 1);
+			//Only take lives if the ball is the mainball
+			if(ball == mainBall)
+				losingPlayer.setLives(losingPlayer.getLives() - 1);
 		}
 
 		// Increase the winners score!
-		updateScore(winner);
+		updateScore(winner, score);
 
 		if (losingPlayer.getLives() < 1) {
 
@@ -366,11 +375,11 @@ public class GameEngine {
 	 * 
 	 * @param winner
 	 */
-	public void updateScore(Player winner) {
-		int score = 0;
-		score = winner.getScore();
+	public void updateScore(Player winner, int scoreToAdd) {
+		int currentScore;
+		currentScore = winner.getScore();
 		// Increase points with 100
-		winner.setScore(score + 100);
+		winner.setScore(currentScore + scoreToAdd);
 	}
 
 	private void createObject(GameItem item) {
