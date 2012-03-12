@@ -20,12 +20,14 @@ public class MotionInput implements SerialPortEventListener {
 	/** The output stream to the port */
 	private OutputStream output;
 	private String xy;
-	private String goodInput = "";
-	private float f;
+	//private String[] goodInput = new String[2];
+	private String[] goodInput = new String[3];
+	private float[] goodInputf = new float[3];
+	private float[] f = new float[3];
 	/** Milliseconds to block while waiting for port open */
 	private static final int TIME_OUT = 2000;
 	/** Default bits per second for COM port. */
-	private static final int DATA_RATE = 9600;
+	private static final int DATA_RATE = 115200;
 	
 	public MotionInput(){
 		this.initialize();
@@ -96,12 +98,17 @@ public class MotionInput implements SerialPortEventListener {
 				input.read(chunk, 0, available);
 				// Displayed results are codepage dependent
 				xy = new String(chunk);
+				String[] xyv = xy.split(":");
 				//System.out.println(xy);
-				
-				if(!xy.equals("-")){
-					goodInput = xy;
-				}else{
-					xy = goodInput;
+				//upp/ner först
+				if(xyv[0].equals("-")){
+					xyv[0] = goodInput[0];
+				}else if ( !xyv[0].equals("-")){
+					goodInput[0] = xyv[0];
+				}else if(xyv[1].equals("-")){
+					xyv[1] = goodInput[1];
+				}else if(!xyv[1].equals("-")){
+					goodInput[1] = xyv[1];
 				}
 				
 				
@@ -112,7 +119,21 @@ public class MotionInput implements SerialPortEventListener {
 				
 		        //int i = Integer.parseInt(xy);
 				//Float f = new Float(xy);
-				f = Float.parseFloat(xy);
+				f[0] = Float.parseFloat(xyv[0]);
+				System.out.println("FLOAT1 " + f[0]);
+				f[1] = Float.parseFloat(xyv[1]);
+				System.out.println("FLOAT2 " + f[1]);
+				
+				if(f[0]<-10 || f[0]>10){
+					f[0] = goodInputf[0];
+				}else if (f[0]>-10  && f[0]<10){
+					goodInputf[0] = f[0];
+				}else if(f[1]<-10 || f[1]>10){
+					f[1] = goodInputf[1];
+				}else if(f[0]>-10  && f[0]<10){
+					goodInputf[1] = f[1];
+				}
+
 				//System.out.println("FLOAT: "+f);
 			} catch (Exception e) {
 				System.err.println(e.toString());
@@ -120,7 +141,7 @@ public class MotionInput implements SerialPortEventListener {
 		}
 		// Ignore all the other eventTypes, but you should consider the other ones.
 	}
-	public float getf(){
+	public float[] getf(){
 		return f;
 	}
 }

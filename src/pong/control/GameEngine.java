@@ -46,7 +46,7 @@ public class GameEngine {
 	// be updated
 	private double skipTicks = 1000 / TARGET_FRAMERATE;
 	private int fps; // keeps track of game(logic) updates per second (not rendering fps)
-
+	private float[] f = new float[3];
 	// Time to sleep in each execution in the game loop
 	long sleepTime;
 
@@ -103,8 +103,8 @@ public class GameEngine {
 		}
 
 		// Initialize sound, no delays afterwards in game
-		SoundPlayer.playMP3("padhit.mp3");
-		SoundPlayer.stopMp3();
+//		SoundPlayer.playMP3("padhit.mp3");
+//		SoundPlayer.stopMp3();
 
 		// Used to calculate FPS
 		int frames = 0;
@@ -254,9 +254,9 @@ public class GameEngine {
 		//else use mouse input to move the player's paddle
 		if(motionInput){
 			// Get Arduino Input
-			float f = mi.getf();
-			//System.out.println("Float: " + xy);
-			Vec2 vec = new Vec2(f*MOTION_SENSITIVTY, 0);
+			f = mi.getf();
+			System.out.println("Float: " + f[0]);
+			Vec2 vec = new Vec2(f[1]*MOTION_SENSITIVTY, f[0]*MOTION_SENSITIVTY);
 			paddle1.getBody().setLinearVelocity(vec);
 		}else{
 			// get mousepointer position on canvas, move the player controlled paddle
