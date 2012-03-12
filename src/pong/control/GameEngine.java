@@ -137,16 +137,17 @@ public class GameEngine {
 					Camera.smoothZoom(CAMERA_POSITION_Z);
 				}
 				gameState = IN_MENU;
+				if(cmdInput != null){
+					menu.tick(cmdInput.getLastKey());
 
-				menu.tick(cmdInput.getLastKey());
-
-				//update the name printed on the menu as it is typed by the player
-				//player1's name is being input
-				if( cmdInput.getInput() != null && menu.select() == TEXT_INPUT_P1 ){
-					menu.updateOption(MENU_RIGHT, 0, cmdInput.getInput()); //update printed text every gametick
-				}//player2's name is being input
-				else if( cmdInput.getInput() != null && menu.select() == TEXT_INPUT_P2 ){
-					menu.updateOption(MENU_BACK, 0, cmdInput.getInput()); //update printed text every gametick
+					//update the name printed on the menu as it is typed by the player
+					//player1's name is being input
+					if( cmdInput.getInput() != null && menu.select() == TEXT_INPUT_P1 ){
+						menu.updateOption(MENU_RIGHT, 0, cmdInput.getInput()); //update printed text every gametick
+					}//player2's name is being input
+					else if( cmdInput.getInput() != null && menu.select() == TEXT_INPUT_P2 ){
+						menu.updateOption(MENU_BACK, 0, cmdInput.getInput()); //update printed text every gametick
+					}
 				}
 			}
 			//Do camera tick
@@ -552,5 +553,10 @@ public class GameEngine {
 	public void setMainBall(Ball mainBall) {
 		this.mainBall = mainBall;
 	}
-
+	public CommandInput getCmdInput() {
+		return cmdInput;
+	}
+	public MotionInput getMi() {
+		return mi;
+	}
 }
