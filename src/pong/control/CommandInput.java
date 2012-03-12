@@ -1,8 +1,13 @@
 package pong.control;
 
 import static pong.model.Const.*;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
+import javax.swing.JOptionPane;
 
 import pong.model.Ball;
 import pong.view.Camera;
@@ -15,7 +20,7 @@ import pong.view.Camera;
  * @author sajohan
  *
  */
-public class CommandInput implements KeyListener {
+public class CommandInput implements ActionListener, KeyListener {
 
 	GameEngine ge;
 	//input stores the string (player name) entered by the player(s)
@@ -188,4 +193,30 @@ public class CommandInput implements KeyListener {
 	public int getLastKey() {
 		return lastKey;
 	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		
+		if(e.getActionCommand().equals("Set COM-port")){
+			boolean validInput = false;
+			while(!validInput){
+				
+				String input = JOptionPane.showInputDialog(null, "Choose COM-port: ", 
+						"COM-port", 1);
+				int port = 0;
+				try{
+					 port = Integer.parseInt(input);
+					 validInput = true;
+					 ge.getMi().setComPort(port);
+				}catch(NumberFormatException exc){
+					validInput = false;
+				}
+				
+			}
+		}
+		
+	}
+
 }

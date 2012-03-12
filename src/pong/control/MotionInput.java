@@ -10,7 +10,7 @@ import java.util.Enumeration;
 public class MotionInput implements SerialPortEventListener {
 	SerialPort serialPort;
         /** The port we're normally going to use. */
-	private static final String PORT_NAMES[] = { 
+	private static String PORT_NAMES[] = { 
 			"/dev/tty.usbserial-A9007UX1", // Mac OS X
 			"/dev/ttyUSB0", // Linux
 			"COM4", // Windows
@@ -36,7 +36,7 @@ public class MotionInput implements SerialPortEventListener {
 	public void initialize() {
 		CommPortIdentifier portId = null;
 		Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
-
+		
 		// iterate through, looking for the port
 		while (portEnum.hasMoreElements()) {
 			CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
@@ -143,5 +143,11 @@ public class MotionInput implements SerialPortEventListener {
 	}
 	public float[] getf(){
 		return f;
+	}
+	
+	public void setComPort(int port){
+		PORT_NAMES[2] = "COM" + port;
+		System.out.println(PORT_NAMES[2]);
+		initialize();
 	}
 }

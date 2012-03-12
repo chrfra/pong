@@ -3,9 +3,13 @@ package pong.view;
 import static pong.model.Const.*;
 
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Menu;
+import java.awt.MenuBar;
+import java.awt.MenuItem;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -24,7 +28,9 @@ import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.fixedfunc.GLLightingFunc;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
+import javax.swing.JMenuBar;
 
+import pong.control.CommandInput;
 import pong.control.GameEngine;
 import pong.model.Const;
 import pong.model.GameItem;
@@ -40,6 +46,8 @@ public class GraphicsEngine implements GLEventListener {
 	private GameEngine ge;
 	private Renderer render;
 	private GLAutoDrawable drawable;
+	private MenuBar menu;
+	private Dialog dialog;
 	private Camera cam;
 	// x,y,z rotation (degrees) to rotate the menu cube and the speed at which to do so
 	float rotationSpeed;
@@ -64,6 +72,8 @@ public class GraphicsEngine implements GLEventListener {
 		canvas.addGLEventListener(this);
 		render = new Renderer(glu);
 		frame.add(canvas);
+	
+		
 		frame.setSize(Const.SCREEN_WIDTH, Const.SCREEN_HEIGHT);
 
 		// spawn window in the center of the screen
@@ -80,6 +90,18 @@ public class GraphicsEngine implements GLEventListener {
 		// starts calling display method
 		animator.start();
 		canvas.requestFocus();
+	}
+	
+	public void setUpMenu(){
+		menu = new MenuBar();
+		Menu controllerMenu = new Menu("Controller Settings");
+		
+		MenuItem setComPort = new MenuItem("Set COM-port");
+		setComPort.addActionListener(ge.getCmdInput());
+		
+		
+		controllerMenu.add(setComPort);
+		menu.add(controllerMenu);
 	}
 
 	@Override
@@ -167,6 +189,10 @@ public class GraphicsEngine implements GLEventListener {
 
 		// add listeners for keyboard and mouse input
 		ge.createCommandListener(glDrawable);
+		
+		//Add menu
+		setUpMenu();
+		frame.setMenuBar(menu);
 
 	}
 
