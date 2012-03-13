@@ -43,7 +43,6 @@ public class Const {
 	public static final int TEXT_INPUT_P1 = 6;	//returned by menu to indicate user text input for player 1 is beginning
 	public static final int TEXT_INPUT_P2 = 7;	//returned by menu to indicate user text input for player 2 is beginning
 	public static final int ERROR = 9999;
-	public static final boolean motionInput = true;
 	
 	/********************GAME ITEM CONSTANTS***************************/
 	

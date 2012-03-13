@@ -2,8 +2,11 @@ package pong.control;
 
 import static pong.model.Const.*;
 
+import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -20,7 +23,7 @@ import pong.view.Camera;
  * @author sajohan
  *
  */
-public class CommandInput implements ActionListener, KeyListener {
+public class CommandInput implements ActionListener, KeyListener, ItemListener {
 
 	GameEngine ge;
 	//input stores the string (player name) entered by the player(s)
@@ -199,10 +202,9 @@ public class CommandInput implements ActionListener, KeyListener {
 	public void actionPerformed(ActionEvent e) {
 		
 		
-		if(e.getActionCommand().equals("Set COM-port")){
+		if(e.getActionCommand().equals("setCOM")){
 			boolean validInput = false;
 			while(!validInput){
-				
 				String input = JOptionPane.showInputDialog(null, "Choose COM-port: ", 
 						"COM-port", 1);
 				int port = 0;
@@ -217,6 +219,15 @@ public class CommandInput implements ActionListener, KeyListener {
 			}
 		}
 		
+	}
+
+
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+
+		if(e.getItem().equals("Activate Motioncontrols")){
+			ge.toggleMotionInput();
+		}
 	}
 
 }
