@@ -100,7 +100,7 @@ public class MotionInput implements SerialPortEventListener {
 				xy = new String(chunk);
 				String[] xyv = xy.split(":");
 				//System.out.println(xy);
-				//upp/ner först
+				//upp/ner fï¿½rst
 				if(xyv[0].equals("-")){
 					xyv[0] = goodInput[0];
 				}else if ( !xyv[0].equals("-")){
@@ -120,9 +120,9 @@ public class MotionInput implements SerialPortEventListener {
 		        //int i = Integer.parseInt(xy);
 				//Float f = new Float(xy);
 				f[0] = Float.parseFloat(xyv[0]);
-				System.out.println("FLOAT1 " + f[0]);
+//				System.out.println("FLOAT1 " + f[0]);
 				f[1] = Float.parseFloat(xyv[1]);
-				System.out.println("FLOAT2 " + f[1]);
+//				System.out.println("FLOAT2 " + f[1]);
 				
 				if(f[0]<-10 || f[0]>10){
 					f[0] = goodInputf[0];
@@ -147,7 +147,8 @@ public class MotionInput implements SerialPortEventListener {
 	
 	public void setComPort(int port){
 		PORT_NAMES[2] = "COM" + port;
-		System.out.println(PORT_NAMES[2]);
+		close();
 		initialize();
+		System.out.println(PORT_NAMES[2]);
 	}
 }

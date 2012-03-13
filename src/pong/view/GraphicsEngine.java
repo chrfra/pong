@@ -2,6 +2,7 @@ package pong.view;
 
 import static pong.model.Const.*;
 
+import java.awt.CheckboxMenuItem;
 import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.Dimension;
@@ -97,10 +98,16 @@ public class GraphicsEngine implements GLEventListener {
 		Menu controllerMenu = new Menu("Controller Settings");
 		
 		MenuItem setComPort = new MenuItem("Set COM-port");
+		setComPort.setActionCommand("setCOM");
 		setComPort.addActionListener(ge.getCmdInput());
 		
+		CheckboxMenuItem motionCheckBox = new CheckboxMenuItem("Activate Motioncontrols");
+		motionCheckBox.setState(ge.isMotionInput());
+		motionCheckBox.setActionCommand("toggleMotion");
+		motionCheckBox.addItemListener(ge.getCmdInput());
 		
 		controllerMenu.add(setComPort);
+		controllerMenu.add(motionCheckBox);
 		menu.add(controllerMenu);
 	}
 
@@ -128,7 +135,7 @@ public class GraphicsEngine implements GLEventListener {
 				+ " Sleeptime: " + ge.getSleepTime() + "ms", FONT_FPS, Color.YELLOW);
 
 		// check gameState to determine whether to zoom out and draw menu or to draw the game
-		if (ge.getGameState() == IN_MENU) {
+		if (ge.getGameState() == IN_MENU && ge.getMenu() != null) {
 			MenuCube menu = ge.getMenu(); // will be using the menu object a lot, store reference to it in "menu" variable
 			// render the Menu Cube
 			render.drawMenu(drawable, menu, menu.getRx(), menu.getRy(), menu.getRz());
@@ -275,10 +282,6 @@ public class GraphicsEngine implements GLEventListener {
 					gl.glPopMatrix();
 				}
 			}
-			gl.glPushMatrix();
-			// Render a string on screen
-			// render.renderStrokeString(gl, GLUT.STROKE_MONO_ROMAN, "Hej");
-			gl.glPopMatrix();
 
 		} catch (InvalidClassException e) {
 			e.printStackTrace();

@@ -57,12 +57,16 @@ public class GameEngine {
 	private GraphicsEngine ge;
 	// the menu cube
 	private MenuCube menu;
+	//Should the mainball reset?
 	private boolean resetGame = false;
 	// Reference to the AI
 	private ComputerAI cpuPlayer;
 	// For random balls spawning
 	private Random gen = new Random();
+	//The COM-port listener
 	private MotionInput mi;
+	//Play with mouse or controller?
+	private boolean motionInput = true;
 
 	public GameEngine() {
 	}
@@ -256,7 +260,7 @@ public class GameEngine {
 		if(motionInput){
 			// Get Arduino Input
 			f = mi.getf();
-			System.out.println("Float: " + f[0]);
+//			System.out.println("Float: " + f[0]);
 			Vec2 vec = new Vec2(f[1]*MOTION_SENSITIVTY, f[0]*MOTION_SENSITIVTY);
 			paddle1.getBody().setLinearVelocity(vec);
 		}else{
@@ -558,5 +562,11 @@ public class GameEngine {
 	}
 	public MotionInput getMi() {
 		return mi;
+	}
+	public void toggleMotionInput() {
+		this.motionInput = !motionInput;
+	}
+	public boolean isMotionInput() {
+		return motionInput;
 	}
 }
