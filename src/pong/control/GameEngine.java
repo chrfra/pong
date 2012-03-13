@@ -103,8 +103,8 @@ public class GameEngine {
 		}
 
 		// Initialize sound, no delays afterwards in game
-//		SoundPlayer.playMP3("padhit.mp3");
-//		SoundPlayer.stopMp3();
+		SoundPlayer.playMP3("padhit.mp3");
+		SoundPlayer.stopMp3();
 
 		// Used to calculate FPS
 		int frames = 0;
