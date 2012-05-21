@@ -97,6 +97,18 @@ public class GraphicsEngine implements GLEventListener {
 		menu = new MenuBar();
 		Menu controllerMenu = new Menu("Controller Settings");
 		
+		Menu infoMenu = new Menu("Information");
+		MenuItem aboutItem = new MenuItem("About the game");
+		aboutItem.setActionCommand("about");
+		aboutItem.addActionListener(ge.getCmdInput());
+		
+		MenuItem helpItem = new MenuItem("Help");
+		helpItem.setActionCommand("help");
+		helpItem.addActionListener(ge.getCmdInput());
+		
+		infoMenu.add(helpItem);
+		infoMenu.add(aboutItem);
+		
 		MenuItem setComPort = new MenuItem("Set COM-port");
 		setComPort.setActionCommand("setCOM");
 		setComPort.addActionListener(ge.getCmdInput());
@@ -109,6 +121,7 @@ public class GraphicsEngine implements GLEventListener {
 		controllerMenu.add(setComPort);
 		controllerMenu.add(motionCheckBox);
 		menu.add(controllerMenu);
+		menu.add(infoMenu);
 	}
 
 	@Override

@@ -15,72 +15,74 @@ import javax.swing.JOptionPane;
 import pong.model.Ball;
 import pong.view.Camera;
 
-
 /**
- * Listens for general commands that control the application. Compared to MouseInput and MotionInput this isn't connected to a player or paddle.
- * e.g. escape to pause, 1-3 to change cameramode. 
+ * Listens for general commands that control the application. Compared to
+ * MouseInput and MotionInput this isn't connected to a player or paddle. e.g.
+ * escape to pause, 1-3 to change cameramode.
  * 
  * @author sajohan
- *
+ * 
  */
 public class CommandInput implements ActionListener, KeyListener, ItemListener {
 
 	GameEngine ge;
-	//input stores the string (player name) entered by the player(s)
+	// input stores the string (player name) entered by the player(s)
 	private String input;
-	//keeps track of the last pressed key ( used for determining which direction to rotate the menu cube )
+	// keeps track of the last pressed key ( used for determining which
+	// direction to rotate the menu cube )
 	private int lastKey;
-	
+
 	public CommandInput(GameEngine ge) {
 		this.ge = ge;
 	}
 
-
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 
-		//store text if text input is enabled ( beginInput() has been called, but not endInput() yet  )
-		if(activeInput()){
+		// store text if text input is enabled ( beginInput() has been called,
+		// but not endInput() yet )
+		if (activeInput()) {
 			int keyCode = arg0.getKeyCode();
 			String key = KeyEvent.getKeyText(keyCode);
 			// only accept one character input ( disregard ENTER string etc...)
-			if(key.length() == 1){
+			if (key.length() == 1) {
 				input = input + key;
 			}
 		}
 
-		//Add ball to game
-		if(arg0.getKeyCode() == KeyEvent.VK_B){
-			ge.addItemToGame(new Ball(BALL_DEFAULT_XPOS, BALL_DEFAULT_YPOS, 0, BALL_RADIUS));
+		// Add ball to game
+		if (arg0.getKeyCode() == KeyEvent.VK_B) {
+			ge.addItemToGame(new Ball(BALL_DEFAULT_XPOS, BALL_DEFAULT_YPOS, 0,
+					BALL_RADIUS));
 		}
-		if(arg0.getKeyCode() == KeyEvent.VK_1){
+		if (arg0.getKeyCode() == KeyEvent.VK_1) {
 			Camera.setMode(CAM_STATIC);
 		}
-		if(arg0.getKeyCode() == KeyEvent.VK_2){
+		if (arg0.getKeyCode() == KeyEvent.VK_2) {
 			Camera.setMode(CAM_FOLLOW_BALLS);
 		}
-		if(arg0.getKeyCode() == KeyEvent.VK_3){
+		if (arg0.getKeyCode() == KeyEvent.VK_3) {
 			Camera.setMode(CAM_LOOKAT_BALLS);
 		}
-		if(arg0.getKeyCode() == KeyEvent.VK_4){
+		if (arg0.getKeyCode() == KeyEvent.VK_4) {
 			Camera.setMode(CAM_PADDLE1);
 		}
-		if(arg0.getKeyCode() == KeyEvent.VK_5){
+		if (arg0.getKeyCode() == KeyEvent.VK_5) {
 			Camera.setMode(CAM_PADDLE2);
 		}
 
 		/*
 		 * handle enter (select) keypress
 		 */
-		if(arg0.getKeyCode() == KeyEvent.VK_ENTER){
+		if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
 			ge.select();
 		}
 
 		/*
 		 * handle backspace (remove last char from input string)
 		 */
-		if(arg0.getKeyCode() == KeyEvent.VK_BACK_SPACE){
-			if(activeInput())//only chop string if user is inputting data
+		if (arg0.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+			if (activeInput())// only chop string if user is inputting data
 				input = chop(input);
 		}
 
@@ -92,32 +94,30 @@ public class CommandInput implements ActionListener, KeyListener, ItemListener {
 		 * RIGHT/LEFT
 		 */
 
-		//on right key press set the target menu rotation to 90 degrees to the right 
-		//of the current rotation if user is not inputting text
-		if(arg0.getKeyCode() == KeyEvent.VK_RIGHT){
-			if(ge.getGameState() == IN_MENU && !activeInput()){
-				lastKey = KEY_RIGHT;	//store what key was pressed
+		// on right key press set the target menu rotation to 90 degrees to the
+		// right
+		// of the current rotation if user is not inputting text
+		if (arg0.getKeyCode() == KeyEvent.VK_RIGHT) {
+			if (ge.getGameState() == IN_MENU && !activeInput()) {
+				lastKey = KEY_RIGHT; // store what key was pressed
 				ge.getMenu().rotateY(-90);
 			}
-		}
-		else if(arg0.getKeyCode() == KeyEvent.VK_LEFT && !activeInput()){
-			if(ge.getGameState() == IN_MENU){
-				lastKey = KEY_LEFT;		//store what key was pressed
+		} else if (arg0.getKeyCode() == KeyEvent.VK_LEFT && !activeInput()) {
+			if (ge.getGameState() == IN_MENU) {
+				lastKey = KEY_LEFT; // store what key was pressed
 				ge.getMenu().rotateY(90);
 			}
 		}
 
 		/*
-		 * UP/DOWN
-		 * unused
+		 * UP/DOWN unused
 		 */
-		if(arg0.getKeyCode() == KeyEvent.VK_UP && !activeInput()){
-			if(ge.getGameState() == IN_MENU){
+		if (arg0.getKeyCode() == KeyEvent.VK_UP && !activeInput()) {
+			if (ge.getGameState() == IN_MENU) {
 				ge.getMenu().rotateX(90);
 			}
-		}
-		else if(arg0.getKeyCode() == KeyEvent.VK_DOWN && !activeInput()){
-			if(ge.getGameState() == IN_MENU){
+		} else if (arg0.getKeyCode() == KeyEvent.VK_DOWN && !activeInput()) {
+			if (ge.getGameState() == IN_MENU) {
 				ge.getMenu().rotateX(-90);
 			}
 		}
@@ -128,28 +128,35 @@ public class CommandInput implements ActionListener, KeyListener, ItemListener {
 		/*
 		 * escape key pauses the game, prints resume option on menu etc.
 		 */
-		if(arg0.getKeyCode() == KeyEvent.VK_ESCAPE){
-			if(ge.getGameState()==IN_GAME){	//only set gamestate to paused if game is running and escape is pressed
+		if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			if (ge.getGameState() == IN_GAME) { // only set gamestate to paused
+												// if game is running and escape
+												// is pressed
 				ge.setGameState(IN_MENU);
-			}else if(ge.getGameState() == IN_MENU){	//pressing escape while game is paused and in the menu resumes the game
-				if( ge.gameInitiated() ) // only resume game if the game (gameitems etc.) have been initiated
+			} else if (ge.getGameState() == IN_MENU) { // pressing escape while
+														// game is paused and in
+														// the menu resumes the
+														// game
+				if (ge.gameInitiated()) // only resume game if the game
+										// (gameitems etc.) have been initiated
 					ge.setGameState(IN_GAME);
 			}
 		}
 
-
 	}
+
 	/*
 	 * enables storing of text input
 	 */
-	public void beginInput(){
+	public void beginInput() {
 		input = new String();
 	}
+
 	/*
-	 * disables storing of text input, 
-	 * the check input == null is used to determine wether the user is inputting data or not
+	 * disables storing of text input, the check input == null is used to
+	 * determine wether the user is inputting data or not
 	 */
-	public void endInput(){
+	public void endInput() {
 		input = null;
 	}
 
@@ -160,10 +167,11 @@ public class CommandInput implements ActionListener, KeyListener, ItemListener {
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 
-
 	}
+
 	/*
 	 * removes the last character of the argument string
+	 * 
 	 * @param the string to be chopped
 	 */
 	public static String chop(String str) {
@@ -186,46 +194,61 @@ public class CommandInput implements ActionListener, KeyListener, ItemListener {
 		}
 		return ret;
 	}
+
 	/*
 	 * keeps track of wether the user is inputting text or not
-	 * @return boolean input	returns true if input is active
+	 * 
+	 * @return boolean input returns true if input is active
 	 */
-	public boolean activeInput(){
+	public boolean activeInput() {
 		return input != null;
 	}
+
 	public int getLastKey() {
 		return lastKey;
 	}
 
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		
-		if(e.getActionCommand().equals("setCOM")){
+
+		if (e.getActionCommand().equals("setCOM")) {
 			boolean validInput = false;
-			while(!validInput){
-				String input = JOptionPane.showInputDialog(null, "Choose COM-port: ", 
-						"COM-port", 1);
+			while (!validInput) {
+				String input = JOptionPane.showInputDialog(null,
+						"Choose COM-port: ", "COM-port", 1);
 				int port = 0;
-				try{
-					 port = Integer.parseInt(input);
-					 validInput = true;
-					 ge.getMi().setComPort(port);
-				}catch(NumberFormatException exc){
+				try {
+					port = Integer.parseInt(input);
+					validInput = true;
+					ge.getMi().setComPort(port);
+				} catch (NumberFormatException exc) {
 					validInput = false;
 				}
-				
+
 			}
 		}
-		
-	}
+		else if (e.getActionCommand().equals("help")) {
+			JOptionPane
+					.showMessageDialog(
+							null,
+							"Controls:\nUse arrow keys in menu.\nUse keys 1,2,3 and 4 to change camera mode when in game.\nDefault mode is motion input, change in menu to use mouse.\nIf using Arduino, set the correct COM-port in controller settings menu.");
 
+		}
+		
+		else if (e.getActionCommand().equals("about")) {
+			JOptionPane
+					.showMessageDialog(
+							null,
+							"Motion controlled pong game \nProject course @ Chalmers University Of Technology spring semester 2012\nAuthors: \nJohan Sandström, Daniel Nicklasson, Christian Fransson\nJonas Ekström and Mikael Andersson Ynghammar ");
+
+		}
+
+	}
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 
-		if(e.getItem().equals("Activate Motioncontrols")){
+		if (e.getItem().equals("Activate Motioncontrols")) {
 			ge.toggleMotionInput();
 		}
 	}
