@@ -43,7 +43,7 @@ public class GraphicsEngine implements GLEventListener {
 
 	private static GLU glu = new GLU();
 	private static GLCanvas canvas = new GLCanvas();
-	private static Frame frame = new Frame("Pong");
+	private static Frame frame = new Frame("MotionPong v1.0 - Project CTH 2012");
 	private GameEngine ge;
 	private Renderer render;
 	private GLAutoDrawable drawable;

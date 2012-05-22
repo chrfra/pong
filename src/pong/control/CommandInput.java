@@ -231,7 +231,7 @@ public class CommandInput implements ActionListener, KeyListener, ItemListener {
 			JOptionPane
 					.showMessageDialog(
 							null,
-							"Controls:\nUse arrow keys in menu.\nUse keys 1,2,3 and 4 to change camera mode when in game.\nDefault mode is motion input, change in menu to use mouse.\nIf using Arduino, set the correct COM-port in controller settings menu.");
+							"Controls:\nUse arrow keys in menu.\nUse keys 1,2,3 and 4 to change camera mode when in game.\nDefault mode is motion input, change in menu to use mouse.\nIf using Arduino, set the correct COM-port in controller settings menu.\nBlue balls are for extra points.\nIf the orange ball touches a wall, you loose a life.\n");
 
 		}
 		

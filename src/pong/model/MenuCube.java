@@ -120,7 +120,7 @@ public class MenuCube {
 	 * @return	the gamestate (Const.*)to be initialized depending on what direction the cube is facing
 	 */
 	public int select(){
-		System.out.println("ry " +ry);
+		//System.out.println("ry " +ry);
 		/*
 		 * NOTE that if the first move the player makes is one step to the right then ry = 0-90 = -90
 		 * but if the player takes three steps to the left (=0+90+90+90 = 270) we will also be facing the rightmost face
